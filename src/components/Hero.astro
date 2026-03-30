@@ -1,0 +1,75 @@
+---
+---
+<section class="hero-section">
+	<div class="overlay"></div>
+	<div class="container hero-content">
+		<h2>Chaveiro Residencial 24 Horas</h2>
+		<h1>O Melhor Chaveiro 24 Horas em São Paulo e Região</h1>
+		<p>Atendimento emergencial rápido, seguro e com garantia de qualidade. Chegamos em até 30 minutos em sua residência ou empresa.</p>
+		
+		<div class="hero-actions">
+			<a href="https://wa.me/5511999999999" class="btn btn-primary btn-large">Solicitar Orçamento via WhatsApp</a>
+			<a href="#servicos" class="btn btn-outline btn-large">Ver Nossos Serviços</a>
+		</div>
+	</div>
+</section>
+
+<style>
+	.hero-section {
+		background: url('https://images.unsplash.com/photo-1582139329536-e7284fece509?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
+		min-height: 80vh;
+		position: relative;
+		display: flex;
+		align-items: center;
+		color: var(--light);
+		padding: 100px 0;
+	}
+	.overlay {
+		position: absolute;
+		top: 0; left: 0; width: 100%; height: 100%;
+		background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%);
+	}
+	.hero-content {
+		position: relative;
+		z-index: 1;
+		max-width: 800px;
+	}
+	.hero-content h2 {
+		color: var(--primary);
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		margin-bottom: 20px;
+		font-size: 1.2rem;
+	}
+	.hero-content h1 {
+		font-size: 3.5rem;
+		line-height: 1.1;
+		margin-bottom: 30px;
+	}
+	.hero-content p {
+		font-size: 1.2rem;
+		margin-bottom: 40px;
+		color: #ddd;
+	}
+	.btn-large {
+		padding: 15px 40px;
+		font-size: 1.1rem;
+		margin-right: 20px;
+		margin-bottom: 20px;
+	}
+	.btn-outline {
+		border: 2px solid var(--primary);
+		color: var(--primary);
+		background: transparent;
+	}
+	.btn-outline:hover {
+		background: var(--primary);
+		color: var(--dark);
+	}
+
+	@media (max-width: 768px) {
+		.hero-content h1 {
+			font-size: 2.5rem;
+		}
+	}
+</style>

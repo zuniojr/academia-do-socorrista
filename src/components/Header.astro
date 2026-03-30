@@ -1,0 +1,97 @@
+---
+---
+<header class="main-header">
+	<div class="top-bar">
+		<div class="container flex">
+			<div class="contact-info">
+				<span>📍 São Paulo e Região</span>
+				<span>📧 contato@chaveiro24h.com.br</span>
+			</div>
+			<div class="social-links">
+				<span>Chaveiro Residencial 24 Horas</span>
+			</div>
+		</div>
+	</div>
+	
+	<div class="nav-container py-4">
+		<div class="container flex items-center justify-between">
+			<div class="logo">
+				<a href="/">
+					<span class="logo-text">CHAVEIRO <strong>24H</strong></span>
+				</a>
+			</div>
+			
+			<nav class="main-nav">
+				<ul>
+					<li><a href="/">Início</a></li>
+					<li><a href="#servicos">Serviços</a></li>
+					<li><a href="#sobre">Sobre</a></li>
+					<li><a href="#contato">Contato</a></li>
+				</ul>
+			</nav>
+			
+			<div class="cta-header">
+				<a href="tel:+551199999999" class="btn btn-primary">Ligar Agora</a>
+			</div>
+		</div>
+	</div>
+</header>
+
+<style>
+	.main-header {
+		width: 100%;
+		z-index: 100;
+	}
+	.top-bar {
+		background-color: var(--dark);
+		color: var(--light);
+		padding: 8px 0;
+		font-size: 14px;
+	}
+	.flex {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.contact-info span {
+		margin-right: 20px;
+	}
+	.nav-container {
+		background-color: var(--light);
+		box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+	}
+	.logo-text {
+		font-size: 24px;
+		color: var(--dark);
+		font-family: 'Montserrat', sans-serif;
+	}
+	.logo-text strong {
+		color: var(--primary);
+	}
+	.main-nav ul {
+		list-style: none;
+		display: flex;
+		gap: 30px;
+	}
+	.main-nav a {
+		text-decoration: none;
+		color: var(--dark);
+		font-weight: 700;
+		text-transform: uppercase;
+		font-size: 14px;
+		transition: color 0.3s;
+	}
+	.main-nav a:hover {
+		color: var(--primary);
+	}
+	.py-4 {
+		padding-top: 1rem;
+		padding-bottom: 1rem;
+	}
+
+	@media (max-width: 768px) {
+		.top-bar, .main-nav {
+			display: none;
+		}
+	}
+</style>

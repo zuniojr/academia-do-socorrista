@@ -1,0 +1,143 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Services from '../components/Services.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "Chaveiro Residencial 24 Horas | O Melhor Chaveiro em São Paulo";
+const description = "Atendimento profissional de chaveiro 24 horas em São Paulo e região. Abertura de portas, instalação de fechaduras, troca de segredo e chaves automotivas. Chegamos rápido!";
+---
+
+<Layout title={title} description={description}>
+	<Header />
+	<main>
+		<Hero />
+		<Services />
+		
+		<section id="sobre" class="about-section py-20">
+			<div class="container flex items-center">
+				<div class="about-text w-1/2 pr-10">
+					<h2>Mais de 20 Anos de Experiência em Segurança</h2>
+					<p>Nossa equipe é altamente treinada para resolver qualquer problema com fechaduras e chaves. Seja em sua residência, empresa ou veículo, garantimos um serviço limpo, rápido e com preço justo.</p>
+					<ul>
+						<li>✅ Atendimento em 30 minutos</li>
+						<li>✅ Profissionais Identificados</li>
+						<li>✅ Ferramentas de Alta Tecnologia</li>
+						<li>✅ Garantia Total nos Serviços</li>
+					</ul>
+					<a href="https://wa.me/5511999999999" class="btn btn-primary">Fale com um Especialista</a>
+				</div>
+				<div class="about-image w-1/2">
+					<img src="https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?q=80&w=1200&auto=format&fit=crop" alt="Equipe de Chaveiro" />
+				</div>
+			</div>
+		</section>
+		
+		<section class="cta-section py-16">
+			<div class="container text-center">
+				<h2>Precisa de ajuda agora?</h2>
+				<p>Estamos prontos para te atender a qualquer hora do dia ou da noite!</p>
+				<a href="tel:+5511999999999" class="btn btn-dark">Ligar Para Emergência</a>
+			</div>
+		</section>
+	</main>
+	<Footer />
+
+	<!-- Floating Button WhatsApp -->
+	<a href="https://wa.me/5511999999999" class="whatsapp-float" target="_blank">
+		<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+	</a>
+</Layout>
+
+<style>
+	.py-20 {
+		padding-top: 80px;
+		padding-bottom: 80px;
+	}
+	.py-16 {
+		padding-top: 60px;
+		padding-bottom: 60px;
+	}
+	.flex {
+		display: flex;
+		align-items: center;
+	}
+	.text-center {
+		text-align: center;
+	}
+	.w-1/2 {
+		width: 50%;
+	}
+	.pr-10 {
+		padding-right: 40px;
+	}
+	h2 {
+		font-size: 2.2rem;
+		margin-bottom: 25px;
+	}
+	.about-text p {
+		margin-bottom: 25px;
+		color: #666;
+		font-size: 1.1rem;
+	}
+	.about-text ul {
+		list-style: none;
+		margin-bottom: 40px;
+	}
+	.about-text ul li {
+		margin-bottom: 12px;
+		font-weight: 700;
+	}
+	.about-image img {
+		width: 100%;
+		border-radius: 8px;
+		box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+	}
+	.cta-section {
+		background-color: var(--primary);
+		color: var(--dark);
+	}
+	.cta-section h2 {
+		margin-bottom: 15px;
+	}
+	.cta-section p {
+		margin-bottom: 30px;
+		font-size: 1.2rem;
+	}
+	.whatsapp-float {
+		position: fixed;
+		bottom: 30px;
+		right: 30px;
+		width: 60px;
+		height: 60px;
+		background-color: #25d366;
+		border-radius: 50%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+		z-index: 1000;
+		transition: transform 0.3s;
+	}
+	.whatsapp-float:hover {
+		transform: scale(1.1);
+	}
+	.whatsapp-float img {
+		width: 35px;
+		height: 35px;
+	}
+
+	@media (max-width: 768px) {
+		.flex {
+			flex-direction: column;
+		}
+		.w-1/2 {
+			width: 100%;
+			padding-right: 0;
+		}
+		.about-image {
+			margin-top: 40px;
+		}
+	}
+</style>
