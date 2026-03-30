@@ -1,0 +1,4 @@
+{
+  "installCommand": "npm i -g bun && bun install",
+  "buildCommand": "bun run build"
+}
