@@ -1,0 +1,261 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "Blog | Dicas e Novidades sobre Segurança em Itajaí";
+const description = "Leia as nossas dicas sobre segurança residencial, fechaduras digitais e muito mais no blog oficial do Chaveiro Itajaí.";
+
+const posts = [
+  {
+    title: '5 Motivos para Instalar uma Fechadura Digital em 2024',
+    category: 'Segurança Smart',
+    date: '20 de Março, 2024',
+    excerpt: 'Descubra como a tecnologia das fechaduras inteligentes está mudando a forma como protegemos as nossas casas e empresas.',
+    image: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=800&auto=format&fit=crop'
+  },
+  {
+    title: 'Chaves Codificadas: O que Fazer em Caso de Perda?',
+    category: 'Automotivo',
+    date: '15 de Março, 2024',
+    excerpt: 'Perdeu a única cópia da chave do carro? Entenda o processo de codificação e como um chaveiro especializado pode te ajudar.',
+    image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?q=80&w=800&auto=format&fit=crop'
+  },
+  {
+    title: 'Segurança Residencial nas Férias: Guia Completo',
+    category: 'Especialista',
+    date: '05 de Março, 2024',
+    excerpt: 'Dicas práticas de como reforçar a segurança das suas fechaduras e janelas antes de viajar no feriado.',
+    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=800&auto=format&fit=crop'
+  },
+  {
+    title: 'Mestramento de Chaves: A Solução para Grandes Empresas',
+    category: 'Corporativo',
+    date: '28 de Fevereiro, 2024',
+    excerpt: 'Simplifique o acesso e melhore a segurança reduzindo a quantidade de chaves necessárias para gerir o seu negócio.',
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop'
+  }
+];
+---
+
+<Layout title={title} description={description}>
+	<Header />
+	<main>
+		<section class="page-hero">
+			<div class="container animate-fade">
+				<span class="section-badge">Blog & Dicas</span>
+				<h1>Segurança <span class="text-gradient">Inteligente</span></h1>
+				<p>Informação de qualidade para você manter o seu patrimônio protegido e moderno.</p>
+			</div>
+		</section>
+
+		<section class="blog-grid-section">
+			<div class="container">
+				<div class="blog-grid">
+					{posts.map((post, index) => (
+						<article class="post-card glass-card animate-fade" style={`animation-delay: ${0.1 * index}s`}>
+							<div class="post-image-wrapper">
+								<img src={post.image} alt={post.title} />
+								<span class="category-badge">{post.category}</span>
+							</div>
+							<div class="post-content">
+								<span class="post-date">{post.date}</span>
+								<h3><a href="#">{post.title}</a></h3>
+								<p>{post.excerpt}</p>
+								<a href="#" class="read-more">Ler Artigo Completo →</a>
+							</div>
+						</article>
+					))}
+				</div>
+				
+				<div class="load-more animate-fade">
+					<button class="btn btn-outline">Carregar Mais Artigos</button>
+				</div>
+			</div>
+		</section>
+
+		<section class="newsletter-section">
+			<div class="container">
+				<div class="newsletter-box glass-card animate-fade">
+					<div class="newsletter-inner">
+						<div class="newsletter-text">
+							<h2>Fique por Dentro</h2>
+							<p>Receba as melhores dicas de segurança e ofertas exclusivas do Chaveiro Itajaí diretamente no seu e-mail.</p>
+						</div>
+						<form class="newsletter-form" onsubmit="return false;">
+							<input type="email" placeholder="Digite seu melhor e-mail" required />
+							<button type="submit" class="btn btn-primary">Inscrever-se</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	.page-hero {
+		padding: 200px 0 100px;
+		background: var(--dark-surface);
+		text-align: center;
+		border-bottom: 1px solid var(--glass-border);
+	}
+
+	.page-hero h1 {
+		font-size: 4rem;
+		margin-bottom: 20px;
+	}
+
+	.page-hero p {
+		font-size: 1.2rem;
+		color: var(--text-muted);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.blog-grid-section {
+		padding: 120px 0;
+	}
+
+	.blog-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+		gap: 30px;
+	}
+
+	.post-card {
+		padding: 0;
+		overflow: hidden;
+		transition: var(--transition);
+	}
+
+	.post-card:hover { transform: translateY(-10px); }
+
+	.post-image-wrapper {
+		position: relative;
+		height: 240px;
+		overflow: hidden;
+	}
+
+	.post-image-wrapper img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: var(--transition);
+	}
+
+	.post-card:hover .post-image-wrapper img { transform: scale(1.1); }
+
+	.category-badge {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		background: var(--primary);
+		color: var(--dark);
+		padding: 6px 15px;
+		border-radius: 100px;
+		font-weight: 700;
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.post-content {
+		padding: 30px;
+	}
+
+	.post-date {
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		margin-bottom: 15px;
+		display: block;
+	}
+
+	.post-content h3 {
+		font-size: 1.4rem;
+		margin-bottom: 20px;
+		line-height: 1.4;
+	}
+
+	.post-content h3 a {
+		color: white;
+		text-decoration: none;
+		transition: var(--transition);
+	}
+
+	.post-content h3 a:hover { color: var(--primary); }
+
+	.post-content p {
+		color: var(--text-muted);
+		font-size: 0.95rem;
+		margin-bottom: 25px;
+		line-height: 1.7;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.read-more {
+		color: var(--primary);
+		text-decoration: none;
+		font-weight: 700;
+		font-size: 0.9rem;
+		transition: var(--transition);
+	}
+
+	.read-more:hover { gap: 15px; padding-left: 5px; }
+
+	.load-more {
+		text-align: center;
+		margin-top: 80px;
+	}
+
+	.newsletter-section {
+		padding-bottom: 150px;
+	}
+
+	.newsletter-box {
+		padding: 80px 60px;
+	}
+
+	.newsletter-inner {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 60px;
+		align-items: center;
+	}
+
+	.newsletter-text h2 { font-size: 2.2rem; margin-bottom: 15px; }
+	.newsletter-text p { color: var(--text-muted); font-size: 1.1rem; }
+
+	.newsletter-form {
+		display: flex;
+		gap: 15px;
+	}
+
+	.newsletter-form input {
+		background: rgba(255, 255, 255, 0.05);
+		border: 1px solid var(--glass-border);
+		padding: 15px 25px;
+		border-radius: 12px;
+		color: white;
+		flex-grow: 1;
+		font-size: 1rem;
+	}
+
+	.newsletter-form input:focus {
+		outline: none;
+		border-color: var(--primary);
+	}
+
+	@media (max-width: 992px) {
+		.newsletter-inner { grid-template-columns: 1fr; text-align: center; }
+		.newsletter-form { flex-direction: column; }
+	}
+
+	@media (max-width: 768px) {
+		.page-hero h1 { font-size: 3rem; }
+	}
+</style>

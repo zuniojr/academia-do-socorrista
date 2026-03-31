@@ -1,0 +1,199 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "Nossa Equipe | Especialistas em Segurança em Itajaí";
+const description = "Conheça a história e os profissionais por trás do Chaveiro Itajaí. Mais de 20 anos de tradição em serviços de chaveiro.";
+
+const team = [
+  {
+    name: 'Roberto Silva',
+    role: 'Fundador e Especialista em Alta Segurança',
+    bio: 'Mais de 25 anos de experiência técnica. Roberto é especialista em aberturas complexas e sistemas de alta segurança.',
+    image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop'
+  },
+  {
+    name: 'Carlos Santos',
+    role: 'Especialista em Sistemas Digitais',
+    bio: 'Expert em fechaduras inteligentes e automação residencial. Carlos lidera nossa frente de tecnologia smart.',
+    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop'
+  },
+  {
+    name: 'Thiago Oliveira',
+    role: 'Especialista em Chaves Automotivas',
+    bio: 'Focado em eletrônica veicular. Thiago domina os softwares de codificação mais modernos do mercado.',
+    image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=400&auto=format&fit=crop'
+  }
+];
+---
+
+<Layout title={title} description={description}>
+	<Header />
+	<main>
+		<section class="page-hero">
+			<div class="container animate-fade">
+				<span class="section-badge">Tradição & Confiança</span>
+				<h1>Nossa <span class="text-gradient">Equipe</span></h1>
+				<p>Conheça os profissionais certificados que garantem a segurança do seu patrimônio 24 horas por dia.</p>
+			</div>
+		</section>
+
+		<section class="team-grid">
+			<div class="container text-center">
+				<div class="team-cards">
+					{team.map((member, index) => (
+						<div class="glass-card team-card animate-fade" style={`animation-delay: ${0.2 * index}s`}>
+							<div class="member-image-wrapper">
+								<img src={member.image} alt={member.name} />
+							</div>
+							<h3>{member.name}</h3>
+							<span class="role">{member.role}</span>
+							<p>{member.bio}</p>
+						</div>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section class="about-timeline">
+			<div class="container">
+				<div class="timeline-box glass-card animate-fade">
+					<div class="timeline-content">
+						<h2>Nossa Trajetória</h2>
+						<p>Fundado há pouco mais de duas décadas em Itajaí, o **Chaveiro Itajaí** nasceu com a missão de elevar o padrão de atendimento e segurança na região. O que começou como uma pequena loja de bairro, hoje é referência tecnológica em toda a AMFRI.</p>
+						<p>Investimos constantemente em treinamento e equipamentos importados para garantir que nossos clientes tenham acesso ao que há de melhor em proteção residencial e comercial.</p>
+						
+						<div class="values-badges">
+							<div class="value-item">⭐ Atendimento 24h</div>
+							<div class="value-item">⭐ Certificação Técnica</div>
+							<div class="value-item">⭐ Garantia Total</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	.page-hero {
+		padding: 200px 0 100px;
+		background: var(--dark-surface);
+		text-align: center;
+		border-bottom: 1px solid var(--glass-border);
+	}
+
+	.page-hero h1 {
+		font-size: 4rem;
+		margin-bottom: 20px;
+	}
+
+	.page-hero p {
+		font-size: 1.2rem;
+		color: var(--text-muted);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.team-grid {
+		padding: 120px 0;
+	}
+
+	.team-cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 30px;
+	}
+
+	.team-card {
+		padding: 40px;
+		text-align: center;
+		transition: var(--transition);
+	}
+
+	.member-image-wrapper {
+		width: 150px;
+		height: 150px;
+		margin: 0 auto 30px;
+		border-radius: 50%;
+		overflow: hidden;
+		border: 4px solid var(--primary);
+		box-shadow: 0 15px 30px var(--primary-glow);
+	}
+
+	.member-image-wrapper img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.team-card h3 {
+		font-size: 1.6rem;
+		margin-bottom: 10px;
+		color: #fff;
+	}
+
+	.team-card .role {
+		display: block;
+		color: var(--primary);
+		font-weight: 700;
+		font-size: 0.9rem;
+		text-transform: uppercase;
+		margin-bottom: 25px;
+		letter-spacing: 0.05em;
+	}
+
+	.team-card p {
+		color: var(--text-muted);
+		font-size: 0.95rem;
+		line-height: 1.7;
+	}
+
+	.about-timeline {
+		padding: 60px 0 150px;
+	}
+
+	.timeline-box {
+		padding: 80px 60px;
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	.timeline-content h2 {
+		font-size: 2.5rem;
+		margin-bottom: 30px;
+		text-align: center;
+	}
+
+	.timeline-content p {
+		font-size: 1.15rem;
+		color: var(--text-muted);
+		line-height: 1.8;
+		margin-bottom: 25px;
+	}
+
+	.values-badges {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 15px;
+		margin-top: 40px;
+		justify-content: center;
+	}
+
+	.value-item {
+		background: rgba(255, 215, 0, 0.1);
+		color: var(--primary);
+		border: 1px solid var(--primary);
+		padding: 10px 20px;
+		border-radius: 100px;
+		font-weight: 700;
+		font-size: 0.9rem;
+	}
+
+	@media (max-width: 768px) {
+		.page-hero h1 { font-size: 3rem; }
+		.timeline-box { padding: 60px 30px; }
+	}
+</style>

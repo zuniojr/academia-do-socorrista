@@ -1,0 +1,188 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "Nossos Serviços | Chaveiro Itajaí 24 Horas";
+const description = "Conheça todos os nossos serviços de chaveiro residencial, automotivo e eletrônico em Itajaí e região.";
+
+const allServices = [
+  {
+    title: 'Aberturas Residenciais',
+    description: 'Abertura técnica de portas sem danificar a estrutura ou a fechadura. Atendimento imediato para casos de esquecimento ou perda de chaves.',
+    features: ['Abertura de portas simples e blindadas', 'Troca de segredos', 'Instalação de travas de segurança', 'Conserto de fechaduras'],
+    icon: '🏠',
+    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=800&auto=format&fit=crop'
+  },
+  {
+    title: 'Chaveiro Automotivo',
+    description: 'Especialistas em tecnologia embarcada. Trabalhamos com chaves codificadas de diversas marcas e modelos.',
+    features: ['Cópia de chaves codificadas', 'Abertura de veículos nacionais e importados', 'Substituição de baterias de controles', 'Reparo em cilindros de ignição'],
+    icon: '🚗',
+    image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?q=80&w=800&auto=format&fit=crop'
+  },
+  {
+    title: 'Fechaduras Digitais',
+    description: 'O futuro da segurança residencial. Instalamos e configuramos as melhores marcas de fechaduras inteligentes.',
+    features: ['Instalação de fechaduras com biometria', 'Configuração de acesso via smartphone', 'Fechaduras com senha e cartão', 'Automação residencial'],
+    icon: '🔐',
+    image: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=800&auto=format&fit=crop'
+  },
+  {
+    title: 'Soluções Comerciais',
+    description: 'Segurança robusta para o seu negócio. Sistemas de controle de acesso e mestramento de chaves.',
+    features: ['Sistemas de mola para portas', 'Barras antipânico', 'Controle de acesso por cartão/biometria', 'Mestramento de chaves para escritórios'],
+    icon: '🏢',
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop'
+  }
+];
+---
+
+<Layout title={title} description={description}>
+	<Header />
+	<main>
+		<section class="page-hero">
+			<div class="container animate-fade">
+				<span class="section-badge">Excelência em Segurança</span>
+				<h1>Nossos <span class="text-gradient">Serviços</span></h1>
+				<p>Soluções completas e tecnológicas para proteger o que é mais importante para você.</p>
+			</div>
+		</section>
+
+		<section class="services-detail">
+			<div class="container">
+				{allServices.map((service, index) => (
+					<div class={`service-block ${index % 2 !== 0 ? 'reverse' : ''}`}>
+						<div class="service-content animate-fade">
+							<div class="service-icon">{service.icon}</div>
+							<h2>{service.title}</h2>
+							<p>{service.description}</p>
+							<ul class="feature-list">
+								{service.features.map(feature => (
+									<li>
+										<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+										{feature}
+									</li>
+								))}
+							</ul>
+							<a href="https://wa.me/5547999999999" class="btn btn-primary">Solicitar este Serviço</a>
+						</div>
+						<div class="service-visual animate-fade" style="animation-delay: 0.2s;">
+							<img src={service.image} alt={service.title} />
+						</div>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<section class="cta-banner">
+			<div class="container">
+				<div class="glass-card animate-fade">
+					<h2>Não encontrou o que procurava?</h2>
+					<p>Nossa equipe técnica resolve praticamente qualquer desafio envolvendo chaves e fechaduras. Entre em contato para um orçamento personalizado.</p>
+					<a href="tel:+5547999999999" class="btn btn-outline">Ligar para a Central: (47) 99999-9999</a>
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	.page-hero {
+		padding: 200px 0 100px;
+		background: var(--dark-surface);
+		text-align: center;
+		border-bottom: 1px solid var(--glass-border);
+	}
+
+	.page-hero h1 {
+		font-size: 4rem;
+		margin-bottom: 20px;
+	}
+
+	.page-hero p {
+		font-size: 1.2rem;
+		color: var(--text-muted);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.services-detail {
+		padding: 120px 0;
+	}
+
+	.service-block {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 100px;
+		align-items: center;
+		margin-bottom: 150px;
+	}
+
+	.service-block.reverse .service-content { order: 2; }
+	.service-block.reverse .service-visual { order: 1; }
+
+	.service-icon {
+		font-size: 3rem;
+		margin-bottom: 25px;
+		display: block;
+	}
+
+	.service-content h2 {
+		font-size: 2.5rem;
+		margin-bottom: 20px;
+	}
+
+	.service-content p {
+		font-size: 1.1rem;
+		color: var(--text-muted);
+		margin-bottom: 35px;
+		line-height: 1.8;
+	}
+
+	.feature-list {
+		list-style: none;
+		margin-bottom: 40px;
+		display: grid;
+		gap: 15px;
+	}
+
+	.feature-list li {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		font-weight: 600;
+		color: #fff;
+	}
+
+	.service-visual img {
+		width: 100%;
+		border-radius: 30px;
+		box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+	}
+
+	.cta-banner {
+		padding-bottom: 150px;
+	}
+
+	.cta-banner .glass-card {
+		padding: 80px 40px;
+		text-align: center;
+	}
+
+	.cta-banner h2 { font-size: 2.5rem; margin-bottom: 20px; }
+	.cta-banner p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 40px; max-width: 700px; margin-inline: auto; }
+
+	@media (max-width: 992px) {
+		.service-block {
+			grid-template-columns: 1fr;
+			gap: 60px;
+			text-align: center;
+		}
+		.service-block.reverse .service-content { order: 1; }
+		.service-block.reverse .service-visual { order: 2; }
+		.feature-list { justify-content: center; text-align: left; }
+		.page-hero h1 { font-size: 3rem; }
+	}
+</style>

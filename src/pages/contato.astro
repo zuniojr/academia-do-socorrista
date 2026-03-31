@@ -1,0 +1,276 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "Contato | Fale agora com o Chaveiro Itajaí 24 Horas";
+const description = "Entre em contato conosco para orçamentos, emergências ou dúvidas. Atendimento rápido em toda a região de Itajaí.";
+
+const contactItems = [
+  {
+    icon: '📞',
+    title: 'Telefone / WhatsApp',
+    value: '(47) 99999-9999',
+    link: 'https://wa.me/5547999999999',
+    subtitle: 'Atendimento Emergencial 24h'
+  },
+  {
+    icon: '📧',
+    title: 'E-mail Comercial',
+    value: 'contato@chaveiroitajai.com.br',
+    link: 'mailto:contato@chaveiroitajai.com.br',
+    subtitle: 'Retorno em até 24 horas úteis'
+  },
+  {
+    icon: '📍',
+    title: 'Nossa Base',
+    value: 'Itajaí - Centro / SC',
+    link: '#mapa',
+    subtitle: 'Atendendo toda a AMFRI'
+  }
+];
+---
+
+<Layout title={title} description={description}>
+	<Header />
+	<main>
+		<section class="page-hero">
+			<div class="container animate-fade">
+				<span class="section-badge">Atendimento Imediato</span>
+				<h1>Fale <span class="text-gradient">Conosco</span></h1>
+				<p>Estamos disponíveis 24 horas por dia para resolver qualquer emergência com suas chaves e fechaduras.</p>
+			</div>
+		</section>
+
+		<section class="contact-section">
+			<div class="container contact-grid">
+				<div class="contact-methods animate-fade">
+					{contactItems.map(item => (
+						<a href={item.link} class="glass-card contact-item">
+							<div class="item-icon">{item.icon}</div>
+							<div class="item-text">
+								<h3>{item.title}</h3>
+								<span class="item-value">{item.value}</span>
+								<span class="item-subtitle">{item.subtitle}</span>
+							</div>
+						</a>
+					))}
+				</div>
+
+				<div class="contact-form-area glass-card animate-fade" style="animation-delay: 0.2s;">
+					<h2>Envie sua Mensagem</h2>
+					<form class="contact-form" onsubmit="return false;">
+						<div class="form-row">
+							<div class="form-group">
+								<label for="name">Nome Completo</label>
+								<input type="text" id="name" placeholder="Como podemos te chamar?" required />
+							</div>
+							<div class="form-group">
+								<label for="phone">Telefone / WhatsApp</label>
+								<input type="tel" id="phone" placeholder="(XX) XXXXX-XXXX" required />
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="service">Serviço de Interesse</label>
+							<select id="service">
+								<option value="residencial">Abertura Residencial</option>
+								<option value="automotivo">Chaveiro Automotivo</option>
+								<option value="digital">Fechadura Digital / Eletrônica</option>
+								<option value="comercial">Soluções Comerciais</option>
+								<option value="outro">Outros Assuntos</option>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label for="message">Sua Mensagem</label>
+							<textarea id="message" rows="5" placeholder="Descreva brevemente sua necessidade..."></textarea>
+						</div>
+
+						<button type="submit" class="btn btn-primary w-full">Enviar Mensagem agora</button>
+					</form>
+				</div>
+			</div>
+		</section>
+
+		<section class="map-section animate-fade" id="mapa">
+			<div class="container">
+				<div class="map-container glass-card">
+					<div class="map-placeholder">
+						<h3>Localização Estratégica</h3>
+						<p>Nossa base central em Itajaí nos permite chegar rapidamente em Navegantes, Balneário Camboriú, Penha e região.</p>
+						<span class="coverage-badge">🗺️ Cobertura Total em toda a AMFRI</span>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	.page-hero {
+		padding: 200px 0 100px;
+		background: var(--dark-surface);
+		text-align: center;
+		border-bottom: 1px solid var(--glass-border);
+	}
+
+	.page-hero h1 {
+		font-size: 4rem;
+		margin-bottom: 20px;
+	}
+
+	.page-hero p {
+		font-size: 1.2rem;
+		color: var(--text-muted);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.contact-section {
+		padding: 120px 0;
+	}
+
+	.contact-grid {
+		display: grid;
+		grid-template-columns: 0.8fr 1.2fr;
+		gap: 60px;
+		align-items: flex-start;
+	}
+
+	.contact-methods {
+		display: grid;
+		gap: 20px;
+	}
+
+	.contact-item {
+		display: flex;
+		padding: 30px;
+		gap: 25px;
+		text-decoration: none;
+		align-items: center;
+		transition: var(--transition);
+	}
+
+	.contact-item:hover {
+		border-color: var(--primary);
+		transform: scale(1.02);
+	}
+
+	.item-icon {
+		font-size: 2rem;
+		background: rgba(255, 215, 0, 0.1);
+		width: 60px;
+		height: 60px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 15px;
+		flex-shrink: 0;
+	}
+
+	.item-text h3 {
+		font-size: 1rem;
+		color: var(--text-muted);
+		margin-bottom: 5px;
+		font-weight: 500;
+	}
+
+	.item-value {
+		display: block;
+		font-size: 1.3rem;
+		font-weight: 800;
+		color: white;
+		line-height: 1.2;
+		margin-bottom: 4px;
+	}
+
+	.item-subtitle {
+		font-size: 0.85rem;
+		color: var(--primary);
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+
+	.contact-form-area {
+		padding: 60px;
+	}
+
+	.contact-form-area h2 {
+		font-size: 2.2rem;
+		margin-bottom: 40px;
+	}
+
+	.form-row {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 25px;
+	}
+
+	.form-group {
+		margin-bottom: 25px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.form-group label {
+		font-size: 0.95rem;
+		font-weight: 700;
+		color: white;
+	}
+
+	.form-group input, .form-group select, .form-group textarea {
+		background: rgba(255, 255, 255, 0.05);
+		border: 1px solid var(--glass-border);
+		padding: 15px 20px;
+		border-radius: 12px;
+		color: white;
+		font-size: 1rem;
+		width: 100%;
+	}
+
+	.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+		outline: none;
+		border-color: var(--primary);
+	}
+
+	.map-section {
+		padding-bottom: 150px;
+	}
+
+	.map-container {
+		height: 400px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: linear-gradient(135deg, #121212 0%, #0A0A0A 100%);
+		text-align: center;
+		padding: 40px;
+	}
+
+	.coverage-badge {
+		display: inline-block;
+		margin-top: 25px;
+		background: var(--primary);
+		color: var(--dark);
+		padding: 8px 25px;
+		border-radius: 100px;
+		font-weight: 800;
+		text-transform: uppercase;
+		font-size: 0.85rem;
+	}
+
+	.w-full { width: 100%; }
+
+	@media (max-width: 992px) {
+		.contact-grid { grid-template-columns: 1fr; }
+		.page-hero h1 { font-size: 3rem; }
+	}
+
+	@media (max-width: 768px) {
+		.form-row { grid-template-columns: 1fr; }
+		.contact-form-area { padding: 40px 25px; }
+	}
+</style>
