@@ -11,28 +11,37 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 
 <Layout title={title} description={description}>
 	<Header />
-	<main>
-		<article class="blog-post container py-20">
-			<div class="hero-image">
-				{heroImage && <img width={1020} height={510} src={heroImage} alt={title} />}
-			</div>
-			<div class="prose">
-				<div class="title">
-					<div class="date">
-						Publicado em {pubDate.toLocaleDateString('pt-BR')}
-						{
-							updatedDate && (
-								<div class="last-updated-on">
-									Atualizado em {updatedDate.toLocaleDateString('pt-BR')}
-								</div>
-							)
-						}
-					</div>
-					<h1>{title}</h1>
-					<hr />
+	<main class="page-container">
+		<article class="blog-post container animate-fade">
+			<div class="post-header text-center">
+				<span class="section-badge">Blog & Segurança</span>
+				<div class="date">
+					Publicado em {pubDate.toLocaleDateString('pt-BR')}
+					{
+						updatedDate && (
+							<span class="last-updated-on">
+								 • Atualizado em {updatedDate.toLocaleDateString('pt-BR')}
+							</span>
+						)
+					}
 				</div>
+				<h1 class="text-gradient">{title}</h1>
+				<div class="hero-image">
+					{heroImage && <img width={1200} height={600} src={heroImage} alt={title} />}
+				</div>
+			</div>
+
+			<div class="prose">
 				<div class="post-content">
 					<slot />
+				</div>
+				<div class="post-footer glass-card">
+					<h3>Precisa de um chaveiro agora?</h3>
+					<p>Atendemos 24 horas em todos os bairros de Itajaí com agilidade e técnica.</p>
+					<div class="footer-actions">
+						<a href="https://wa.me/5547999999999" class="btn btn-primary">Chamar no WhatsApp</a>
+						<a href="tel:+5547999999999" class="btn btn-outline">Ligar: (47) 99999-9999</a>
+					</div>
 				</div>
 			</div>
 		</article>
@@ -41,42 +50,115 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 </Layout>
 
 <style>
-	.blog-post {
-		max-width: 900px;
+	.page-container {
+		padding: 180px 0 120px;
+		background: var(--dark);
 	}
+
+	.blog-post {
+		max-width: 1000px;
+	}
+
+	.post-header {
+		margin-bottom: 60px;
+	}
+
+	.post-header h1 {
+		font-size: 3.5rem;
+		margin: 20px 0 40px;
+		line-height: 1.1;
+	}
+
+	.date {
+		color: var(--text-muted);
+		font-weight: 600;
+		font-size: 1rem;
+	}
+
 	.hero-image {
 		width: 100%;
-		margin-bottom: 40px;
+		border-radius: 30px;
+		overflow: hidden;
+		box-shadow: 0 40px 80px rgba(0,0,0,0.6);
 	}
+
 	.hero-image img {
+		width: 100%;
+		height: auto;
 		display: block;
-		margin: 0 auto;
-		border-radius: 12px;
-		box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 	}
+
 	.prose {
-		margin: auto;
-		color: #333;
+		margin: 80px auto 0;
+		max-width: 800px;
 	}
-	.title {
-		margin-bottom: 2em;
-		padding: 1em 0;
-		text-align: center;
-		line-height: 1;
-	}
-	.title h1 {
-		margin: 0 0 0.5em 0;
-		font-size: 3rem;
-	}
-	.date {
-		margin-bottom: 0.5em;
-		color: #666;
-	}
+
 	.post-content {
 		font-size: 1.2rem;
-		line-height: 1.8;
+		line-height: 2;
+		color: var(--text-muted);
 	}
-	.post-content p {
-		margin-bottom: 1.5em;
+
+	.post-content :global(h2) {
+		color: white;
+		font-size: 2rem;
+		margin: 60px 0 30px;
+	}
+
+	.post-content :global(h3) {
+		color: var(--primary);
+		font-size: 1.5rem;
+		margin: 40px 0 20px;
+	}
+
+	.post-content :global(p) {
+		margin-bottom: 30px;
+	}
+
+	.post-content :global(ul) {
+		margin-bottom: 30px;
+		list-style: none;
+	}
+
+	.post-content :global(li) {
+		margin-bottom: 15px;
+		position: relative;
+		padding-left: 30px;
+	}
+
+	.post-content :global(li::before) {
+		content: '→';
+		position: absolute;
+		left: 0;
+		color: var(--primary);
+		font-weight: 800;
+	}
+
+	.post-footer {
+		margin-top: 100px;
+		padding: 60px;
+		text-align: center;
+	}
+
+	.post-footer h3 {
+		font-size: 2rem;
+		margin-bottom: 15px;
+	}
+
+	.post-footer p {
+		margin-bottom: 35px;
+		color: var(--text-muted);
+	}
+
+	.footer-actions {
+		display: flex;
+		gap: 20px;
+		justify-content: center;
+	}
+
+	@media (max-width: 768px) {
+		.post-header h1 { font-size: 2.5rem; }
+		.post-footer { padding: 40px 20px; }
+		.footer-actions { flex-direction: column; }
 	}
 </style>

@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -6,36 +7,9 @@ import Footer from '../components/Footer.astro';
 const title = "Blog | Dicas e Novidades sobre Segurança em Itajaí";
 const description = "Leia as nossas dicas sobre segurança residencial, fechaduras digitais e muito mais no blog oficial do Chaveiro Itajaí.";
 
-const posts = [
-  {
-    title: '5 Motivos para Instalar uma Fechadura Digital em 2024',
-    category: 'Segurança Smart',
-    date: '20 de Março, 2024',
-    excerpt: 'Descubra como a tecnologia das fechaduras inteligentes está mudando a forma como protegemos as nossas casas e empresas.',
-    image: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=800&auto=format&fit=crop'
-  },
-  {
-    title: 'Chaves Codificadas: O que Fazer em Caso de Perda?',
-    category: 'Automotivo',
-    date: '15 de Março, 2024',
-    excerpt: 'Perdeu a única cópia da chave do carro? Entenda o processo de codificação e como um chaveiro especializado pode te ajudar.',
-    image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0729?q=80&w=800&auto=format&fit=crop'
-  },
-  {
-    title: 'Segurança Residencial nas Férias: Guia Completo',
-    category: 'Especialista',
-    date: '05 de Março, 2024',
-    excerpt: 'Dicas práticas de como reforçar a segurança das suas fechaduras e janelas antes de viajar no feriado.',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=800&auto=format&fit=crop'
-  },
-  {
-    title: 'Mestramento de Chaves: A Solução para Grandes Empresas',
-    category: 'Corporativo',
-    date: '28 de Fevereiro, 2024',
-    excerpt: 'Simplifique o acesso e melhore a segurança reduzindo a quantidade de chaves necessárias para gerir o seu negócio.',
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop'
-  }
-];
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
 ---
 
 <Layout title={title} description={description}>
@@ -55,14 +29,14 @@ const posts = [
 					{posts.map((post, index) => (
 						<article class="post-card glass-card animate-fade" style={`animation-delay: ${0.1 * index}s`}>
 							<div class="post-image-wrapper">
-								<img src={post.image} alt={post.title} />
-								<span class="category-badge">{post.category}</span>
+								<img src={post.data.heroImage} alt={post.data.title} />
+								<span class="category-badge">Itajaí</span>
 							</div>
 							<div class="post-content">
-								<span class="post-date">{post.date}</span>
-								<h3><a href="#">{post.title}</a></h3>
-								<p>{post.excerpt}</p>
-								<a href="#" class="read-more">Ler Artigo Completo →</a>
+								<span class="post-date">{post.data.pubDate.toLocaleDateString('pt-BR')}</span>
+								<h3><a href={`/blog/${post.slug}/`}>{post.data.title}</a></h3>
+								<p>{post.data.description}</p>
+								<a href={`/blog/${post.slug}/`} class="read-more">Ler Artigo Completo →</a>
 							</div>
 						</article>
 					))}
