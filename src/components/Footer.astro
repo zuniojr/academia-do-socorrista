@@ -2,43 +2,55 @@
 ---
 <footer class="main-footer">
 	<div class="container footer-grid">
-		<div class="footer-col col-info">
-			<h3>CHAVEIRO <strong>ITAJAÍ</strong></h3>
-			<p>Somos especialistas em soluções de segurança e abertura de portas residenciais e automotivas há mais de 20 anos atendendo Itajaí, Navegantes e região com agilidade e profissionalismo.</p>
+		<div class="footer-col col-brand">
+			<a href="/" class="logo">
+				<span class="logo-icon">🔑</span>
+				<div class="logo-text">
+					<span class="brand">Chaveiro <span class="text-gradient">Itajaí</span></span>
+					<span class="tagline">Atendimento 24 Horas</span>
+				</div>
+			</a>
+			<p class="brand-desc">Especialistas em alta segurança e aberturas emergenciais em Itajaí, Navegantes e Balneário Camboriú há mais de 20 anos.</p>
 		</div>
 		
 		<div class="footer-col">
-			<h4>Links Rápidos</h4>
+			<h4>Navegação</h4>
 			<ul>
-				<li><a href="/">Início</a></li>
+				<li><a href="#inicio">Início</a></li>
 				<li><a href="#servicos">Serviços</a></li>
-				<li><a href="#sobre">Sobre Nós</a></li>
+				<li><a href="#sobre">Nossa Equipe</a></li>
 				<li><a href="#contato">Contato</a></li>
 			</ul>
 		</div>
 		
 		<div class="footer-col">
-			<h4>Serviços</h4>
+			<h4>Especialidades</h4>
 			<ul>
 				<li><a href="#">Residencial</a></li>
 				<li><a href="#">Automotivo</a></li>
+				<li><a href="#">Digital / Smart</a></li>
 				<li><a href="#">Comercial</a></li>
-				<li><a href="#">Cofres</a></li>
 			</ul>
 		</div>
 		
 		<div class="footer-col">
-			<h4>Contato</h4>
-			<p>📍 Itajaí, SC</p>
-			<p>📞 (47) 99999-9999</p>
-			<p>📧 contato@chaveiroitajai.com.br</p>
-			<p>🕒 24 Horas por dia / 7 dias</p>
+			<h4>Cidades Atendidas</h4>
+			<ul>
+				<li><a href="#">Itajaí</a></li>
+				<li><a href="#">Navegantes</a></li>
+				<li><a href="#">Balneário Camboriú</a></li>
+				<li><a href="#">Penha / Piçarras</a></li>
+			</ul>
 		</div>
 	</div>
 	
 	<div class="footer-bottom">
-		<div class="container flex justify-between items-center text-center">
-			<p>&copy; {new Date().getFullYear()} Chaveiro Residencial 24 Horas. Todos os direitos reservados.</p>
+		<div class="container footer-bottom-inner">
+			<p>&copy; {new Date().getFullYear()} Chaveiro Itajaí 24 Horas. Todos os direitos reservados.</p>
+			<div class="social-links">
+				<a href="#" aria-label="Instagram">Instagram</a>
+				<a href="#" aria-label="Facebook">Facebook</a>
+			</div>
 		</div>
 	</div>
 </footer>
@@ -46,70 +58,124 @@
 <style>
 	.main-footer {
 		background-color: var(--dark);
-		color: var(--light);
-		padding: 80px 0 0 0;
+		color: var(--text-main);
+		padding: 100px 0 0 0;
+		border-top: 1px solid var(--glass-border);
 	}
+
 	.footer-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		grid-template-columns: 1.5fr 1fr 1fr 1fr;
 		gap: 60px;
-		margin-bottom: 60px;
+		margin-bottom: 80px;
 	}
-	.footer-col h3 {
-		font-size: 1.5rem;
+
+	.col-brand .logo {
 		margin-bottom: 25px;
+		text-decoration: none;
+		display: flex;
+		align-items: center;
+		gap: 12px;
 	}
-	.footer-col h3 strong {
-		color: var(--primary);
+
+	.logo-icon { font-size: 1.8rem; }
+	.brand { font-size: 1.5rem; font-weight: 800; color: white; display: block; }
+	.tagline { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; }
+
+	.brand-desc {
+		color: var(--text-muted);
+		font-size: 1rem;
+		line-height: 1.7;
+		max-width: 320px;
 	}
+
 	.footer-col h4 {
-		font-size: 1.2rem;
-		margin-bottom: 25px;
-		color: var(--primary);
+		font-size: 1.1rem;
+		margin-bottom: 30px;
+		color: white;
+		position: relative;
+		padding-bottom: 10px;
 	}
-	.footer-col p {
-		color: #bbb;
-		font-size: 0.95rem;
-		line-height: 1.8;
+
+	.footer-col h4::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 30px;
+		height: 2px;
+		background: var(--primary);
 	}
+
 	.footer-col ul {
 		list-style: none;
 	}
+
 	.footer-col ul li {
-		margin-bottom: 12px;
+		margin-bottom: 15px;
 	}
+
 	.footer-col ul a {
 		text-decoration: none;
-		color: #bbb;
-		transition: color 0.3s;
+		color: var(--text-muted);
+		transition: var(--transition);
 		font-size: 0.95rem;
 	}
+
 	.footer-col ul a:hover {
 		color: var(--primary);
+		padding-left: 5px;
 	}
+
 	.footer-bottom {
-		border-top: 1px solid #333;
-		padding: 30px 0;
+		border-top: 1px solid var(--glass-border);
+		padding: 40px 0;
 		font-size: 0.9rem;
-		color: #888;
+		color: var(--text-muted);
 	}
-	.flex {
+
+	.footer-bottom-inner {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 	}
-	.text-center {
-		text-align: center;
+
+	.social-links {
+		display: flex;
+		gap: 25px;
 	}
-	.justify-between {
-		justify-content: space-between;
+
+	.social-links a {
+		color: var(--text-muted);
+		text-decoration: none;
+		transition: var(--transition);
+	}
+
+	.social-links a:hover {
+		color: var(--primary);
+	}
+
+	@media (max-width: 1100px) {
+		.footer-grid {
+			grid-template-columns: 1fr 1fr;
+			gap: 40px;
+		}
 	}
 
 	@media (max-width: 768px) {
 		.footer-grid {
 			grid-template-columns: 1fr;
 			text-align: center;
-			gap: 40px;
 		}
+		.footer-col h4::after {
+			left: 50%;
+			transform: translateX(-50%);
+		}
+		.footer-bottom-inner {
+			flex-direction: column;
+			gap: 20px;
+		}
+		.col-brand .logo { justify-content: center; }
+		.brand-desc { margin: 0 auto; }
 	}
 </style>

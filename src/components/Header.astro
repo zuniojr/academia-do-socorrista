@@ -1,194 +1,239 @@
 ---
 ---
-<header class="main-header">
-	<!-- Top Bar -->
-	<div class="top-bar">
-		<div class="container top-bar-inner">
-			<div class="top-item separator">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="var(--primary)"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-				<span>contato@chaveiroitajai.com.br</span>
+<header class="main-header" id="header">
+	<div class="container header-inner">
+		<!-- Logo Area -->
+		<a href="/" class="logo">
+			<span class="logo-icon">🔑</span>
+			<div class="logo-text">
+				<span class="brand">Chaveiro <span class="text-gradient">Itajaí</span></span>
+				<span class="tagline">Atendimento 24 Horas</span>
 			</div>
-			<div class="top-item separator">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="var(--primary)"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-				<span>Itajaí, Navegantes e Balneário Camboriú</span>
-			</div>
-			<div class="top-item separator">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="var(--primary)"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.46 14.3c-.23.65-1.3 1.2-1.81 1.27-.47.06-1.07.13-3.08-.7-2.42-1-3.95-3.52-4.07-3.68-.13-.16-1-1.33-1-2.53s.62-1.78.85-2.03c.22-.24.47-.3.63-.3h.46c.16 0 .37-.06.58.45.22.52.7 1.7.76 1.83.06.13.11.28.02.45-.09.16-.14.26-.28.43-.13.16-.28.36-.39.47-.13.13-.26.27-.11.53.15.26.68 1.13 1.45 1.83.99.91 1.86 1.19 2.11 1.32.26.13.41.11.56-.06.15-.18.66-.76.84-1.02.18-.26.35-.22.58-.13.23.09 1.48.7 1.73.83.26.13.43.19.49.3.06.11.06.65-.17 1.3z"/></svg>
+		</a>
+
+		<!-- Navigation -->
+		<nav class="nav-desktop">
+			<ul class="nav-links">
+				<li><a href="#inicio" class="active">Início</a></li>
+				<li><a href="#servicos">Serviços</a></li>
+				<li><a href="#sobre">Nossa Equipe</a></li>
+				<li><a href="#contato">Contato</a></li>
+			</ul>
+		</nav>
+
+		<!-- CTA -->
+		<div class="header-cta">
+			<a href="https://wa.me/5547999999999" class="btn btn-primary btn-sm">
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
 				<span>(47) 99999-9999</span>
-			</div>
-			<div class="top-item">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="var(--primary)"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-				<span>(47) 99999-9999</span>
-			</div>
+			</a>
+			<button class="mobile-menu-toggle" id="menuToggle" aria-label="Abrir Menu">
+				<span></span>
+				<span></span>
+			</button>
 		</div>
 	</div>
-	
-	<!-- Main Header -->
-	<div class="nav-container">
-		<div class="container header-main">
-			
-			<div class="contact-area">
-				<div class="contact-line">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="var(--primary)"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-					<strong>(47) 99999-9999</strong>
-				</div>
-				<div class="contact-line">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="var(--primary)"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.46 14.3c-.23.65-1.3 1.2-1.81 1.27-.47.06-1.07.13-3.08-.7-2.42-1-3.95-3.52-4.07-3.68-.13-.16-1-1.33-1-2.53s.62-1.78.85-2.03c.22-.24.47-.3.63-.3h.46c.16 0 .37-.06.58.45.22.52.7 1.7.76 1.83.06.13.11.28.02.45-.09.16-.14.26-.28.43-.13.16-.28.36-.39.47-.13.13-.26.27-.11.53.15.26.68 1.13 1.45 1.83.99.91 1.86 1.19 2.11 1.32.26.13.41.11.56-.06.15-.18.66-.76.84-1.02.18-.26.35-.22.58-.13.23.09 1.48.7 1.73.83.26.13.43.19.49.3.06.11.06.65-.17 1.3z"/></svg>
-					<strong>(47) 99999-9999</strong>
-				</div>
-			</div>
-			
-			<nav class="main-nav">
-				<ul>
-					<li><a href="/">Pagina Inicial</a></li>
-					<li><a href="#servicos">Serviços <span class="arrow">▼</span></a></li>
-					<li><a href="#contato">Contato</a></li>
-					<li><a href="/blog">Blog</a></li>
-					<li><a href="#chaveiro">Chaveiro 24 Horas <span class="arrow">▼</span></a></li>
-				</ul>
-			</nav>
-			
-			<div class="cta-area">
-				<div class="cta-icon">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40" fill="var(--primary)"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-3 10H7v-2h10v2zm0-3H7V7h10v2z"/></svg>
-				</div>
-				<div class="cta-text">
-					<span class="cta-title">Faça um Orçamento</span>
-					<span class="cta-phone">(47) 99999-9999</span>
-				</div>
-			</div>
-			
+
+	<!-- Mobile Menu Overlay -->
+	<div class="mobile-menu" id="mobileMenu">
+		<nav>
+			<ul>
+				<li><a href="#inicio">Início</a></li>
+				<li><a href="#servicos">Serviços</a></li>
+				<li><a href="#sobre">Nossa Equipe</a></li>
+				<li><a href="#contato">Contato</a></li>
+			</ul>
+		</nav>
+		<div class="mobile-cta">
+			<a href="https://wa.me/5547999999999" class="btn btn-primary w-full">Chamar no WhatsApp</a>
 		</div>
 	</div>
 </header>
 
 <style>
 	.main-header {
+		position: fixed;
+		top: 0;
+		left: 0;
 		width: 100%;
 		z-index: 1000;
-		position: relative;
-		font-family: 'Arial', sans-serif;
-	}
-	
-	/* Top Bar */
-	.top-bar {
-		background-color: #0b0b0b;
-		color: #ffffff;
-		padding: 10px 0;
-		font-size: 13px;
-	}
-	.top-bar-inner {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-wrap: wrap;
-		gap: 0;
-	}
-	.top-item {
-		display: flex;
-		align-items: center;
-		padding: 0 15px;
-	}
-	.separator {
-		border-right: 1px solid #333;
-	}
-	.top-item svg {
-		margin-right: 8px;
+		background: rgba(10, 10, 10, 0.6);
+		backdrop-filter: blur(20px);
+		-webkit-backdrop-filter: blur(20px);
+		border-bottom: 1px solid var(--glass-border);
+		transition: var(--transition);
+		padding: 15px 0;
 	}
 
-	/* Main Header */
-	.nav-container {
-		background-color: #ffffff;
-		box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-		padding: 20px 0;
+	.main-header.scrolled {
+		padding: 10px 0;
+		background: rgba(10, 10, 10, 0.95);
 	}
-	.header-main {
+
+	.header-inner {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 	}
 
-	/* Left Contact Area */
-	.contact-area {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-	}
-	.contact-line {
-		display: flex;
-		align-items: center;
-		color: #1a1a1a;
-		font-size: 16px;
-	}
-	.contact-line svg {
-		margin-right: 10px;
-	}
-
-	/* Navigation */
-	.main-nav ul {
-		list-style: none;
-		display: flex;
-		margin: 0;
-		padding: 0;
-		gap: 25px;
-	}
-	.main-nav a {
+	/* Logo */
+	.logo {
 		text-decoration: none;
-		color: #1a1a1a;
-		font-size: 15px;
-		transition: color 0.3s;
 		display: flex;
 		align-items: center;
-	}
-	.main-nav a:hover {
-		color: var(--primary);
-	}
-	.arrow {
-		font-size: 10px;
-		margin-left: 5px;
+		gap: 12px;
 	}
 
-	/* CTA Area */
-	.cta-area {
-		display: flex;
-		align-items: center;
-		border-left: 1px solid #eaeaea;
-		padding-left: 20px;
+	.logo-icon {
+		font-size: 1.8rem;
+		filter: drop-shadow(0 0 10px var(--primary-glow));
 	}
-	.cta-icon {
-		margin-right: 15px;
-	}
-	.cta-text {
+
+	.logo-text {
 		display: flex;
 		flex-direction: column;
 	}
-	.cta-title {
-		font-size: 16px;
-		color: #1a1a1a;
+
+	.brand {
+		color: white;
+		font-size: 1.3rem;
+		font-weight: 800;
+		font-family: 'Outfit', sans-serif;
+		line-height: 1;
 	}
-	.cta-phone {
-		font-size: 15px;
-		color: #777;
+
+	.tagline {
+		color: var(--text-muted);
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
 		margin-top: 2px;
 	}
 
+	/* Desktop Nav */
+	.nav-desktop {
+		background: var(--glass);
+		border: 1px solid var(--glass-border);
+		border-radius: 100px;
+		padding: 5px 25px;
+	}
+
+	.nav-links {
+		display: flex;
+		list-style: none;
+		gap: 30px;
+	}
+
+	.nav-links a {
+		color: var(--text-muted);
+		text-decoration: none;
+		font-size: 0.95rem;
+		font-weight: 500;
+		transition: var(--transition);
+	}
+
+	.nav-links a:hover, .nav-links a.active {
+		color: var(--primary);
+	}
+
+	/* CTA */
+	.header-cta {
+		display: flex;
+		align-items: center;
+		gap: 20px;
+	}
+
+	.btn-sm {
+		padding: 10px 20px;
+		font-size: 0.9rem;
+	}
+
+	/* Mobile Toggle */
+	.mobile-menu-toggle {
+		display: none;
+		flex-direction: column;
+		gap: 6px;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 5px;
+	}
+
+	.mobile-menu-toggle span {
+		display: block;
+		width: 25px;
+		height: 2px;
+		background: white;
+		transition: var(--transition);
+	}
+
+	/* Mobile Menu */
+	.mobile-menu {
+		position: fixed;
+		top: 0;
+		right: -100%;
+		width: 100%;
+		height: 100vh;
+		background: var(--dark);
+		padding: 100px 40px;
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+		transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+		z-index: 999;
+	}
+
+	.mobile-menu.active {
+		right: 0;
+	}
+
+	.mobile-menu ul {
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 25px;
+	}
+
+	.mobile-menu a {
+		color: white;
+		text-decoration: none;
+		font-size: 2rem;
+		font-family: 'Outfit', sans-serif;
+		font-weight: 700;
+	}
+
+	.w-full {
+		width: 100%;
+	}
+
 	@media (max-width: 992px) {
-		.header-main {
-			flex-direction: column;
-			gap: 20px;
-			text-align: center;
+		.nav-desktop {
+			display: none;
 		}
-		.top-item {
-			margin-bottom: 5px;
-			padding: 0 10px;
-		}
-		.separator {
-			border-right: none;
-		}
-		.cta-area {
-			border-left: none;
-			padding-left: 0;
-			justify-content: center;
+		.mobile-menu-toggle {
+			display: flex;
 		}
 	}
+</style>
+
+<script>
+	const header = document.getElementById('header');
+	const menuToggle = document.getElementById('menuToggle');
+	const mobileMenu = document.getElementById('mobileMenu');
+
+	window.addEventListener('scroll', () => {
+		if (window.scrollY > 50) {
+			header.classList.add('scrolled');
+		} else {
+			header.classList.remove('scrolled');
+		}
+	});
+
+	menuToggle.addEventListener('click', () => {
+		mobileMenu.classList.toggle('active');
+		const spans = menuToggle.querySelectorAll('span');
+		spans[0].style.transform = mobileMenu.classList.contains('active') ? 'rotate(45deg) translate(6px, 6px)' : 'none';
+		spans[1].style.transform = mobileMenu.classList.contains('active') ? 'rotate(-45deg) translate(1px, -2px)' : 'none';
+	});
+</script>
 </style>

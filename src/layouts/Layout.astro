@@ -18,67 +18,163 @@ const { title, description = "Chaveiro Residencial 24 Horas - Atendimento rápid
 		<meta name="description" content={description} />
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 	</head>
 	<body>
 		<slot />
 		<style is:global>
 			:root {
-				--primary: #FDC900;
-				--primary-dark: #e5b600;
-				--dark: #1A1A1A;
-				--light: #FFFFFF;
-				--gray: #F4F4F4;
-				--text: #333333;
+				--primary: #FFD700;
+				--primary-hover: #E6C200;
+				--primary-glow: rgba(255, 215, 0, 0.4);
+				--dark: #0A0A0A;
+				--dark-surface: #121212;
+				--dark-card: #1C1C1C;
+				--text-main: #FFFFFF;
+				--text-muted: #A0A0A0;
+				--glass: rgba(255, 255, 255, 0.03);
+				--glass-border: rgba(255, 255, 255, 0.08);
+				--transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 			}
+
 			* {
 				box-sizing: border-box;
 				margin: 0;
 				padding: 0;
 			}
+
 			html {
-				font-family: 'Roboto', sans-serif;
-				background: var(--light);
-				color: var(--text);
+				font-family: 'Plus Jakarta Sans', sans-serif;
+				background: var(--dark);
+				color: var(--text-main);
 				scroll-behavior: smooth;
+				-webkit-font-smoothing: antialiased;
 			}
-			h1, h2, h3, h4, h5, h6 {
-				font-family: 'Montserrat', sans-serif;
-				font-weight: 700;
-			}
+
 			body {
 				line-height: 1.6;
+				overflow-x: hidden;
 			}
-			.container {
-				max-width: 1200px;
-				margin: 0 auto;
-				padding: 0 20px;
-			}
-			.btn {
-				display: inline-block;
-				padding: 12px 24px;
-				border-radius: 4px;
+
+			h1, h2, h3, h4, h5, h6 {
+				font-family: 'Outfit', sans-serif;
 				font-weight: 700;
+				letter-spacing: -0.02em;
+			}
+
+			.container {
+				max-width: 1300px;
+				margin: 0 auto;
+				padding: 0 24px;
+			}
+
+			/* Typography Helpers */
+			.text-gradient {
+				background: linear-gradient(135deg, var(--primary) 0%, #FFFFFF 100%);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+			}
+
+			/* Button System */
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				padding: 14px 32px;
+				border-radius: 12px;
+				font-weight: 700;
+				font-size: 1rem;
 				text-decoration: none;
-				transition: all 0.3s ease;
-				text-align: center;
+				transition: var(--transition);
 				cursor: pointer;
 				border: none;
+				gap: 10px;
 			}
+
 			.btn-primary {
-				background-color: var(--primary);
+				background: var(--primary);
 				color: var(--dark);
+				box-shadow: 0 4px 20px var(--primary-glow);
 			}
+
 			.btn-primary:hover {
-				background-color: var(--primary-dark);
-				transform: translateY(-2px);
+				background: var(--primary-hover);
+				transform: translateY(-3px);
+				box-shadow: 0 8px 30px var(--primary-glow);
 			}
-			.btn-dark {
-				background-color: var(--dark);
-				color: var(--primary);
+
+			.btn-outline {
+				background: transparent;
+				border: 1px solid var(--glass-border);
+				color: var(--text-main);
+				backdrop-filter: blur(10px);
 			}
-			.btn-dark:hover {
-				background-color: #333;
+
+			.btn-outline:hover {
+				background: var(--glass);
+				border-color: var(--primary);
+				transform: translateY(-3px);
+			}
+
+			/* Animations */
+			@keyframes fadeIn {
+				from { opacity: 0; transform: translateY(20px); }
+				to { opacity: 1; transform: translateY(0); }
+			}
+
+			.animate-fade {
+				animation: fadeIn 0.8s ease forwards;
+			}
+
+			/* Glass Card */
+			.glass-card {
+				background: var(--glass);
+				backdrop-filter: blur(12px);
+				border: 1px solid var(--glass-border);
+				border-radius: 20px;
+				padding: 30px;
+				transition: var(--transition);
+			}
+
+			.glass-card:hover {
+				border-color: var(--primary);
+				background: rgba(255, 255, 255, 0.05);
+			}
+
+			/* WhatsApp Float */
+			.whatsapp-float {
+				position: fixed;
+				bottom: 40px;
+				right: 40px;
+				width: 65px;
+				height: 65px;
+				background: #25D366;
+				border-radius: 50%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+				z-index: 1000;
+				transition: var(--transition);
+			}
+
+			.whatsapp-float:hover {
+				transform: scale(1.1) rotate(5deg);
+			}
+
+			.whatsapp-float svg {
+				width: 35px;
+				height: 35px;
+				fill: white;
+			}
+
+			@media (max-width: 768px) {
+				.whatsapp-float {
+					bottom: 20px;
+					right: 20px;
+					width: 55px;
+					height: 55px;
+				}
 			}
 		</style>
 	</body>

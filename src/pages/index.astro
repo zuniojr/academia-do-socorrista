@@ -5,8 +5,8 @@ import Hero from '../components/Hero.astro';
 import Services from '../components/Services.astro';
 import Footer from '../components/Footer.astro';
 
-const title = "Chaveiro Itajaí 24 Horas | O Melhor Chaveiro em Itajaí e Região";
-const description = "Atendimento profissional de chaveiro 24 horas em Itajaí, Navegantes e Balneário Camboriú. Abertura de portas, instalação de fechaduras e chaves automotivas.";
+const title = "Chaveiro Itajaí 24 Horas | Especialista em Alta Segurança";
+const description = "Atendimento profissional de chaveiro 24 horas em Itajaí, Navegantes e Balneário Camboriú. Especialista em aberturas, fechaduras digitais e chaves automotivas.";
 ---
 
 <Layout title={title} description={description}>
@@ -15,129 +15,233 @@ const description = "Atendimento profissional de chaveiro 24 horas em Itajaí, N
 		<Hero />
 		<Services />
 		
-		<section id="sobre" class="about-section py-20">
-			<div class="container flex items-center">
-				<div class="about-text w-1/2 pr-10">
-					<h2>Mais de 20 Anos atendendo Itajaí e Região</h2>
-					<p>Nossa equipe é altamente treinada para resolver qualquer problema com fechaduras e chaves em Itajaí, Navegantes e Balneário Camboriú.</p>
-					<ul>
-						<li>✅ Atendimento em 30 minutos</li>
-						<li>✅ Profissionais Identificados</li>
-						<li>✅ Ferramentas de Alta Tecnologia</li>
-						<li>✅ Garantia Total nos Serviços</li>
-					</ul>
-					<a href="https://wa.me/5511999999999" class="btn btn-primary">Fale com um Especialista</a>
+		<section id="sobre" class="about">
+			<div class="container about-inner">
+				<div class="about-image animate-fade">
+					<img src="https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?q=80&w=1200&auto=format&fit=crop" alt="Equipe Profissional" />
+					<div class="experience-badge">
+						<span class="exp-years">+20</span>
+						<span class="exp-text">Anos de Experiência</span>
+					</div>
 				</div>
-				<div class="about-image w-1/2">
-					<img src="https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?q=80&w=1200&auto=format&fit=crop" alt="Equipe de Chaveiro" />
+				<div class="about-text animate-fade" style="animation-delay: 0.2s;">
+					<span class="section-badge">Nossa História</span>
+					<h2>Líder em <span class="text-gradient">Segurança Técnica</span> na Região</h2>
+					<p>Nossa equipe é altamente treinada e equipada com as ferramentas mais modernas do mercado para resolver qualquer problema com fechaduras, chaves e controles de acesso.</p>
+					
+					<div class="benefits-list">
+						<div class="benefit-item">
+							<span class="benefit-icon">⏱️</span>
+							<div class="benefit-content">
+								<h4>Agilidade Extrema</h4>
+								<p>Chegamos em até 30 minutos em Itajaí e cidades vizinhas.</p>
+							</div>
+						</div>
+						<div class="benefit-item">
+							<span class="benefit-icon">👮</span>
+							<div class="benefit-content">
+								<h4>Segurança Total</h4>
+								<p>Profissionais identificados e com procedência garantida.</p>
+							</div>
+						</div>
+						<div class="benefit-item">
+							<span class="benefit-icon">🛠️</span>
+							<div class="benefit-content">
+								<h4>Tecnologia de Ponta</h4>
+								<p>Ferramentas que abrem e reparam sem danificar seu patrimônio.</p>
+							</div>
+						</div>
+					</div>
+
+					<a href="https://wa.me/5547999999999" class="btn btn-primary">Falar com um Especialista</a>
 				</div>
 			</div>
 		</section>
 		
-		<section class="cta-section py-16">
-			<div class="container text-center">
-				<h2>Precisa de ajuda agora?</h2>
-				<p>Estamos prontos para te atender a qualquer hora do dia ou da noite!</p>
-				<a href="tel:+5511999999999" class="btn btn-dark">Ligar Para Emergência</a>
+		<section id="emergencia" class="emergency-cta">
+			<div class="container">
+				<div class="glass-card emergency-box animate-fade">
+					<div class="emergency-content">
+						<h2>Perdeu a chave ou está trancado para fora?</h2>
+						<p>Não entre em pânico. Nossa equipe de plantão está pronta para sair agora mesmo.</p>
+						<div class="emergency-actions">
+							<a href="tel:+5547999999999" class="btn btn-primary btn-large">
+								📞 Ligar Agora: (47) 99999-9999
+							</a>
+							<span class="emergency-note">Atendimento disponível em इटजाई, Navegantes e Balneário Camboriú</span>
+						</div>
+					</div>
+				</div>
 			</div>
 		</section>
 	</main>
 	<Footer />
 
-	<!-- Floating Button WhatsApp -->
-	<a href="https://wa.me/5511999999999" class="whatsapp-float" target="_blank">
-		<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+	<a href="https://wa.me/5547999999999" class="whatsapp-float" target="_blank" aria-label="WhatsApp">
+		<svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-11.7 a8.38 8.38 0 0 1 3.8.9L21 2z"></path></svg>
 	</a>
 </Layout>
 
 <style>
-	.py-20 {
-		padding-top: 80px;
-		padding-bottom: 80px;
+	/* About Section */
+	.about {
+		padding: 120px 0;
+		background: var(--dark);
 	}
-	.py-16 {
-		padding-top: 60px;
-		padding-bottom: 60px;
-	}
-	.flex {
-		display: flex;
+
+	.about-inner {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 80px;
 		align-items: center;
 	}
-	.text-center {
-		text-align: center;
+
+	.about-image {
+		position: relative;
 	}
-	.w-1/2 {
-		width: 50%;
-	}
-	.pr-10 {
-		padding-right: 40px;
-	}
-	h2 {
-		font-size: 2.2rem;
-		margin-bottom: 25px;
-	}
-	.about-text p {
-		margin-bottom: 25px;
-		color: #666;
-		font-size: 1.1rem;
-	}
-	.about-text ul {
-		list-style: none;
-		margin-bottom: 40px;
-	}
-	.about-text ul li {
-		margin-bottom: 12px;
-		font-weight: 700;
-	}
+
 	.about-image img {
 		width: 100%;
-		border-radius: 8px;
-		box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+		border-radius: 24px;
+		box-shadow: 0 30px 60px rgba(0,0,0,0.5);
 	}
-	.cta-section {
-		background-color: var(--primary);
+
+	.experience-badge {
+		position: absolute;
+		bottom: -30px;
+		right: -30px;
+		background: var(--primary);
+		padding: 30px;
+		border-radius: 24px;
+		text-align: center;
+		box-shadow: 0 20px 40px var(--primary-glow);
 		color: var(--dark);
 	}
-	.cta-section h2 {
-		margin-bottom: 15px;
+
+	.exp-years {
+		display: block;
+		font-size: 2.5rem;
+		font-weight: 800;
+		line-height: 1;
 	}
-	.cta-section p {
-		margin-bottom: 30px;
+
+	.exp-text {
+		font-size: 0.9rem;
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+
+	.section-badge {
+		color: var(--primary);
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		font-size: 0.85rem;
+		margin-bottom: 15px;
+		display: block;
+	}
+
+	.about-text h2 {
+		font-size: 3rem;
+		margin-bottom: 25px;
+		line-height: 1.2;
+	}
+
+	.about-text p {
+		color: var(--text-muted);
+		font-size: 1.1rem;
+		margin-bottom: 40px;
+	}
+
+	.benefits-list {
+		display: flex;
+		flex-direction: column;
+		gap: 30px;
+		margin-bottom: 50px;
+	}
+
+	.benefit-item {
+		display: flex;
+		gap: 20px;
+	}
+
+	.benefit-icon {
+		font-size: 1.8rem;
+		flex-shrink: 0;
+	}
+
+	.benefit-content h4 {
+		font-size: 1.2rem;
+		margin-bottom: 5px;
+	}
+
+	.benefit-content p {
+		font-size: 0.95rem;
+		margin-bottom: 0;
+	}
+
+	/* Emergency Section */
+	.emergency-cta {
+		padding: 60px 0 120px;
+	}
+
+	.emergency-box {
+		padding: 80px 40px;
+		text-align: center;
+		background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+	}
+
+	.emergency-box h2 {
+		font-size: 2.5rem;
+		margin-bottom: 20px;
+	}
+
+	.emergency-box p {
+		font-size: 1.2rem;
+		color: var(--text-muted);
+		margin-bottom: 40px;
+	}
+
+	.emergency-actions {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 20px;
+	}
+
+	.btn-large {
+		padding: 20px 45px;
 		font-size: 1.2rem;
 	}
-	.whatsapp-float {
-		position: fixed;
-		bottom: 30px;
-		right: 30px;
-		width: 60px;
-		height: 60px;
-		background-color: #25d366;
-		border-radius: 50%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-		z-index: 1000;
-		transition: transform 0.3s;
+
+	.emergency-note {
+		font-size: 0.9rem;
+		color: var(--text-muted);
 	}
-	.whatsapp-float:hover {
-		transform: scale(1.1);
-	}
-	.whatsapp-float img {
-		width: 35px;
-		height: 35px;
+
+	@media (max-width: 992px) {
+		.about-inner {
+			grid-template-columns: 1fr;
+			gap: 60px;
+			text-align: center;
+		}
+		.about-image {
+			order: 2;
+			max-width: 600px;
+			margin: 0 auto;
+		}
+		.experience-badge {
+			right: 20px;
+			bottom: 20px;
+			padding: 20px;
+		}
+		.benefits-list {
+			text-align: left;
+		}
 	}
 
 	@media (max-width: 768px) {
-		.flex {
-			flex-direction: column;
-		}
-		.w-1/2 {
-			width: 100%;
-			padding-right: 0;
-		}
-		.about-image {
-			margin-top: 40px;
-		}
+		.about-text h2 { font-size: 2rem; }
+		.emergency-box h2 { font-size: 1.8rem; }
 	}
 </style>

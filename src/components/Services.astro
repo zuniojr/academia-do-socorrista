@@ -1,41 +1,54 @@
 ---
 const services = [
   {
-    title: 'Chaveiro Residencial',
-    description: 'Abertura de portas, instalação de fechaduras e troca de segredos em residências.',
+    title: 'Aberturas Residenciais',
+    description: 'Abertura de portas sem danos, troca de segredos e manutenção de fechaduras de alta segurança.',
+    icon: '🏠',
     image: 'https://images.unsplash.com/photo-1558002038-1055907df827?q=80&w=800&auto=format&fit=crop'
   },
   {
     title: 'Chaveiro Automotivo',
-    description: 'Chaves codificadas, abertura de veículos e conserto de ignição.',
+    description: 'Cópia de chaves codificadas, abertura de veículos nacionais e importados e reparo em ignições.',
+    icon: '🚗',
     image: 'https://images.unsplash.com/photo-1590674880581-26ec07e1e863?q=80&w=800&auto=format&fit=crop'
   },
   {
     title: 'Fechaduras Digitais',
-    description: 'Venda e instalação de fechaduras eletrônicas com senha e biometria.',
+    description: 'Instalação e configuração de fechaduras eletrônicas com biometria, senha e comando de voz.',
+    icon: '🔐',
     image: 'https://images.unsplash.com/photo-1582139329536-e7284fece509?q=80&w=800&auto=format&fit=crop'
   },
   {
-    title: 'Troca de Segredo',
-    description: 'Troque o segredo de suas fechaduras sem precisar trocar a fechadura inteira.',
-    image: 'https://images.unsplash.com/photo-1582139329536-e7284fece509?q=80&w=800&auto=format&fit=crop'
+    title: 'Soluções Comerciais',
+    description: 'Mestramento de chaves, instalação de molas de porta e sistemas de controle de acesso.',
+    icon: '🏢',
+    image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=800&auto=format&fit=crop'
   }
 ];
 ---
 
-<section id="servicos" class="services-section">
-	<div class="container text-center">
-		<h2>Nossos Principais Serviços</h2>
-		<p class="subtitle">Oferecemos soluções completas em segurança para sua casa ou empresa.</p>
+<section id="servicos" class="services">
+	<div class="container">
+		<div class="section-header animate-fade">
+			<span class="section-badge">Especialidades</span>
+			<h2>Serviços de <span class="text-gradient">Alta Excelência</span></h2>
+			<p>Oferecemos o que há de mais moderno em segurança e tecnologia de chaves e acessos.</p>
+		</div>
 		
 		<div class="services-grid">
-			{services.map(service => (
-				<div class="service-card">
-					<img src={service.image} alt={service.title} />
-					<div class="card-content">
+			{services.map((service, index) => (
+				<div class="service-card glass-card animate-fade" style={`animation-delay: ${0.1 * index}s`}>
+					<div class="card-visual">
+						<img src={service.image} alt={service.title} />
+						<div class="card-icon-wrapper">{service.icon}</div>
+					</div>
+					<div class="card-info">
 						<h3>{service.title}</h3>
 						<p>{service.description}</p>
-						<a href="#" class="read-more">Saiba Mais →</a>
+						<a href="https://wa.me/5547999999999" class="service-link">
+							Solicitar Orçamento 
+							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+						</a>
 					</div>
 				</div>
 			))}
@@ -44,63 +57,116 @@ const services = [
 </section>
 
 <style>
-	.services-section {
-		padding: 100px 0;
-		background-color: var(--gray);
+	.services {
+		padding: 120px 0;
+		background: var(--dark-surface);
+		position: relative;
 	}
-	.text-center {
+
+	.section-header {
 		text-align: center;
+		max-width: 700px;
+		margin: 0 auto 60px;
 	}
-	h2 {
-		font-size: 2.5rem;
-		margin-bottom: 10px;
-		color: var(--dark);
-	}
-	.subtitle {
-		color: #666;
-		margin-bottom: 60px;
-		font-size: 1.1rem;
-	}
-	.services-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-		gap: 30px;
-	}
-	.service-card {
-		background: var(--light);
-		border-radius: 8px;
-		overflow: hidden;
-		box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-		transition: all 0.3s ease;
-		text-align: left;
-	}
-	.service-card:hover {
-		transform: translateY(-10px);
-		box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-	}
-	.service-card img {
-		width: 100%;
-		height: 200px;
-		object-fit: cover;
-	}
-	.card-content {
-		padding: 25px;
-	}
-	.card-content h3 {
-		font-size: 1.5rem;
-		margin-bottom: 15px;
-		color: var(--dark);
-	}
-	.card-content p {
-		color: #666;
-		margin-bottom: 20px;
-		font-size: 0.95rem;
-	}
-	.read-more {
-		color: var(--primary-dark);
-		text-decoration: none;
+
+	.section-badge {
+		color: var(--primary);
 		font-weight: 700;
 		text-transform: uppercase;
-		font-size: 13px;
+		letter-spacing: 0.1em;
+		font-size: 0.85rem;
+		margin-bottom: 15px;
+		display: block;
+	}
+
+	.section-header h2 {
+		font-size: 3rem;
+		margin-bottom: 20px;
+	}
+
+	.section-header p {
+		color: var(--text-muted);
+		font-size: 1.1rem;
+	}
+
+	.services-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 30px;
+	}
+
+	.service-card {
+		padding: 0;
+		overflow: hidden;
+	}
+
+	.card-visual {
+		position: relative;
+		height: 200px;
+		overflow: hidden;
+	}
+
+	.card-visual img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: var(--transition);
+	}
+
+	.service-card:hover .card-visual img {
+		transform: scale(1.1);
+	}
+
+	.card-icon-wrapper {
+		position: absolute;
+		bottom: -25px;
+		right: 25px;
+		background: var(--primary);
+		width: 50px;
+		height: 50px;
+		border-radius: 12px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 1.5rem;
+		box-shadow: 0 10px 20px var(--primary-glow);
+		z-index: 2;
+	}
+
+	.card-info {
+		padding: 40px 30px 30px;
+	}
+
+	.card-info h3 {
+		font-size: 1.4rem;
+		margin-bottom: 15px;
+	}
+
+	.card-info p {
+		color: var(--text-muted);
+		font-size: 0.95rem;
+		margin-bottom: 25px;
+		height: 4.8em;
+		overflow: hidden;
+	}
+
+	.service-link {
+		color: var(--primary);
+		text-decoration: none;
+		font-weight: 700;
+		font-size: 0.9rem;
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		transition: var(--transition);
+	}
+
+	.service-link:hover {
+		gap: 15px;
+	}
+
+	@media (max-width: 768px) {
+		.section-header h2 { font-size: 2.2rem; }
+		.services { padding: 80px 0; }
 	}
 </style>
