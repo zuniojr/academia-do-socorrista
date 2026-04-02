@@ -4,65 +4,46 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
 const title = "Cursos | Academia do Socorrista";
-const description = "Conheça os cursos de Atendimento Pré-Hospitalar (APH), controle de hemorragias, resgate tático e primeiros socorros da Academia do Socorrista.";
+const description = "Conheça os cursos de Atendimento Pré-Hospitalar, controle de hemorragias, recuperação de afogados e guarda-vidas da Academia do Socorrista.";
 
 const cursos = [
 	{
-		icon: "🩸",
-		nome: "Controle de Hemorragias",
+		id: "hemorragias",
+		nome: "Domine o Controle de Hemorragias",
+		subtitulo: "Aprenda a salvar vidas nos primeiros minutos de uma emergência",
+		descricao: "Treinamento prático e intenso nos protocolos mais modernos de controle de sangramentos massivos. Domine o uso de torniquetes, curativos hemostáticos e o protocolo Stop the Bleed seguindo os padrões internacionais do PHTLS.",
+		imagem: "/cursos/hemorragias.jpg",
 		nivel: "Fundamental",
-		descricao: "Aprenda os protocolos modernos de controle de sangramentos massivos, uso de torniquetes e curativos de combate seguindo o protocolo Stop the Bleed.",
-		topicos: ["Uso do torniquete CAT/SOFT-T", "Wound Packing e curativos hemostáticos", "Hemorragias em junções", "Protocolo Stop the Bleed"],
-		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20Controle%20de%20Hemorragias"
+		nivelCor: "#ef4444",
+		topicos: ["Uso do torniquete CAT / SOFT-T", "Wound Packing e curativos hemostáticos", "Protocolo Stop the Bleed", "Hemorragias em junções (axila e virilha)"],
+		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20Controle%20de%20Hemorragias",
+		ctaTexto: "Quero me Inscrever"
 	},
 	{
-		icon: "🚨",
-		nome: "APH Tático (TCCC)",
-		nivel: "Avançado",
-		descricao: "Treinamento de Tactical Combat Casualty Care (TCCC) para profissionais que atuam em ambientes hostis. Desenvolva habilidades para salvar vidas sob pressão extrema.",
-		topicos: ["Care Under Fire", "Tactical Field Care", "Protocolo MARCH", "Avaliação e evacuação tática"],
-		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20APH%20T%C3%A1tico"
-	},
-	{
-		icon: "🫀",
-		nome: "Suporte Básico de Vida (SBV)",
-		nivel: "Fundamental",
-		descricao: "Domine as técnicas de Ressuscitação Cardiopulmonar (RCP), uso do DEA e manejo de obstrução de vias aéreas por corpo estranho (OVACE) em adultos e crianças.",
-		topicos: ["RCP de alta qualidade", "Uso do DEA", "Manobra de Heimlich", "Protocolo ILCOR atualizado"],
-		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20SBV"
-	},
-	{
-		icon: "🚑",
-		nome: "Primeiros Socorros Completo",
+		id: "afogados",
+		nome: "Recuperação de Afogados",
+		subtitulo: "Na Prática",
+		descricao: "Treinamento especializado em resgate aquático e recuperação de afogados. Aprenda as técnicas corretas de abordagem, extração e suporte de vida para vítimas de afogamento em ambientes de water emergência.",
+		imagem: "/cursos/afogados.jpg",
 		nivel: "Intermediário",
-		descricao: "Curso completo para socorristas leigos e profissionais. Aprenda a agir com segurança e precisão nas principais emergências médicas e de trauma do dia a dia.",
-		topicos: ["Avaliação da cena e da vítima", "Queimaduras e fraturas", "Crises convulsivas", "Emergências pediátricas"],
-		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20Primeiros%20Socorros"
+		nivelCor: "#f59e0b",
+		topicos: ["Avaliação e abordagem à vítima aquática", "Técnicas de extração segura", "RCP em ambiente aquático", "Manejo do afogado inconsciente"],
+		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20Recupera%C3%A7%C3%A3o%20de%20Afogados",
+		ctaTexto: "Quero me Inscrever"
 	},
 	{
-		icon: "🎖️",
-		nome: "Resgate Avançado",
-		nivel: "Avançado",
-		descricao: "Para socorristas que buscam o nível máximo de preparo. Simulações realistas, manejo de via aérea avançada e extricação de vítimas em cenários complexos.",
-		topicos: ["Dispositivos extraglóticos de VA", "Acesso venoso em emergência", "Extricação e imobilização", "Simulações de trauma massivo"],
-		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20Resgate%20Avan%C3%A7ado"
-	},
-	{
-		icon: "👮",
-		nome: "APH para Forças de Segurança",
+		id: "guarda-vidas",
+		nome: "Trace Seu Destino",
+		subtitulo: "Torne-se um Guarda-Vidas em Portugal!",
+		descricao: "Uma oportunidade única de trabalhar e se especializar como guarda-vidas em Portugal. Em parceria com a Start Portugal, este programa te prepara com todo o treinamento técnico e te conecta com as oportunidades certas no mercado europeu.",
+		imagem: "/cursos/guarda-vidas.jpg",
 		nivel: "Especializado",
-		descricao: "Treinamento desenvolvido para policiais, agentes de segurança e militares. Protocolos de trauma adaptados para a realidade e risco específico de cada missão.",
-		topicos: ["Autoajuda e ajuda mútua", "Gerenciamento de feridos em ambiente tático", "Extração de vítima sob risco", "Integração com suporte médico avançado"],
-		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20APH%20para%20For%C3%A7as%20de%20Seguran%C3%A7a"
+		nivelCor: "#8b5cf6",
+		topicos: ["Treinamento técnico completo de guarda-vidas", "Certificação reconhecida em Portugal", "Orientação para visto e residência", "Conexão direta com oportunidades de emprego"],
+		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20programa%20Guarda-Vidas%20em%20Portugal",
+		ctaTexto: "Saiba Mais"
 	}
 ];
-
-const nivelCores: Record<string, string> = {
-	"Fundamental": "#22c55e",
-	"Intermediário": "#f59e0b",
-	"Avançado": "#ef4444",
-	"Especializado": "#8b5cf6"
-};
 ---
 
 <Layout title={title} description={description}>
@@ -72,35 +53,41 @@ const nivelCores: Record<string, string> = {
 			<div class="container animate-fade">
 				<span class="section-badge">Treinamento de Elite</span>
 				<h1>Nossos <span class="text-gradient">Cursos</span></h1>
-				<p>Formação técnica e prática nos protocolos mais modernos do mundo em Atendimento Pré-Hospitalar e Socorrismo.</p>
+				<p>Formação técnica e prática nos protocolos mais modernos de APH e Socorrismo.</p>
 			</div>
 		</section>
 
 		<section class="cursos-section">
 			<div class="container">
-				<div class="cursos-grid">
-					{cursos.map((curso, index) => (
-						<div class="curso-card glass-card animate-fade" style={`animation-delay: ${0.1 * index}s`}>
-							<div class="curso-header">
-								<div class="curso-icon">{curso.icon}</div>
-								<span class="nivel-badge" style={`background: ${nivelCores[curso.nivel]}22; color: ${nivelCores[curso.nivel]}; border-color: ${nivelCores[curso.nivel]}44`}>{curso.nivel}</span>
+				{cursos.map((curso, index) => (
+					<div class={`curso-row animate-fade ${index % 2 !== 0 ? 'reverse' : ''}`} style={`animation-delay: ${0.15 * index}s`}>
+						<div class="curso-banner">
+							<img src={curso.imagem} alt={curso.nome} onerror="this.style.display='none'; this.parentElement.classList.add('no-image')" />
+							<div class="banner-overlay">
+								<span class="nivel-tag" style={`background: ${curso.nivelCor}22; color: ${curso.nivelCor}; border-color: ${curso.nivelCor}55`}>{curso.nivel}</span>
 							</div>
-							<h3>{curso.nome}</h3>
-							<p class="curso-desc">{curso.descricao}</p>
-							<ul class="topicos-list">
+						</div>
+
+						<div class="curso-content glass-card">
+							<h2>{curso.nome}</h2>
+							{curso.subtitulo && <p class="subtitulo">{curso.subtitulo}</p>}
+							<p class="descricao">{curso.descricao}</p>
+
+							<ul class="topicos">
 								{curso.topicos.map(t => (
 									<li>
-										<span class="topico-check">✔</span>
+										<span class="check" style={`color: ${curso.nivelCor}`}>✔</span>
 										{t}
 									</li>
 								))}
 							</ul>
-							<a href={curso.cta} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-curso">
-								Saber Mais
+
+							<a href={curso.cta} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-cta">
+								{curso.ctaTexto} →
 							</a>
 						</div>
-					))}
-				</div>
+					</div>
+				))}
 			</div>
 		</section>
 
@@ -127,17 +114,8 @@ const nivelCores: Record<string, string> = {
 		border-bottom: 1px solid var(--glass-border);
 	}
 
-	.page-hero h1 {
-		font-size: 4rem;
-		margin: 15px 0 20px;
-	}
-
-	.page-hero p {
-		font-size: 1.2rem;
-		color: var(--text-muted);
-		max-width: 650px;
-		margin: 0 auto;
-	}
+	.page-hero h1 { font-size: 4rem; margin: 15px 0 20px; }
+	.page-hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 650px; margin: 0 auto; }
 
 	.section-badge {
 		display: inline-block;
@@ -154,93 +132,152 @@ const nivelCores: Record<string, string> = {
 
 	.cursos-section {
 		padding: 100px 0;
-	}
-
-	.cursos-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-		gap: 30px;
-	}
-
-	.curso-card {
-		padding: 40px;
 		display: flex;
 		flex-direction: column;
-		gap: 20px;
-		transition: var(--transition);
+		gap: 0;
 	}
 
-	.curso-card:hover {
-		transform: translateY(-8px);
-		border-color: var(--primary);
-	}
-
-	.curso-header {
+	.cursos-section .container {
 		display: flex;
-		justify-content: space-between;
-		align-items: center;
+		flex-direction: column;
+		gap: 60px;
 	}
 
-	.curso-icon {
-		font-size: 2.5rem;
-		line-height: 1;
+	/* Linha de cada curso */
+	.curso-row {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0;
+		border-radius: 24px;
+		overflow: hidden;
+		border: 1px solid var(--glass-border);
+		transition: var(--transition);
+		min-height: 360px;
 	}
 
-	.nivel-badge {
-		font-size: 0.75rem;
+	.curso-row:hover {
+		border-color: var(--primary);
+		transform: translateY(-5px);
+		box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+	}
+
+	/* Imagem do curso (banner) */
+	.curso-banner {
+		position: relative;
+		overflow: hidden;
+		min-height: 360px;
+		background: var(--dark-card);
+	}
+
+	.curso-banner img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		display: block;
+		transition: transform 0.6s ease;
+	}
+
+	.curso-row:hover .curso-banner img {
+		transform: scale(1.05);
+	}
+
+	.banner-overlay {
+		position: absolute;
+		top: 20px;
+		left: 20px;
+	}
+
+	.nivel-tag {
+		padding: 6px 16px;
+		border-radius: 100px;
+		font-size: 0.8rem;
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
-		padding: 5px 14px;
-		border-radius: 100px;
 		border: 1px solid;
+		backdrop-filter: blur(8px);
 	}
 
-	.curso-card h3 {
-		font-size: 1.5rem;
-		color: white;
+	/* Conteúdo do curso */
+	.curso-content {
+		padding: 50px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 20px;
+		border: none;
+		border-radius: 0;
+		background: var(--dark-card);
+	}
+
+	.curso-content:hover {
+		background: var(--dark-card);
+		border-color: transparent;
+	}
+
+	.curso-content h2 {
+		font-size: 1.9rem;
+		color: #fff;
 		line-height: 1.2;
 	}
 
-	.curso-desc {
-		color: var(--text-muted);
-		font-size: 0.95rem;
-		line-height: 1.7;
-		flex-grow: 1;
+	.subtitulo {
+		color: var(--primary);
+		font-weight: 700;
+		font-size: 1rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		margin: 0;
 	}
 
-	.topicos-list {
+	.descricao {
+		color: var(--text-muted);
+		font-size: 1rem;
+		line-height: 1.7;
+	}
+
+	.topicos {
 		list-style: none;
 		display: flex;
 		flex-direction: column;
 		gap: 10px;
 	}
 
-	.topicos-list li {
+	.topicos li {
 		color: var(--text-muted);
-		font-size: 0.9rem;
+		font-size: 0.95rem;
 		display: flex;
 		align-items: center;
 		gap: 10px;
 	}
 
-	.topico-check {
-		color: var(--primary);
+	.check {
 		font-weight: 900;
-		font-size: 0.8rem;
+		font-size: 0.85rem;
 		flex-shrink: 0;
 	}
 
-	.btn-curso {
-		width: 100%;
-		text-align: center;
-		margin-top: auto;
-		justify-content: center;
+	.btn-cta {
+		align-self: flex-start;
+		margin-top: 10px;
 	}
 
-	.cta-section {
-		padding-bottom: 120px;
+	/* Linha invertida (imagem à direita) */
+	.reverse {
+		direction: rtl;
 	}
+
+	.reverse .curso-content {
+		direction: ltr;
+	}
+
+	.reverse .curso-banner {
+		direction: ltr;
+	}
+
+	/* CTA final */
+	.cta-section { padding-bottom: 120px; }
 
 	.cta-box {
 		padding: 80px 60px;
@@ -249,22 +286,31 @@ const nivelCores: Record<string, string> = {
 		margin: 0 auto;
 	}
 
-	.cta-box h2 {
-		font-size: 2.5rem;
-		margin-bottom: 20px;
+	.cta-box h2 { font-size: 2.5rem; margin-bottom: 20px; }
+	.cta-box p { color: var(--text-muted); font-size: 1.15rem; margin-bottom: 40px; line-height: 1.7; }
+
+	/* Banner sem imagem */
+	.no-image {
+		background: linear-gradient(135deg, var(--dark-card), var(--dark-surface));
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
-	.cta-box p {
-		color: var(--text-muted);
-		font-size: 1.15rem;
-		margin-bottom: 40px;
-		line-height: 1.7;
+	@media (max-width: 992px) {
+		.curso-row, .reverse {
+			grid-template-columns: 1fr;
+			direction: ltr;
+		}
+
+		.curso-banner { min-height: 250px; }
+		.curso-content { padding: 35px; }
+		.page-hero h1 { font-size: 2.8rem; }
 	}
 
 	@media (max-width: 768px) {
-		.page-hero h1 { font-size: 2.8rem; }
-		.cursos-grid { grid-template-columns: 1fr; }
 		.cta-box { padding: 50px 25px; }
 		.cta-box h2 { font-size: 2rem; }
+		.curso-content h2 { font-size: 1.5rem; }
 	}
 </style>
