@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
 const title = "Política de Privacidade | Academia do Socorrista";
-const description = "Saiba como protegemos seus dados e informações pessoais na Academia do Socorrista.";
+const description = "Saiba como coletamos, armazenamos e protegemos suas informações pessoais na Academia do Socorrista.";
 ---
 
 <Layout title={title} description={description}>
@@ -13,24 +13,23 @@ const description = "Saiba como protegemos seus dados e informações pessoais n
 		<section class="page-hero">
 			<div class="container animate-fade">
 				<h1>Política de <span class="text-gradient">Privacidade</span></h1>
-				<p>Nosso compromisso é com a transparência e segurança dos seus dados.</p>
+				<p>Nosso compromisso com a proteção dos seus dados pessoais.</p>
 			</div>
 		</section>
 
 		<section class="content-section">
 			<div class="container">
 				<div class="glass-card content-card animate-fade">
-					<h2>1. Coleta de Informações</h2>
-					<p>Coletamos apenas as informações necessárias para sua inscrição em nossos cursos e treinamentos. Isso inclui nome, e-mail, telefone e informações profissionais relevantes para a certificação.</p>
+					<p>Esta política descreve as formas como coletamos, armazenamos, usamos e protegemos suas informações pessoais. Você aceita essa política e concorda com tal coleta, armazenamento e uso quando se inscrever ou usar nossos produtos, serviços ou qualquer outro recurso, tecnologia ou funcionalidade que nós oferecemos ao acessar nosso site ou por qualquer outro meio (coletivamente “a Academia do Socorrista”).</p>
 
-					<h2>2. Uso dos Dados</h2>
-					<p>Seus dados são utilizados para garantir sua participação nas turmas, emissão de certificados válidos e envio de novidades sobre protocolos de primeiros socorros. Você pode cancelar sua inscrição em nossa newsletter a qualquer momento.</p>
+					<p>Podemos alterar esta política a qualquer momento, divulgando uma versão revisada em nosso site. A versão revisada entrará em vigor assim que disponibilizada no site. Além disso, se a versão revisada incluir uma alteração substancial, avisaremos você com 30 dias de antecedência, divulgando o aviso sobre a alteração na página “Atualizações da política” do nosso site. Depois desse aviso de 30 dias, será considerado que você concorda com todas as emendas feitas a essa política.</p>
 
-					<h2>3. Segurança das Informações</h2>
-					<p>Utilizamos sistemas de criptografia de ponta para proteger todas as transações e armazenamento de dados pessoais, garantindo que suas informações não sejam compartilhadas com terceiros sem seu consentimento.</p>
+					<div class="opt-out-box">
+						<h2>Importante: Política de Descadastramento (“Opt-out”)</h2>
+						<p>O usuário dos nossos serviços pode a qualquer momento deixar de receber comunicações do nosso site. Para tanto basta enviar um email para <a href="mailto:contato@academiadosocorrista.com.br">contato@academiadosocorrista.com.br</a> indicando o seu desejo de não mais receber comunicações, ou simplesmente clicar no link <strong>‘remover’</strong> ou <strong>‘unsubscribe’</strong> contido no final de cada email.</p>
+					</div>
 
-					<h2>4. Direitos do Usuário</h2>
-					<p>Conforme a LGPD (Lei Geral de Proteção de Dados), você tem o direito de solicitar a exclusão de seus dados de nossa base a qualquer momento, desde que não haja obrigações legais de manutenção desses registros.</p>
+					<p>Para uma visão detalhada de nossas práticas de tratamento de dados conforme a LGPD, consulte também nossos <a href="/termos-de-uso">Termos de Uso</a>.</p>
 				</div>
 			</div>
 		</section>
@@ -68,14 +67,18 @@ const description = "Saiba como protegemos seus dados e informações pessoais n
 		margin: 0 auto;
 	}
 
-	h2 {
-		color: var(--primary);
-		margin: 40px 0 20px;
-		font-size: 1.8rem;
+	.opt-out-box {
+		background: rgba(255, 107, 0, 0.05);
+		border-left: 4px solid var(--primary);
+		padding: 30px;
+		margin: 40px 0;
+		border-radius: 0 15px 15px 0;
 	}
 
-	h2:first-child {
-		margin-top: 0;
+	h2 {
+		color: #fff;
+		margin-bottom: 15px;
+		font-size: 1.6rem;
 	}
 
 	p {
@@ -83,6 +86,17 @@ const description = "Saiba como protegemos seus dados e informações pessoais n
 		line-height: 1.8;
 		margin-bottom: 20px;
 		font-size: 1.1rem;
+	}
+
+	a {
+		color: var(--primary);
+		text-decoration: none;
+		transition: var(--transition);
+		font-weight: 600;
+	}
+
+	a:hover {
+		text-decoration: underline;
 	}
 
 	@media (max-width: 768px) {

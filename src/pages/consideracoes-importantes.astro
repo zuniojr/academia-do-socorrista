@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
 const title = "Considerações Importantes | Academia do Socorrista";
-const description = "Informações cruciais sobre nossos treinamentos e práticas de primeiros socorros.";
+const description = "Entenda nosso propósito de ensinar para salvar e como transformamos vidas através da educação.";
 ---
 
 <Layout title={title} description={description}>
@@ -13,24 +13,22 @@ const description = "Informações cruciais sobre nossos treinamentos e prática
 		<section class="page-hero">
 			<div class="container animate-fade">
 				<h1>Considerações <span class="text-gradient">Importantes</span></h1>
-				<p>Informações de segurança e validade dos protocolos de treinamento.</p>
+				<p>Nosso propósito: Ensinar para Salvar.</p>
 			</div>
 		</section>
 
 		<section class="content-section">
 			<div class="container">
 				<div class="glass-card content-card animate-fade">
-					<h2>1. Validade dos Protocolos</h2>
-					<p>Nossos currículos são revisados por médicos e especialistas conforme os protocolos mais recentes do ILCOR (International Liaison Committee on Resuscitation) e PHTLS (Prehospital Trauma Life Support).</p>
+					<p>“Ensinar para salvar” é o nosso propósito. Somos uma plataforma de conteúdo e educação em atendimento pré-hospitalar e salvamentos, investindo <strong>PESADO</strong> no conhecimento.</p>
+					
+					<p>A nossa maior recompensa é quando as pessoas assumem o controle e conduzem as emergências com total segurança, com um raciocínio ideal para fazer o atendimento correto, atendendo com agilidade e fazendo o melhor para o seu paciente.</p>
 
-					<h2>2. Atuação Profissional</h2>
-					<p>Participar dos nossos treinamentos não substitui a formação em cursos de graduação específicos da saúde (Enfermagem, Medicina, etc.). O objetivo é o aperfeiçoamento constante das técnicas de primeiros socorros e trauma.</p>
-
-					<h2>3. Segurança no Treinamento</h2>
-					<p>Nossas simulações práticas são planejadas visando o máximo aprendizado com risco zero para os alunos. O uso de drones, bonecos de simulação avançados e cenários reais garantem a experiência de campo necessária.</p>
-
-					<h2>4. Consultas Constantes</h2>
-					<p>Sempre consulte os protocolos atualizados e a regulamentação local antes de atuar em emergências reais. O conhecimento contínuo é o que define um excelente socorrista.</p>
+					<div class="highlight-section">
+						<h2>O que tem nessa caminhada?</h2>
+						<p>Aqui tem um ambiente com múltiplos talentos que estão engajados na distribuição de conhecimento de ponta. Nosso ambiente é colaborativo e de alta performance, sempre focado no melhor!</p>
+						<p>Somos agentes de transformação, temos a missão de estimular o que há de melhor nas pessoas, ajudando a salvar vidas por meio da educação.</p>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -68,21 +66,29 @@ const description = "Informações cruciais sobre nossos treinamentos e prática
 		margin: 0 auto;
 	}
 
-	h2 {
-		color: var(--primary);
-		margin: 40px 0 20px;
-		font-size: 1.8rem;
+	.highlight-section {
+		background: rgba(255, 107, 0, 0.05);
+		border: 1px solid var(--glass-border);
+		padding: 40px;
+		margin-top: 40px;
+		border-radius: 20px;
 	}
 
-	h2:first-child {
-		margin-top: 0;
+	h2 {
+		color: var(--primary);
+		margin-bottom: 25px;
+		font-size: 2rem;
 	}
 
 	p {
 		color: var(--text-muted);
 		line-height: 1.8;
-		margin-bottom: 20px;
-		font-size: 1.1rem;
+		margin-bottom: 25px;
+		font-size: 1.15rem;
+	}
+
+	strong {
+		color: var(--primary);
 	}
 
 	@media (max-width: 768px) {
