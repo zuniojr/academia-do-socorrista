@@ -3,37 +3,37 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-const title = "Soluções Digitais | Virada Marketing Digital";
-const description = "Conheça nossas soluções completas para escalar seu negócio: criação de landing pages, gestão de tráfego, social media e SEO.";
+const title = "Cursos | Academia do Socorrista";
+const description = "Conheça nossos treinamentos completos: avaliação de cena, controle de hemorragias, manejo de vias aéreas e tratamento de choque.";
 
 const allServices = [
   {
-    title: 'Criação de Landing Pages',
-    description: 'Desenvolvemos páginas otimizadas para conversão com design premium, copywriting persuasivo e carregamento ultrarrápido.',
-    features: ['Design focado em UX/UI', 'Copywriting estratégico', 'Alta velocidade de carregamento', 'Integração com CRM e pixels'],
-    icon: '💻',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop'
+    title: 'Avaliação de Cena e Segurança',
+    description: 'Protocolos rigorosos para garantir a integridade da equipe e das vítimas antes de qualquer intervenção médica de risco.',
+    features: ['Análise de riscos', 'Comunicação Tática', 'Isolamento da área', 'Triagem inicial'],
+    icon: '🛡️',
+    image: 'https://images.unsplash.com/photo-1583324113626-70df0f4deaab?q=80&w=800&auto=format&fit=crop'
   },
   {
-    title: 'Gestão de Tráfego',
-    description: 'Campanhas de alta performance no Google Ads, Meta Ads e TikTok Ads para colocar sua oferta de frente com quem quer comprar.',
-    features: ['Análise de público-alvo', 'Criação de anúncios criativos', 'Otimização diária de campanhas', 'Relatórios transparentes de ROI'],
-    icon: '🎯',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop'
+    title: 'Controle de Hemorragias',
+    description: 'Aprenda os mais recentes protocolos baseados no PHTLS e TCCC para controle agressivo de hemorragias massivas.',
+    features: ['Uso correto do torniquete', 'Preenchimento de feridas (Wound Packing)', 'Curativos compressivos', 'Hemostáticos'],
+    icon: '🩸',
+    image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=800&auto=format&fit=crop'
   },
   {
-    title: 'Posicionamento Social',
-    description: 'Construa autoridade e engajamento genuíno com seu público nas redes que mais importam para o seu segmento.',
-    features: ['Calendário editorial estratégico', 'Criação de conteúdo visual', 'Gestão de engajamento', 'Análise de métricas'],
-    icon: '📱',
-    image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800&auto=format&fit=crop'
+    title: 'Manejo de Vias Aéreas',
+    description: 'Domine as técnicas fundamentais e avançadas para manutenção da via aérea fluida em pacientes traumatizados.',
+    features: ['Manobras manuais (Jaw Thrust)', 'Cânulas Orofaringeas e Nasofaringeas', 'Manejo com Supraglóticos', 'Identificação de trauma de face'],
+    icon: '🫁',
+    image: 'https://images.unsplash.com/photo-1516841273335-e39b37888115?q=80&w=800&auto=format&fit=crop'
   },
   {
-    title: 'Consultoria e Estratégia',
-    description: 'Um direcionamento completo de marketing e vendas desenhado especificamente para a realidade atual do seu negócio.',
-    features: ['Diagnóstico completo de presença online', 'Planejamento de funil de vendas', 'Mapeamento de concorrentes', 'Acompanhamento de implementação'],
-    icon: '📈',
-    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop'
+    title: 'Tratamento de Choque',
+    description: 'Treinamento intensivo na identificação e intervenção de quadros de choque hipovolêmico sistêmico.',
+    features: ['Identificação dos sinais vitais', 'Prevenção de Hipotermia', 'Reposicionamentos práticos', 'Estabilização contínua'],
+    icon: '⚕️',
+    image: 'https://images.unsplash.com/photo-1542884748-2b87b36c6b90?q=80&w=800&auto=format&fit=crop'
   }
 ];
 ---
@@ -43,9 +43,9 @@ const allServices = [
 	<main>
 		<section class="page-hero">
 			<div class="container animate-fade">
-				<span class="section-badge">Metodologia Virada</span>
-				<h1>Nossas <span class="text-gradient">Soluções</span></h1>
-				<p>Estratégias digitais de ponta a ponta para construir sua máquina de vendas previsível.</p>
+				<span class="section-badge">Treinamento Especializado</span>
+				<h1>Nossos <span class="text-gradient">Cursos</span></h1>
+				<p>Adquira a maestria necessária para salvar vidas em cenários reais e críticos.</p>
 			</div>
 		</section>
 
@@ -65,7 +65,7 @@ const allServices = [
 									</li>
 								))}
 							</ul>
-							<a href="http://bitlybr.net/virada" class="btn btn-primary">Solicitar este Serviço</a>
+							<a href="http://bitlybr.net/virada" class="btn btn-primary">Fazer Inscrição</a>
 						</div>
 						<div class="service-visual animate-fade" style="animation-delay: 0.2s;">
 							<img src={service.image} alt={service.title} />
@@ -78,9 +78,9 @@ const allServices = [
 		<section class="cta-banner">
 			<div class="container">
 				<div class="glass-card animate-fade">
-					<h2>Pronto para iniciar seu projeto?</h2>
-					<p>Cada negócio é único. Converse com um de nossos especialistas para criarmos um plano de ação sob medida para escalar suas vendas.</p>
-					<a href="http://bitlybr.net/virada" class="btn btn-outline">Agendar Consultoria Gratuita</a>
+					<h2>Pronto para assumir a linha de frente?</h2>
+					<p>Nenhum resgate bem sucedido é sorte. Torne-se um profissional essencial e altamente capacitado, conversando com nossa equipe.</p>
+					<a href="http://bitlybr.net/virada" class="btn btn-outline">Conversar com a Equipe</a>
 				</div>
 			</div>
 		</section>

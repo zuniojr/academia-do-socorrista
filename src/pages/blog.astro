@@ -4,8 +4,8 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-const title = "Blog | Estratégias de Vendas e Marketing Digital";
-const description = "Leia as nossas dicas sobre tráfego pago, SEO, conversão em Landing Pages e muito mais no blog oficial da Virada Marketing Digital.";
+const title = "Blog | Academia do Socorrista";
+const description = "Leia artigos e dicas sobre APH, controle de hemorragias, resgate tático e primeiros socorros no blog oficial da Academia do Socorrista.";
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -17,9 +17,9 @@ const posts = (await getCollection('blog')).sort(
 	<main>
 		<section class="page-hero">
 			<div class="container animate-fade">
-				<span class="section-badge">Insights & Estratégias</span>
-				<h1>Marketing <span class="text-gradient">Inteligente</span></h1>
-				<p>Informação de qualidade para você manter o seu negócio escalando no digital.</p>
+				<span class="section-badge">Insights & Dicas Clínicas</span>
+				<h1>Conhecimento <span class="text-gradient">Tático</span></h1>
+				<p>Informação de qualidade e protocolos atualizados para profissionais e estudantes.</p>
 			</div>
 		</section>
 
@@ -30,7 +30,7 @@ const posts = (await getCollection('blog')).sort(
 						<article class="post-card glass-card animate-fade" style={`animation-delay: ${0.1 * index}s`}>
 							<div class="post-image-wrapper">
 								<img src={post.data.heroImage} alt={post.data.title} />
-								<span class="category-badge">Performance</span>
+								<span class="category-badge">Emergência</span>
 							</div>
 							<div class="post-content">
 								<span class="post-date">{post.data.pubDate.toLocaleDateString('pt-BR')}</span>
@@ -53,8 +53,8 @@ const posts = (await getCollection('blog')).sort(
 				<div class="newsletter-box glass-card animate-fade">
 					<div class="newsletter-inner">
 						<div class="newsletter-text">
-							<h2>Domine o Digital</h2>
-							<p>Receba as melhores dicas de tráfego, funis de vendas e atualizações de mercado da Virada Marketing Digital diretamente no seu e-mail.</p>
+							<h2>Apoio Tático Gratuito</h2>
+							<p>Receba resumos de novos protocolos, atualizações de APH e dicas valiosas de sobrevivência diretamente no seu e-mail.</p>
 						</div>
 						<form class="newsletter-form" onsubmit="return false;">
 							<input type="email" placeholder="Digite seu melhor e-mail" required />
