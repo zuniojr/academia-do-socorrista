@@ -1,0 +1,92 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "Termos de Uso | Academia do Socorrista";
+const description = "Leia os termos de uso para utilizar os serviços e conteúdos da Academia do Socorrista.";
+---
+
+<Layout title={title} description={description}>
+	<Header />
+	<main>
+		<section class="page-hero">
+			<div class="container animate-fade">
+				<h1>Termos de <span class="text-gradient">Uso</span></h1>
+				<p>Regras e diretrizes para o uso de nossa plataforma e treinamentos.</p>
+			</div>
+		</section>
+
+		<section class="content-section">
+			<div class="container">
+				<div class="glass-card content-card animate-fade">
+					<h2>1. Aceitação dos Termos</h2>
+					<p>Ao acessar e utilizar o site da Academia do Socorrista, você concorda em cumprir e respeitar estes Termos de Uso. Se você não concordar com qualquer parte destes termos, não deve utilizar nossos serviços.</p>
+
+					<h2>2. Uso do Conteúdo</h2>
+					<p>Todo o conteúdo disponibilizado, incluindo vídeos, textos, imagens e protocolos de treinamento, é de propriedade exclusiva da Academia do Socorrista e está protegido por leis de direitos autorais. O uso não autorizado é estritamente proibido.</p>
+
+					<h2>3. Responsabilidade do Aluno</h2>
+					<p>Os treinamentos fornecidos são de caráter educacional. A aplicação prática das técnicas aprendidas deve seguir rigorosamente os protocolos vigentes e a legislação local. A Academia do Socorrista não se responsabiliza pelo uso indevido das técnicas fora do ambiente controlado de treinamento.</p>
+
+					<h2>4. Modificações</h2>
+					<p>Reservamos o direito de modificar estes termos a qualquer momento, sem aviso prévio. Recomendamos a revisão periódica desta página.</p>
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	.page-hero {
+		padding: 150px 0 80px;
+		background: var(--dark-surface);
+		text-align: center;
+		border-bottom: 1px solid var(--glass-border);
+	}
+
+	.page-hero h1 {
+		font-size: 3.5rem;
+		margin-bottom: 20px;
+	}
+
+	.page-hero p {
+		font-size: 1.1rem;
+		color: var(--text-muted);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.content-section {
+		padding: 80px 0 120px;
+	}
+
+	.content-card {
+		padding: 60px;
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	h2 {
+		color: var(--primary);
+		margin: 40px 0 20px;
+		font-size: 1.8rem;
+	}
+
+	h2:first-child {
+		margin-top: 0;
+	}
+
+	p {
+		color: var(--text-muted);
+		line-height: 1.8;
+		margin-bottom: 20px;
+		font-size: 1.1rem;
+	}
+
+	@media (max-width: 768px) {
+		.page-hero h1 { font-size: 2.5rem; }
+		.content-card { padding: 40px 25px; }
+	}
+</style>

@@ -1,0 +1,92 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "Considerações Importantes | Academia do Socorrista";
+const description = "Informações cruciais sobre nossos treinamentos e práticas de primeiros socorros.";
+---
+
+<Layout title={title} description={description}>
+	<Header />
+	<main>
+		<section class="page-hero">
+			<div class="container animate-fade">
+				<h1>Considerações <span class="text-gradient">Importantes</span></h1>
+				<p>Informações de segurança e validade dos protocolos de treinamento.</p>
+			</div>
+		</section>
+
+		<section class="content-section">
+			<div class="container">
+				<div class="glass-card content-card animate-fade">
+					<h2>1. Validade dos Protocolos</h2>
+					<p>Nossos currículos são revisados por médicos e especialistas conforme os protocolos mais recentes do ILCOR (International Liaison Committee on Resuscitation) e PHTLS (Prehospital Trauma Life Support).</p>
+
+					<h2>2. Atuação Profissional</h2>
+					<p>Participar dos nossos treinamentos não substitui a formação em cursos de graduação específicos da saúde (Enfermagem, Medicina, etc.). O objetivo é o aperfeiçoamento constante das técnicas de primeiros socorros e trauma.</p>
+
+					<h2>3. Segurança no Treinamento</h2>
+					<p>Nossas simulações práticas são planejadas visando o máximo aprendizado com risco zero para os alunos. O uso de drones, bonecos de simulação avançados e cenários reais garantem a experiência de campo necessária.</p>
+
+					<h2>4. Consultas Constantes</h2>
+					<p>Sempre consulte os protocolos atualizados e a regulamentação local antes de atuar em emergências reais. O conhecimento contínuo é o que define um excelente socorrista.</p>
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	.page-hero {
+		padding: 150px 0 80px;
+		background: var(--dark-surface);
+		text-align: center;
+		border-bottom: 1px solid var(--glass-border);
+	}
+
+	.page-hero h1 {
+		font-size: 3.5rem;
+		margin-bottom: 20px;
+	}
+
+	.page-hero p {
+		font-size: 1.1rem;
+		color: var(--text-muted);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.content-section {
+		padding: 80px 0 120px;
+	}
+
+	.content-card {
+		padding: 60px;
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	h2 {
+		color: var(--primary);
+		margin: 40px 0 20px;
+		font-size: 1.8rem;
+	}
+
+	h2:first-child {
+		margin-top: 0;
+	}
+
+	p {
+		color: var(--text-muted);
+		line-height: 1.8;
+		margin-bottom: 20px;
+		font-size: 1.1rem;
+	}
+
+	@media (max-width: 768px) {
+		.page-hero h1 { font-size: 2.5rem; }
+		.content-card { padding: 40px 25px; }
+	}
+</style>

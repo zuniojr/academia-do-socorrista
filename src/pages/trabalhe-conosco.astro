@@ -1,0 +1,140 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "Trabalhe Conosco | Academia do Socorrista";
+const description = "Junte-se à equipe da Academia do Socorrista e ajude a salvar vidas através da educação.";
+---
+
+<Layout title={title} description={description}>
+	<Header />
+	<main>
+		<section class="page-hero">
+			<div class="container animate-fade">
+				<h1>Trabalhe <span class="text-gradient">Conosco</span></h1>
+				<p>Procuramos instrutores experientes e apaixonados pela área de resgate.</p>
+			</div>
+		</section>
+
+		<section class="career-section">
+			<div class="container">
+				<div class="glass-card career-card animate-fade">
+					<h2>Faça parte do Time</h2>
+					<p>Nosso objetivo é transformar o cenário do APH no Brasil. Buscamos profissionais comprometidos, com vivência prática no trauma e resgate para atuar em nossas turmas de formação de novos socorristas.</p>
+					
+					<h3>O que procuramos:</h3>
+					<ul>
+						<li>Experiência comprovada em APH ou Trauma</li>
+						<li>Didática clara e cativante</li>
+						<li>Conhecimento técnico avançado e protocolos atualizados</li>
+						<li>Preparo físico e mental para simulações de alto impacto</li>
+					</ul>
+
+					<div class="apply-cta">
+						<h3>Envie seu currículo</h3>
+						<p>Interessados em se tornar instrutores ou atuar em nossa equipe de apoio devem enviar currículo para:</p>
+						<a href="mailto:carreira@academiadosocorrista.com.br" class="btn btn-primary">carreira@academiadosocorrista.com.br</a>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	.page-hero {
+		padding: 150px 0 80px;
+		background: var(--dark-surface);
+		text-align: center;
+		border-bottom: 1px solid var(--glass-border);
+	}
+
+	.page-hero h1 {
+		font-size: 3.5rem;
+		margin-bottom: 20px;
+	}
+
+	.page-hero p {
+		font-size: 1.1rem;
+		color: var(--text-muted);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.career-section {
+		padding: 80px 0 120px;
+	}
+
+	.career-card {
+		padding: 60px;
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	h2, h3 {
+		color: #fff;
+		margin: 30px 0 15px;
+	}
+
+	h2 { font-size: 2.2rem; color: var(--primary); }
+
+	p {
+		color: var(--text-muted);
+		line-height: 1.8;
+		margin-bottom: 25px;
+		font-size: 1.1rem;
+	}
+
+	ul {
+		list-style: none;
+		margin-bottom: 40px;
+	}
+
+	ul li {
+		color: var(--text-muted);
+		margin-bottom: 10px;
+		padding-left: 30px;
+		position: relative;
+	}
+
+	ul li::before {
+		content: '✔';
+		position: absolute;
+		left: 0;
+		color: var(--primary);
+		font-weight: 900;
+	}
+
+	.apply-cta {
+		background: rgba(255, 107, 0, 0.05);
+		border: 1px solid var(--glass-border);
+		padding: 40px;
+		border-radius: 20px;
+		text-align: center;
+		margin-top: 50px;
+	}
+
+	.btn {
+		display: inline-block;
+		padding: 15px 40px;
+		border-radius: 50px;
+		text-decoration: none;
+		font-weight: 700;
+		transition: var(--transition);
+		background: var(--primary);
+		color: white;
+		margin-top: 10px;
+	}
+
+	.btn:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 10px 20px var(--primary-glow);
+	}
+
+	@media (max-width: 768px) {
+		.page-hero h1 { font-size: 2.5rem; }
+		.career-card { padding: 40px 25px; }
+	}
+</style>

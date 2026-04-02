@@ -1,0 +1,92 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "Política de Privacidade | Academia do Socorrista";
+const description = "Saiba como protegemos seus dados e informações pessoais na Academia do Socorrista.";
+---
+
+<Layout title={title} description={description}>
+	<Header />
+	<main>
+		<section class="page-hero">
+			<div class="container animate-fade">
+				<h1>Política de <span class="text-gradient">Privacidade</span></h1>
+				<p>Nosso compromisso é com a transparência e segurança dos seus dados.</p>
+			</div>
+		</section>
+
+		<section class="content-section">
+			<div class="container">
+				<div class="glass-card content-card animate-fade">
+					<h2>1. Coleta de Informações</h2>
+					<p>Coletamos apenas as informações necessárias para sua inscrição em nossos cursos e treinamentos. Isso inclui nome, e-mail, telefone e informações profissionais relevantes para a certificação.</p>
+
+					<h2>2. Uso dos Dados</h2>
+					<p>Seus dados são utilizados para garantir sua participação nas turmas, emissão de certificados válidos e envio de novidades sobre protocolos de primeiros socorros. Você pode cancelar sua inscrição em nossa newsletter a qualquer momento.</p>
+
+					<h2>3. Segurança das Informações</h2>
+					<p>Utilizamos sistemas de criptografia de ponta para proteger todas as transações e armazenamento de dados pessoais, garantindo que suas informações não sejam compartilhadas com terceiros sem seu consentimento.</p>
+
+					<h2>4. Direitos do Usuário</h2>
+					<p>Conforme a LGPD (Lei Geral de Proteção de Dados), você tem o direito de solicitar a exclusão de seus dados de nossa base a qualquer momento, desde que não haja obrigações legais de manutenção desses registros.</p>
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	.page-hero {
+		padding: 150px 0 80px;
+		background: var(--dark-surface);
+		text-align: center;
+		border-bottom: 1px solid var(--glass-border);
+	}
+
+	.page-hero h1 {
+		font-size: 3.5rem;
+		margin-bottom: 20px;
+	}
+
+	.page-hero p {
+		font-size: 1.1rem;
+		color: var(--text-muted);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.content-section {
+		padding: 80px 0 120px;
+	}
+
+	.content-card {
+		padding: 60px;
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	h2 {
+		color: var(--primary);
+		margin: 40px 0 20px;
+		font-size: 1.8rem;
+	}
+
+	h2:first-child {
+		margin-top: 0;
+	}
+
+	p {
+		color: var(--text-muted);
+		line-height: 1.8;
+		margin-bottom: 20px;
+		font-size: 1.1rem;
+	}
+
+	@media (max-width: 768px) {
+		.page-hero h1 { font-size: 2.5rem; }
+		.content-card { padding: 40px 25px; }
+	}
+</style>
