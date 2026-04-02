@@ -59,7 +59,9 @@ const contactItems = [
 
 				<div class="contact-form-area glass-card animate-fade" style="animation-delay: 0.2s;">
 					<h2>Envie sua Mensagem</h2>
-					<form class="contact-form" onsubmit="return false;">
+					<div id="form-success" class="form-feedback success" style="display:none;">✅ Mensagem enviada com sucesso! Entraremos em contato em breve.</div>
+					<div id="form-error" class="form-feedback error" style="display:none;">❌ Ocorreu um erro. Tente novamente ou fale pelo WhatsApp.</div>
+					<form class="contact-form" id="contactForm">
 						<div class="form-row">
 							<div class="form-group">
 								<label for="name">Nome Completo</label>
@@ -88,8 +90,45 @@ const contactItems = [
 							<textarea id="message" rows="5" placeholder="Descreva brevemente sua necessidade..."></textarea>
 						</div>
 
-						<button type="submit" class="btn btn-primary w-full">Enviar Mensagem agora</button>
+						<button type="submit" id="submitBtn" class="btn btn-primary w-full">Enviar Mensagem agora</button>
 					</form>
+
+					<script is:inline>
+						document.getElementById('contactForm').addEventListener('submit', async function(e) {
+							e.preventDefault();
+							const btn = document.getElementById('submitBtn');
+							const successEl = document.getElementById('form-success');
+							const errorEl = document.getElementById('form-error');
+
+							btn.disabled = true;
+							btn.textContent = 'Enviando...';
+
+							const payload = {
+								nome: document.getElementById('name').value,
+								telefone: document.getElementById('phone').value,
+								treinamento: document.getElementById('service').value,
+								mensagem: document.getElementById('message').value
+							};
+
+							try {
+								await fetch('https://script.google.com/macros/s/AKfycbxCT_SvVMlyGME9xLaeA1O9sLz4Nl7jFWPG39bNEH4LLckK7dxeBnsDi1N_eEsQVqHM/exec', {
+									method: 'POST',
+									headers: { 'Content-Type': 'application/json' },
+									body: JSON.stringify(payload),
+									mode: 'no-cors'
+								});
+								successEl.style.display = 'block';
+								errorEl.style.display = 'none';
+								document.getElementById('contactForm').reset();
+							} catch (err) {
+								errorEl.style.display = 'block';
+								successEl.style.display = 'none';
+							} finally {
+								btn.disabled = false;
+								btn.textContent = 'Enviar Mensagem agora';
+							}
+						});
+					</script>
 				</div>
 			</div>
 		</section>
@@ -264,6 +303,26 @@ const contactItems = [
 	}
 
 	.w-full { width: 100%; }
+
+	.form-feedback {
+		padding: 16px 20px;
+		border-radius: 12px;
+		font-weight: 600;
+		margin-bottom: 25px;
+		font-size: 1rem;
+	}
+
+	.form-feedback.success {
+		background: rgba(34, 197, 94, 0.1);
+		border: 1px solid rgba(34, 197, 94, 0.4);
+		color: #22c55e;
+	}
+
+	.form-feedback.error {
+		background: rgba(239, 68, 68, 0.1);
+		border: 1px solid rgba(239, 68, 68, 0.4);
+		color: #ef4444;
+	}
 
 	@media (max-width: 992px) {
 		.contact-grid { grid-template-columns: 1fr; }
