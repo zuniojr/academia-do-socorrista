@@ -13,21 +13,29 @@ const description = "Entenda nosso propósito de ensinar para salvar e como tran
 		<section class="page-hero">
 			<div class="container animate-fade">
 				<h1>Considerações <span class="text-gradient">Importantes</span></h1>
-				<p>Nosso propósito: Ensinar para Salvar.</p>
+				<p>Nosso propósito: “Ensinar para salvar”.</p>
 			</div>
 		</section>
 
 		<section class="content-section">
 			<div class="container">
 				<div class="glass-card content-card animate-fade">
-					<p>“Ensinar para salvar” é o nosso propósito. Somos uma plataforma de conteúdo e educação em atendimento pré-hospitalar e salvamentos, investindo <strong>PESADO</strong> no conhecimento.</p>
+					<p>“Ensinar para salvar” é o nosso propósito. Somos uma plataforma de conteúdo e educação em atendimento pré- hospitalar e salvamentos, investindo <strong>PESADO</strong> no conhecimento. A nossa maior recompensa é quando as pessoas assumem o controle e conduzem as emergências com total segurança, com um raciocínio ideal para fazer o atendimento correto.</p>
 					
-					<p>A nossa maior recompensa é quando as pessoas assumem o controle e conduzem as emergências com total segurança, com um raciocínio ideal para fazer o atendimento correto, atendendo com agilidade e fazendo o melhor para o seu paciente.</p>
+					<p>Atendendo com agilidade e fazendo o melhor para o seu paciente.</p>
 
 					<div class="highlight-section">
-						<h2>O que tem nessa caminhada?</h2>
+						<h2>O QUE TEM NESSA CAMINHADA?</h2>
 						<p>Aqui tem um ambiente com múltiplos talentos que estão engajados na distribuição de conhecimento de ponta. Nosso ambiente é colaborativo e de alta performance, sempre focado no melhor!</p>
 						<p>Somos agentes de transformação, temos a missão de estimular o que há de melhor nas pessoas, ajudando a salvar vidas por meio da educação.</p>
+						
+						<ul class="values-list">
+							<li>Foco, Força e Fé, não permitimos que ninguém diminua o potencial de ninguém;</li>
+							<li>Aqui trabalhamos duro, mas trabalhamos felizes, em um ambiente leve e descontraído. Precisamos estar bem pra fazer o bem;</li>
+							<li>Usamos nossa criatividade a serviço da educação. Trazemos um inconformismo positivo, o desconforto e agilidade nos move;</li>
+							<li>Estimulamos o feedback, entendemos que esse processo é essencial para a melhoria;</li>
+							<li>Amamos um pódio, mas nem sempre ganhamos troféus, e sempre saímos vitoriosos com o aprendizado.</li>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -69,15 +77,16 @@ const description = "Entenda nosso propósito de ensinar para salvar e como tran
 	.highlight-section {
 		background: rgba(255, 107, 0, 0.05);
 		border: 1px solid var(--glass-border);
-		padding: 40px;
+		padding: 60px;
 		margin-top: 40px;
 		border-radius: 20px;
 	}
 
 	h2 {
 		color: var(--primary);
-		margin-bottom: 25px;
-		font-size: 2rem;
+		margin-bottom: 30px;
+		font-size: 1.8rem;
+		font-weight: 800;
 	}
 
 	p {
@@ -88,11 +97,36 @@ const description = "Entenda nosso propósito de ensinar para salvar e como tran
 	}
 
 	strong {
+		color: #fff;
+	}
+
+	.values-list {
+		list-style: none;
+		margin-top: 40px;
+		padding: 0;
+	}
+
+	.values-list li {
+		color: var(--text-muted);
+		line-height: 1.7;
+		margin-bottom: 20px;
+		padding-left: 35px;
+		position: relative;
+		font-size: 1.1rem;
+	}
+
+	.values-list li::before {
+		content: '✔';
+		position: absolute;
+		left: 0;
 		color: var(--primary);
+		font-weight: 900;
+		font-size: 1.2rem;
 	}
 
 	@media (max-width: 768px) {
 		.page-hero h1 { font-size: 2.5rem; }
 		.content-card { padding: 40px 25px; }
+		.highlight-section { padding: 40px 20px; }
 	}
 </style>
