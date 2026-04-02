@@ -1,0 +1,270 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "Cursos | Academia do Socorrista";
+const description = "Conheça os cursos de Atendimento Pré-Hospitalar (APH), controle de hemorragias, resgate tático e primeiros socorros da Academia do Socorrista.";
+
+const cursos = [
+	{
+		icon: "🩸",
+		nome: "Controle de Hemorragias",
+		nivel: "Fundamental",
+		descricao: "Aprenda os protocolos modernos de controle de sangramentos massivos, uso de torniquetes e curativos de combate seguindo o protocolo Stop the Bleed.",
+		topicos: ["Uso do torniquete CAT/SOFT-T", "Wound Packing e curativos hemostáticos", "Hemorragias em junções", "Protocolo Stop the Bleed"],
+		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20Controle%20de%20Hemorragias"
+	},
+	{
+		icon: "🚨",
+		nome: "APH Tático (TCCC)",
+		nivel: "Avançado",
+		descricao: "Treinamento de Tactical Combat Casualty Care (TCCC) para profissionais que atuam em ambientes hostis. Desenvolva habilidades para salvar vidas sob pressão extrema.",
+		topicos: ["Care Under Fire", "Tactical Field Care", "Protocolo MARCH", "Avaliação e evacuação tática"],
+		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20APH%20T%C3%A1tico"
+	},
+	{
+		icon: "🫀",
+		nome: "Suporte Básico de Vida (SBV)",
+		nivel: "Fundamental",
+		descricao: "Domine as técnicas de Ressuscitação Cardiopulmonar (RCP), uso do DEA e manejo de obstrução de vias aéreas por corpo estranho (OVACE) em adultos e crianças.",
+		topicos: ["RCP de alta qualidade", "Uso do DEA", "Manobra de Heimlich", "Protocolo ILCOR atualizado"],
+		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20SBV"
+	},
+	{
+		icon: "🚑",
+		nome: "Primeiros Socorros Completo",
+		nivel: "Intermediário",
+		descricao: "Curso completo para socorristas leigos e profissionais. Aprenda a agir com segurança e precisão nas principais emergências médicas e de trauma do dia a dia.",
+		topicos: ["Avaliação da cena e da vítima", "Queimaduras e fraturas", "Crises convulsivas", "Emergências pediátricas"],
+		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20Primeiros%20Socorros"
+	},
+	{
+		icon: "🎖️",
+		nome: "Resgate Avançado",
+		nivel: "Avançado",
+		descricao: "Para socorristas que buscam o nível máximo de preparo. Simulações realistas, manejo de via aérea avançada e extricação de vítimas em cenários complexos.",
+		topicos: ["Dispositivos extraglóticos de VA", "Acesso venoso em emergência", "Extricação e imobilização", "Simulações de trauma massivo"],
+		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20Resgate%20Avan%C3%A7ado"
+	},
+	{
+		icon: "👮",
+		nome: "APH para Forças de Segurança",
+		nivel: "Especializado",
+		descricao: "Treinamento desenvolvido para policiais, agentes de segurança e militares. Protocolos de trauma adaptados para a realidade e risco específico de cada missão.",
+		topicos: ["Autoajuda e ajuda mútua", "Gerenciamento de feridos em ambiente tático", "Extração de vítima sob risco", "Integração com suporte médico avançado"],
+		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20APH%20para%20For%C3%A7as%20de%20Seguran%C3%A7a"
+	}
+];
+
+const nivelCores: Record<string, string> = {
+	"Fundamental": "#22c55e",
+	"Intermediário": "#f59e0b",
+	"Avançado": "#ef4444",
+	"Especializado": "#8b5cf6"
+};
+---
+
+<Layout title={title} description={description}>
+	<Header />
+	<main>
+		<section class="page-hero">
+			<div class="container animate-fade">
+				<span class="section-badge">Treinamento de Elite</span>
+				<h1>Nossos <span class="text-gradient">Cursos</span></h1>
+				<p>Formação técnica e prática nos protocolos mais modernos do mundo em Atendimento Pré-Hospitalar e Socorrismo.</p>
+			</div>
+		</section>
+
+		<section class="cursos-section">
+			<div class="container">
+				<div class="cursos-grid">
+					{cursos.map((curso, index) => (
+						<div class="curso-card glass-card animate-fade" style={`animation-delay: ${0.1 * index}s`}>
+							<div class="curso-header">
+								<div class="curso-icon">{curso.icon}</div>
+								<span class="nivel-badge" style={`background: ${nivelCores[curso.nivel]}22; color: ${nivelCores[curso.nivel]}; border-color: ${nivelCores[curso.nivel]}44`}>{curso.nivel}</span>
+							</div>
+							<h3>{curso.nome}</h3>
+							<p class="curso-desc">{curso.descricao}</p>
+							<ul class="topicos-list">
+								{curso.topicos.map(t => (
+									<li>
+										<span class="topico-check">✔</span>
+										{t}
+									</li>
+								))}
+							</ul>
+							<a href={curso.cta} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-curso">
+								Saber Mais
+							</a>
+						</div>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section class="cta-section">
+			<div class="container">
+				<div class="cta-box glass-card animate-fade">
+					<h2>Não sabe qual curso escolher?</h2>
+					<p>Fale com nossa equipe pelo WhatsApp e descubra o treinamento ideal para o seu nível e objetivo profissional.</p>
+					<a href="https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20qual%20curso%20%C3%A9%20ideal%20para%20mim" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+						Falar com um Especialista
+					</a>
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	.page-hero {
+		padding: 160px 0 100px;
+		background: var(--dark-surface);
+		text-align: center;
+		border-bottom: 1px solid var(--glass-border);
+	}
+
+	.page-hero h1 {
+		font-size: 4rem;
+		margin: 15px 0 20px;
+	}
+
+	.page-hero p {
+		font-size: 1.2rem;
+		color: var(--text-muted);
+		max-width: 650px;
+		margin: 0 auto;
+	}
+
+	.section-badge {
+		display: inline-block;
+		background: rgba(255, 94, 0, 0.1);
+		color: var(--primary);
+		border: 1px solid rgba(255, 94, 0, 0.3);
+		padding: 8px 20px;
+		border-radius: 100px;
+		font-size: 0.85rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+	}
+
+	.cursos-section {
+		padding: 100px 0;
+	}
+
+	.cursos-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+		gap: 30px;
+	}
+
+	.curso-card {
+		padding: 40px;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		transition: var(--transition);
+	}
+
+	.curso-card:hover {
+		transform: translateY(-8px);
+		border-color: var(--primary);
+	}
+
+	.curso-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.curso-icon {
+		font-size: 2.5rem;
+		line-height: 1;
+	}
+
+	.nivel-badge {
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		padding: 5px 14px;
+		border-radius: 100px;
+		border: 1px solid;
+	}
+
+	.curso-card h3 {
+		font-size: 1.5rem;
+		color: white;
+		line-height: 1.2;
+	}
+
+	.curso-desc {
+		color: var(--text-muted);
+		font-size: 0.95rem;
+		line-height: 1.7;
+		flex-grow: 1;
+	}
+
+	.topicos-list {
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.topicos-list li {
+		color: var(--text-muted);
+		font-size: 0.9rem;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.topico-check {
+		color: var(--primary);
+		font-weight: 900;
+		font-size: 0.8rem;
+		flex-shrink: 0;
+	}
+
+	.btn-curso {
+		width: 100%;
+		text-align: center;
+		margin-top: auto;
+		justify-content: center;
+	}
+
+	.cta-section {
+		padding-bottom: 120px;
+	}
+
+	.cta-box {
+		padding: 80px 60px;
+		text-align: center;
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	.cta-box h2 {
+		font-size: 2.5rem;
+		margin-bottom: 20px;
+	}
+
+	.cta-box p {
+		color: var(--text-muted);
+		font-size: 1.15rem;
+		margin-bottom: 40px;
+		line-height: 1.7;
+	}
+
+	@media (max-width: 768px) {
+		.page-hero h1 { font-size: 2.8rem; }
+		.cursos-grid { grid-template-columns: 1fr; }
+		.cta-box { padding: 50px 25px; }
+		.cta-box h2 { font-size: 2rem; }
+	}
+</style>
