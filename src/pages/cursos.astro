@@ -60,7 +60,7 @@ const cursos = [
 		<section class="cursos-section">
 			<div class="container">
 				{cursos.map((curso, index) => (
-					<div class={`curso-row animate-fade ${index % 2 !== 0 ? 'reverse' : ''}`} style={`animation-delay: ${0.15 * index}s`}>
+					<div class="curso-row animate-fade" style={`animation-delay: ${0.15 * index}s`}>
 						<div class="curso-banner">
 							<img src={curso.imagem} alt={curso.nome} onerror="this.style.display='none'; this.parentElement.classList.add('no-image')" />
 							<div class="banner-overlay">
@@ -145,14 +145,13 @@ const cursos = [
 
 	/* Linha de cada curso */
 	.curso-row {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
+		display: flex;
+		flex-direction: column;
 		gap: 0;
 		border-radius: 24px;
 		overflow: hidden;
 		border: 1px solid var(--glass-border);
 		transition: var(--transition);
-		min-height: 360px;
 	}
 
 	.curso-row:hover {
@@ -165,13 +164,12 @@ const cursos = [
 	.curso-banner {
 		position: relative;
 		overflow: hidden;
-		min-height: 360px;
 		background: var(--dark-card);
 	}
 
 	.curso-banner img {
 		width: 100%;
-		height: 100%;
+		height: auto;
 		object-fit: cover;
 		object-position: center;
 		display: block;
@@ -263,19 +261,6 @@ const cursos = [
 		margin-top: 10px;
 	}
 
-	/* Linha invertida (imagem à direita) */
-	.reverse {
-		direction: rtl;
-	}
-
-	.reverse .curso-content {
-		direction: ltr;
-	}
-
-	.reverse .curso-banner {
-		direction: ltr;
-	}
-
 	/* CTA final */
 	.cta-section { padding-bottom: 120px; }
 
@@ -298,12 +283,6 @@ const cursos = [
 	}
 
 	@media (max-width: 992px) {
-		.curso-row, .reverse {
-			grid-template-columns: 1fr;
-			direction: ltr;
-		}
-
-		.curso-banner { min-height: 250px; }
 		.curso-content { padding: 35px; }
 		.page-hero h1 { font-size: 2.8rem; }
 	}
