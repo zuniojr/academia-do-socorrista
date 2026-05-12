@@ -1,0 +1,187 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "Helber Braga | Academia do Socorrista";
+const description = "Bombeiro, Instrutor de guarda-vidas, Especialista em Urgência, Emergência e APH.";
+
+const links = [
+	{
+		title: "Domine o Controle de Hemorragias",
+		url: "/cursos", // Aponta para a página interna de cursos
+		icon: "🩸",
+		highlight: true
+	},
+	{
+		title: "Recuperação de Afogados na Prática",
+		url: "/cursos", // Aponta para a página interna de cursos
+		icon: "🌊"
+	},
+	{
+		title: "Comprar Produtos",
+		url: "https://profissaoguardavidas.com.br/",
+		icon: "🛍️"
+	},
+	{
+		title: "Siga no TikTok",
+		url: "https://www.tiktok.com/@hbragaa",
+		icon: "📱"
+	},
+	{
+		title: "Siga no Instagram",
+		url: "https://www.instagram.com/hbragaa/",
+		icon: "📸"
+	},
+	{
+		title: "Fale no WhatsApp",
+		url: "https://wa.me/+5548988551045?text=Ol%C3%A1%2C%20",
+		icon: "💬"
+	}
+];
+---
+
+<Layout title={title} description={description}>
+	<main class="link-tree">
+		<div class="link-tree-container animate-fade">
+			<div class="profile-header">
+				<div class="profile-image-container">
+					<img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=250&auto=format&fit=crop" alt="Helber Braga" class="profile-image" />
+				</div>
+				<h1>Helber Braga</h1>
+				<p class="subtitle">Bombeiro • Instrutor de Guarda-Vidas<br>Especialista em Urgência, Emergência e APH</p>
+			</div>
+
+			<div class="links-container">
+				{links.map(link => (
+					<a href={link.url} class={`link-btn ${link.highlight ? 'highlight' : ''}`} target={link.url.startsWith('http') ? '_blank' : '_self'} rel={link.url.startsWith('http') ? 'noopener noreferrer' : ''}>
+						<span class="link-icon">{link.icon}</span>
+						<span class="link-text">{link.title}</span>
+					</a>
+				))}
+			</div>
+
+			<div class="footer-links">
+				<a href="/" class="back-home">Voltar para o site</a>
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.link-tree {
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 40px 20px;
+		background: var(--dark);
+		background-image: radial-gradient(circle at 50% 0%, rgba(255, 94, 0, 0.1) 0%, transparent 70%);
+	}
+
+	.link-tree-container {
+		width: 100%;
+		max-width: 500px;
+		background: var(--glass);
+		backdrop-filter: blur(12px);
+		border: 1px solid var(--glass-border);
+		border-radius: 24px;
+		padding: 40px 30px;
+		box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+	}
+
+	.profile-header {
+		text-align: center;
+		margin-bottom: 40px;
+	}
+
+	.profile-image-container {
+		width: 120px;
+		height: 120px;
+		margin: 0 auto 20px;
+		border-radius: 50%;
+		padding: 4px;
+		background: linear-gradient(135deg, var(--primary) 0%, #FFFFFF 100%);
+	}
+
+	.profile-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: 50%;
+		border: 4px solid var(--dark-card);
+	}
+
+	.profile-header h1 {
+		font-size: 2rem;
+		margin-bottom: 10px;
+		color: white;
+	}
+
+	.subtitle {
+		color: var(--text-muted);
+		font-size: 0.95rem;
+		line-height: 1.5;
+	}
+
+	.links-container {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+	}
+
+	.link-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 16px 24px;
+		background: var(--dark-card);
+		border: 1px solid var(--glass-border);
+		border-radius: 12px;
+		color: white;
+		text-decoration: none;
+		font-weight: 600;
+		font-size: 1.05rem;
+		transition: var(--transition);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.link-icon {
+		position: absolute;
+		left: 20px;
+		font-size: 1.2rem;
+	}
+
+	.link-btn:hover {
+		transform: translateY(-3px);
+		border-color: var(--primary);
+		box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+		background: rgba(255, 94, 0, 0.1);
+	}
+
+	.link-btn.highlight {
+		background: var(--primary);
+		color: var(--dark);
+		border-color: transparent;
+	}
+
+	.link-btn.highlight:hover {
+		background: var(--primary-hover);
+		box-shadow: 0 10px 20px var(--primary-glow);
+	}
+
+	.footer-links {
+		margin-top: 40px;
+		text-align: center;
+	}
+
+	.back-home {
+		color: var(--text-muted);
+		text-decoration: none;
+		font-size: 0.9rem;
+		transition: var(--transition);
+	}
+
+	.back-home:hover {
+		color: var(--primary);
+	}
+</style>
