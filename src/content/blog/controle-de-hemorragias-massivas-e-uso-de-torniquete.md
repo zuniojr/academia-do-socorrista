@@ -2,7 +2,7 @@
 title: "Controle de Hemorragias Massivas: Protocolos Atualizados e Uso de Torniquete"
 description: "Aprenda por que o controle contundente de sangramentos é o passo mais importante na avaliação de trauma e desmistifique o uso do torniquete pré-hospitalar."
 pubDate: "2024-08-12"
-heroImage: "https://images.unsplash.com/photo-1584432810601-6c7f27d2362b?q=80&w=800&auto=format&fit=crop"
+heroImage: "/blog/torniquete-aph.png"
 ---
 
 A exsanguinação (sangramento severo) é a principal causa de morte por trauma prevenível no mundo. Perder o controle sobre uma hemorragia arterial significa perder a vítima em pouquíssimos minutos. O reconhecimento da urgência dessa etapa alterou significativamente protocolos globais, fazendo o tradicional ABC do trauma se transformar no X-ABCDE (onde o X representa justamente o controle da exsanguinação massiva).

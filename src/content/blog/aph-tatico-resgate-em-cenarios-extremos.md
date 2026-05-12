@@ -2,7 +2,7 @@
 title: "APH Tático (TCCC): Resgate e Atendimento em Cenários Extremos"
 description: "Descubra como o APH Tático (TCCC) salva vidas em ambientes hostis, zonas de conflito e situações de alto risco, onde a medicina se une à estratégia militar."
 pubDate: "2024-08-15"
-heroImage: "https://images.unsplash.com/photo-1541881452934-8cddfc58bcdf?q=80&w=800&auto=format&fit=crop"
+heroImage: "/blog/aph-tatico.png"
 ---
 
 O Atendimento Pré-Hospitalar (APH) Tático, ou TCCC (*Tactical Combat Casualty Care*), representa a fronteira final da medicina de resgate. Diferente do APH convencional, onde o ambiente costuma ser controlado após a chegada da polícia ou bombeiros, no APH Tático a ameaça ainda está ativa. É o treinamento onde a técnica médica deve ser aplicada com disciplina tática rigorosa.
