@@ -37,7 +37,6 @@ const cursos = [
 		subtitulo: "Torne-se um Guarda-Vidas em Portugal!",
 		descricao: "Uma oportunidade única de trabalhar e se especializar como guarda-vidas em Portugal. Em parceria com a Start Portugal, este programa te prepara com todo o treinamento técnico e te conecta com as oportunidades certas no mercado europeu.",
 		imagem: "/cursos/guarda-vidas.png",
-		nivel: "Especializado",
 		nivelCor: "#8b5cf6",
 		topicos: ["Treinamento técnico completo de guarda-vidas", "Certificação reconhecida em Portugal", "Orientação para visto e residência", "Conexão direta com oportunidades de emprego"],
 		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20programa%20Guarda-Vidas%20em%20Portugal",
@@ -63,9 +62,6 @@ const cursos = [
 					<div class="curso-row animate-fade" style={`animation-delay: ${0.15 * index}s`}>
 						<div class="curso-banner">
 							<img src={curso.imagem} alt={curso.nome} onerror="this.style.display='none'; this.parentElement.classList.add('no-image')" />
-							<div class="banner-overlay">
-								<span class="nivel-tag" style={`background: ${curso.nivelCor}22; color: ${curso.nivelCor}; border-color: ${curso.nivelCor}55`}>{curso.nivel}</span>
-							</div>
 						</div>
 
 						<div class="curso-content glass-card">
