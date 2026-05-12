@@ -230,9 +230,9 @@ const whatsappUrl = "https://api.whatsapp.com/send?phone=5547996372129&text=Tenh
 
 		/* ─── EMPATHY ──────────────────────────────────── */
 		.empathy-section {
-			padding: 70px 20px;
+			padding: 60px 20px;
 			text-align: center;
-			max-width: 800px;
+			max-width: 1100px;
 			margin: 0 auto;
 		}
 
@@ -241,20 +241,35 @@ const whatsappUrl = "https://api.whatsapp.com/send?phone=5547996372129&text=Tenh
 			letter-spacing: 0.25em;
 			color: var(--muted);
 			text-transform: uppercase;
-			margin-bottom: 30px;
+			margin-bottom: 40px;
 		}
 
-		.doubt-list {
-			list-style: none;
-			margin-bottom: 50px;
+		.empathy-cards {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 15px;
 		}
 
-		.doubt-list li {
-			font-size: clamp(0.85rem, 2vw, 1rem);
-			letter-spacing: 0.15em;
+		.empathy-card {
+			background: var(--dark-2);
+			border-radius: 8px;
+			overflow: hidden;
+		}
+
+		.empathy-card img {
+			width: 100%;
+			height: 250px;
+			object-fit: cover;
+			display: block;
+		}
+
+		.empathy-card-text {
+			padding: 18px 20px;
+			text-align: left;
+			background: #0d1e35;
+			font-size: 0.9rem;
 			color: var(--muted);
-			padding: 10px 0;
-			border-bottom: 1px solid rgba(255,255,255,0.05);
+			line-height: 1.6;
 		}
 
 		.empathy-text {
@@ -269,6 +284,12 @@ const whatsappUrl = "https://api.whatsapp.com/send?phone=5547996372129&text=Tenh
 			font-weight: 900;
 			color: var(--white);
 			margin: 30px 0;
+		}
+
+		@media (max-width: 768px) {
+			.empathy-cards {
+				grid-template-columns: 1fr;
+			}
 		}
 
 		/* ─── GOOD NEWS ────────────────────────────────── */
@@ -535,14 +556,29 @@ const whatsappUrl = "https://api.whatsapp.com/send?phone=5547996372129&text=Tenh
 <section style="background: var(--dark); padding: 70px 20px;">
 <div class="empathy-section">
 	<p class="empathy-label">MAS ANTES DE CONTINUAR, ME CONTA SE VOCÊ...</p>
-	<ul class="doubt-list">
-		<li>"SERÁ QUE ISSO DARIA CERTO PRA MIM?"</li>
-		<li>"SERÁ QUE EU VOU TER TEMPO?"</li>
-		<li>"SERÁ QUE VOU LEMBRAR DE TUDO NA HORA DO RESGATE?"</li>
-		<li>"SERÁ QUE ESSE CURSO REALMENTE FUNCIONA?"</li>
-		<li>"E SE EU TIVER DÚVIDAS DURANTE O CURSO?"</li>
-	</ul>
-	<p class="empathy-text">Eu sei exatamente como é sentir essa insegurança, porque já passei por isso.</p>
+
+	<div class="empathy-cards">
+		<div class="empathy-card">
+			<img src="/images/empathy-1.jpg" alt="Pessoa confusa e preocupada" />
+			<div class="empathy-card-text">
+				... já viu várias pessoas falando sobre recuperação de afogados, mas se sente confuso em como começar e em quem confiar?
+			</div>
+		</div>
+		<div class="empathy-card">
+			<img src="/images/empathy-2.jpg" alt="Pessoa estudando sozinha" />
+			<div class="empathy-card-text">
+				... se sente sozinha, perdida e com falta de um suporte mais próximo que atenda as dúvidas que você tem?
+			</div>
+		</div>
+		<div class="empathy-card">
+			<img src="/images/empathy-3.jpg" alt="Pessoa frustrada" />
+			<div class="empathy-card-text">
+				... se sente frustrado e está a ponto de desistir, por não conseguir por prática o que estuda, mesmo já tendo feito algum curso?
+			</div>
+		</div>
+	</div>
+
+	<p class="empathy-text" style="margin-top: 50px;">Eu sei exatamente como é sentir essa insegurança, porque já passei por isso.</p>
 	<p class="empathy-text">Mas e se eu te dissesse que você pode aprender a salvar uma vida com segurança, sem precisar de anos de experiência? Seria importante para você?</p>
 	<div class="big-sim">SIM?</div>
 </div>
