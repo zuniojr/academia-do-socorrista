@@ -44,65 +44,38 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 		</section>
 
 		<!-- Conteúdo do Curso Section -->
-		<section class="course-modules">
-			<div class="container">
-				<h2 class="section-title text-center">O CONTEÚDO do curso</h2>
-				
-				<div class="modules-grid">
-					<!-- Módulo 1 -->
-					<div class="module-card glass-card">
-						<img src="/images/boas-vindas-1.jpg" alt="Boas Vindas">
-						<div class="module-info">
-							<h3>Boas Vindas</h3>
-						</div>
-					</div>
-					<!-- Módulo 2 -->
-					<div class="module-card glass-card">
-						<img src="/images/introducao-1.jpg" alt="Introdução">
-						<div class="module-info">
-							<h3>Introdução</h3>
-						</div>
-					</div>
-					<!-- Módulo 3 -->
-					<div class="module-card glass-card">
-						<img src="/images/sistema-cardiovascular.jpg" alt="Sistema Cardiovascular">
-						<div class="module-info">
-							<h3>Sistema Cardiovascular</h3>
-						</div>
-					</div>
-					<!-- Módulo 4 -->
-					<div class="module-card glass-card">
-						<img src="/images/tipos-de-hemorragia-1.jpg" alt="Tipos de Hemorragia">
-						<div class="module-info">
-							<h3>Tipos de Hemorragia</h3>
-						</div>
-					</div>
-					<!-- Módulo 5 -->
-					<div class="module-card glass-card">
-						<img src="/images/protocolospara-comtrole-de-hemorragia.jpg" alt="Protocolos">
-						<div class="module-info">
-							<h3>Protocolos de Controle</h3>
-						</div>
-					</div>
-					<!-- Módulo 6 -->
-					<div class="module-card glass-card">
-						<img src="/images/como-controlar-hemorragias.jpg" alt="Como Controlar">
-						<div class="module-info">
-							<h3>Como Controlar Hemorragias</h3>
-						</div>
-					</div>
-					<!-- Módulo 7 -->
-					<div class="module-card glass-card">
-						<img src="/images/como-prevenir-o-choque-hemorragias.jpg" alt="Prevenção de Choque">
-						<div class="module-info">
-							<h3>Como Prevenir o Choque</h3>
-						</div>
-					</div>
+		<section class="course-modules-section">
+			<div class="course-modules-title-wrapper">
+				<h2 class="about-title text-center">O CONTEÚDO do curso</h2>
+			</div>
+			
+			<div class="modules-stack">
+				<div class="module-row bg-dark">
+					<img src="/images/boas-vindas-1.jpg" alt="Boas vindas">
 				</div>
+				<div class="module-row bg-white">
+					<img src="/images/introducao-1.jpg" alt="Introdução">
+				</div>
+				<div class="module-row bg-dark">
+					<img src="/images/sistema-cardiovascular.jpg" alt="Sistema cardiovascular">
+				</div>
+				<div class="module-row bg-white">
+					<img src="/images/tipos-de-hemorragia-1.jpg" alt="Tipos de hemorragias">
+				</div>
+				<div class="module-row bg-dark">
+					<img src="/images/protocolospara-comtrole-de-hemorragia.jpg" alt="Protocolos para controle de hemorragias">
+				</div>
+				<div class="module-row bg-white">
+					<img src="/images/como-controlar-hemorragias.jpg" alt="Como controlar hemorragias">
+				</div>
+				<div class="module-row bg-dark">
+					<img src="/images/como-prevenir-o-choque-hemorragias.jpg" alt="Como prevenir o choque hemorrágico">
+				</div>
+			</div>
 
-				<div class="text-center mt-5">
-					<a href="http://bitlybr.net/virada" class="btn btn-primary btn-large">QUERO ENTRAR PARA O CURSO</a>
-				</div>
+			<div class="container text-center mt-5">
+				<a href="http://bitlybr.net/virada" class="btn btn-large cta-button green-btn pulse-btn">QUERO ENTRAR PARA O CURSO</a>
+			</div>
 			</div>
 		</section>
 
@@ -380,48 +353,44 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 	}
 
 	/* Course Modules */
-	.course-modules {
-		padding: 80px 0;
-		background: var(--dark);
+	.course-modules-section {
+		padding-bottom: 80px;
+		background-color: #ffffff;
 	}
 
-	.section-title {
-		font-size: 2.8rem;
-		margin-bottom: 60px;
+	.course-modules-title-wrapper {
+		padding: 0 0 60px 0;
+		background-color: #ffffff;
 	}
 
-	.modules-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-		gap: 30px;
-	}
-
-	.module-card {
-		padding: 0;
-		overflow: hidden;
-		transition: transform 0.3s;
-	}
-
-	.module-card:hover {
-		transform: translateY(-10px);
-	}
-
-	.module-card img {
+	.modules-stack {
+		display: flex;
+		flex-direction: column;
 		width: 100%;
-		height: 200px;
-		object-fit: cover;
-		border-bottom: 1px solid var(--glass-border);
 	}
 
-	.module-info {
-		padding: 20px;
-		text-align: center;
+	.module-row {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		padding: 20px 15px; /* Added horizontal padding for mobile */
 	}
 
-	.module-info h3 {
-		font-size: 1.2rem;
-		color: #fff;
-		margin: 0;
+	.module-row img {
+		max-width: 600px;
+		width: 100%;
+		height: auto;
+		object-fit: contain;
+		border-radius: 8px;
+		box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+	}
+
+	.bg-dark {
+		background-color: #0d1321;
+	}
+
+	.bg-white {
+		background-color: #ffffff;
 	}
 
 	/* Instructor */
