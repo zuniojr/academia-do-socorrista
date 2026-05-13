@@ -34,16 +34,11 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 
 		<!-- Sobre o Curso Section -->
 		<section class="about-course">
-			<div class="container">
-				<div class="about-grid">
-					<div class="about-text animate-fade">
-						<h2>O que é o curso Controle de Hemorragia?</h2>
-						<p>É um treinamento essencial que ensina técnicas vitais para parar sangramentos em situações de emergência. Este curso é ideal para profissionais de saúde, socorristas, guarda-vidas, professores, pais, e qualquer pessoa que queira estar preparada para agir em momentos críticos.</p>
-						<p>Estar preparado para situações de emergência pode fazer a diferença entre a vida e a morte. Com este curso, você estará equipado com o conhecimento e as habilidades necessárias para intervir de maneira eficaz em situações críticas, proporcionando segurança e tranquilidade para você e para aqueles ao seu redor.</p>
-					</div>
-					<div class="about-image animate-fade" style="animation-delay: 0.2s;">
-						<img src="/images/curativo-1-rircm25fvp4urbsb7erare2eqvwb3cpcy6ybuc3ax0.png" alt="Curativo e APH">
-					</div>
+			<div class="container text-center-mobile">
+				<h2 class="about-title">O que é o curso Controte de Hemorragia?</h2>
+				<div class="about-text-container">
+					<p>É um treinamento essencial que ensina técnicas vitais para parar sangramentos em situações de emergência. Este curso é ideal para profissionais de saúde, socorristas, guarda vidas, professores, pais, e qualquer pessoa que queira estar preparada para agir em momentos críticos.</p>
+					<p>Estar preparado para situações de emergência pode fazer a diferença entre a vida e a morte. Com este curso, você estará equipado com o conhecimento e as habilidades necessárias para intervir de maneira eficaz em situações críticas, proporcionando segurança e tranquilidade para você e para aqueles ao seu redor.</p>
 				</div>
 			</div>
 		</section>
@@ -358,32 +353,30 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 
 	/* About Course */
 	.about-course {
-		padding: 100px 0;
+		padding: 80px 0;
+		background-color: #ffffff;
+		color: #555555;
 	}
 
-	.about-grid {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 60px;
-		align-items: center;
+	.about-title {
+		font-size: 2.8rem;
+		margin-bottom: 30px;
+		color: #333333;
+		text-align: center;
+		font-weight: 800;
 	}
 
-	.about-text h2 {
-		font-size: 2.5rem;
-		margin-bottom: 25px;
+	.about-text-container {
+		max-width: 1000px;
+		margin: 0 auto;
+		text-align: left;
 	}
 
-	.about-text p {
-		color: var(--text-muted);
-		font-size: 1.1rem;
+	.about-text-container p {
+		font-size: 1.15rem;
 		line-height: 1.8;
-		margin-bottom: 20px;
-	}
-
-	.about-image img {
-		width: 100%;
-		border-radius: 20px;
-		box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+		margin-bottom: 25px;
+		color: #555555;
 	}
 
 	/* Course Modules */
