@@ -128,8 +128,8 @@ const contactItems = [
 				<div class="map-container glass-card">
 					<div class="map-placeholder">
 						<h3>Escala Nacional</h3>
-						<p>Recebemos alunos de todos os estados do Brasil, oferecendo uma infraestrutura completa para treinamentos de imersão presencial e acompanhamento digital contínuo.</p>
-						<span class="coverage-badge">🌎 Sem fronteiras para salvar vidas</span>
+						<p>Mais do que aprender técnicas, você aprende a fazer diferença.<br>Conheça nossos cursos e evolua com quem leva emergências a sério.</p>
+						<a href="/cursos" class="coverage-badge" target="_blank" rel="noopener noreferrer">Conheça Nossos Cursos</a>
 					</div>
 				</div>
 			</div>
@@ -290,6 +290,12 @@ const contactItems = [
 		font-weight: 800;
 		text-transform: uppercase;
 		font-size: 0.85rem;
+		text-decoration: none;
+		transition: transform 0.3s ease;
+	}
+
+	.coverage-badge:hover {
+		transform: scale(1.05);
 	}
 
 	.w-full { width: 100%; }
