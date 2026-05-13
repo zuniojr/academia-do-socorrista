@@ -12,17 +12,23 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 		<!-- Hero Section -->
 		<section class="sales-hero">
 			<div class="container animate-fade">
-				<span class="section-badge">Academia do Socorrista</span>
-				<h1>Domine o <span class="text-gradient">Controle de Hemorragias</span></h1>
+				<p class="top-badge">A C A D E M I A &nbsp;&nbsp; D O &nbsp;&nbsp; S O C O R R I S T A</p>
+				<h1 class="main-title">DOMINE O<br>CONTROLE DE<br>HEMORRAGIAS</h1>
 				
-				<p class="subtitle">Conquiste o RACIOCÍNIO ideal para fazer o atendimento correto.</p>
-				<p class="description">ATENDA e faça o melhor para seu paciente com agilidade e SEGURANÇA NA PRÁTICA.<br>Conteúdo atualizado e aulas totalmente em vídeo.</p>
+				<p class="subtitle">Conquiste o RACIOCÍNIO ideal para fazer o atendimentos correto.</p>
+				<p class="description">ATENDA e faça o melhor para seu paciente com agilidade e<br>SEGURANÇA NA PRÁTICA.</p>
+				<p class="description">Conteúdo atualizado e aulas totalmente em vídeo.</p>
 				
+				<div class="video-container">
+					<!-- Vídeo original -->
+					<iframe width="100%" height="100%" src="https://www.youtube.com/embed/aVW01hpFb2M" title="Domine o controle de hemorragias" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</div>
+
 				<div class="hero-alert">
 					Controle de Hemorragias: Conhecimento que salva.
 				</div>
 
-				<a href="http://bitlybr.net/virada" class="btn btn-primary btn-large cta-button pulse-btn">GARANTA SUA VAGA AGORA</a>
+				<a href="http://bitlybr.net/virada" class="btn btn-large cta-button green-btn pulse-btn">GARANTA SUA VAGA AGORA</a>
 			</div>
 		</section>
 
@@ -274,42 +280,80 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 
 	/* Hero Section */
 	.sales-hero {
-		padding: 100px 0 80px;
+		padding: 60px 0 80px;
 		text-align: center;
-		background: radial-gradient(circle at center, #1a1a1a 0%, var(--dark) 100%);
-		border-bottom: 1px solid var(--glass-border);
+		background-color: #0d1321; /* Azul escuro idêntico à imagem */
+		border-bottom: 1px solid rgba(255,255,255,0.05);
 	}
 
-	.sales-hero h1 {
-		font-size: 3.5rem;
-		line-height: 1.1;
+	.top-badge {
+		color: #55607c;
+		font-weight: 800;
+		font-size: 0.75rem;
+		margin-bottom: 15px;
+		letter-spacing: 0.3em;
+		text-transform: uppercase;
+	}
+
+	.sales-hero .main-title {
+		font-size: 3.8rem;
+		line-height: 1;
 		margin-bottom: 25px;
+		font-weight: 900;
+		color: #fff;
+		text-transform: uppercase;
+		font-family: 'Outfit', sans-serif;
 	}
 
 	.sales-hero .subtitle {
-		font-size: 1.5rem;
-		color: #fff;
-		font-weight: 700;
-		margin-bottom: 15px;
+		font-size: 1.3rem;
+		color: #e2e8f0;
+		margin-bottom: 20px;
+		font-weight: 400;
 	}
 
 	.sales-hero .description {
-		font-size: 1.1rem;
-		color: var(--text-muted);
-		max-width: 700px;
-		margin: 0 auto 30px;
-		line-height: 1.6;
+		font-size: 1.3rem;
+		color: #e2e8f0;
+		max-width: 800px;
+		margin: 0 auto 20px;
+		line-height: 1.4;
+		font-weight: 400;
+	}
+
+	.video-container {
+		max-width: 800px;
+		margin: 50px auto;
+		aspect-ratio: 16/9;
+		background: #000;
+		border-radius: 8px;
+		overflow: hidden;
+		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 	}
 
 	.hero-alert {
-		background: rgba(255, 215, 0, 0.1);
-		color: #FFD700;
-		border: 1px solid rgba(255, 215, 0, 0.3);
-		padding: 15px 30px;
-		border-radius: 100px;
-		display: inline-block;
-		font-weight: 700;
-		margin-bottom: 40px;
+		font-size: 1.6rem;
+		color: #fff;
+		margin-bottom: 30px;
+		font-weight: 500;
+		border: none;
+		background: none;
+		padding: 0;
+	}
+
+	.green-btn {
+		background-color: #cadd22; /* Verde limão da imagem */
+		color: #000;
+		border: none;
+		padding: 18px 45px;
+		font-size: 1.1rem;
+		border-radius: 4px;
+		transition: transform 0.2s, box-shadow 0.2s;
+	}
+
+	.green-btn:hover {
+		background-color: #b8c91f;
+		transform: scale(1.05);
 	}
 
 	/* About Course */
