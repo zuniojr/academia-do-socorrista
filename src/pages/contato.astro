@@ -11,22 +11,25 @@ const contactItems = [
     icon: '📞',
     title: 'Telefone / WhatsApp',
     value: '(47) 99999-9999',
-    link: 'http://bitlybr.net/virada',
-    subtitle: 'Falar com Especialistas'
+    link: 'https://bitlybr.net/whatsapp_AS',
+    subtitle: 'Falar com Especialistas',
+    target: '_blank'
   },
   {
     icon: '📧',
-    title: 'E-mail do Suporte',
+    title: 'E-mail Comercial',
     value: 'contato@academiadosocorrista.com.br',
     link: 'mailto:contato@academiadosocorrista.com.br',
-    subtitle: 'Retorno em até 24 horas úteis'
+    subtitle: 'Retorno em até 24 horas úteis',
+    target: '_self'
   },
   {
     icon: '📍',
-    title: 'Nossa Base de Treinamento',
+    title: 'Nossa Base',
     value: 'Itajaí - Centro / SC',
     link: '#mapa',
-    subtitle: 'Atendendo todo o Brasil'
+    subtitle: 'Atendendo todo o Brasil',
+    target: '_self'
   }
 ];
 ---
@@ -46,7 +49,7 @@ const contactItems = [
 			<div class="container contact-grid">
 				<div class="contact-methods animate-fade">
 					{contactItems.map(item => (
-						<a href={item.link} class="glass-card contact-item">
+						<a href={item.link} class="glass-card contact-item" target={item.target} rel={item.target === '_blank' ? 'noopener noreferrer' : undefined}>
 							<div class="item-icon">{item.icon}</div>
 							<div class="item-text">
 								<h3>{item.title}</h3>
