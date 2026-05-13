@@ -108,32 +108,44 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 
 				<div class="benefits-grid mt-5">
 					<div class="benefit-card glass-card">
-						<div class="b-icon">🔒</div>
+						<div class="b-icon">
+							<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+						</div>
 						<h3>Pagamento Seguro</h3>
 						<p>Ambiente seguro. Seus dados estão protegidos e sua compra é 100% segura.</p>
 					</div>
 					<div class="benefit-card glass-card">
-						<div class="b-icon">⚡</div>
+						<div class="b-icon">
+							<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-2 10h8l-9 10 2-10H3l9-10z"/></svg>
+						</div>
 						<h3>Acesso Imediato</h3>
 						<p>Seu login e senha serão enviados ao seu e-mail logo após o processo de pagamento.</p>
 					</div>
 					<div class="benefit-card glass-card">
-						<div class="b-icon">🛡️</div>
+						<div class="b-icon">
+							<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+						</div>
 						<h3>7 dias de Garantia</h3>
 						<p>Não gostou do curso? Você poderá pedir a devolução de 100% de seu dinheiro dentro desse prazo.</p>
 					</div>
 					<div class="benefit-card glass-card">
-						<div class="b-icon">🛠️</div>
+						<div class="b-icon">
+							<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+						</div>
 						<h3>100% PRÁTICO</h3>
 						<p>Treinamento "100% passo a passo" na prática.</p>
 					</div>
 					<div class="benefit-card glass-card">
-						<div class="b-icon">🎧</div>
+						<div class="b-icon">
+							<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg>
+						</div>
 						<h3>SUPORTE COMPLETO</h3>
 						<p>Suporte rápido de verdade.</p>
 					</div>
 					<div class="benefit-card glass-card">
-						<img src="/images/curso-online-rircm25fmxdkfq5kbml2c6aqjf1zd027ru1am1zuws.png" alt="100% Online" width="60" style="margin: 0 auto 15px;">
+						<div class="b-icon">
+							<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+						</div>
 						<h3>100% ONLINE</h3>
 						<p>Aulas totalmente em vídeos.</p>
 					</div>
@@ -459,8 +471,16 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 	}
 
 	.b-icon {
-		font-size: 3rem;
 		margin-bottom: 20px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.b-icon svg {
+		width: 54px;
+		height: 54px;
+		stroke: white;
 	}
 
 	.benefit-card h3 {
