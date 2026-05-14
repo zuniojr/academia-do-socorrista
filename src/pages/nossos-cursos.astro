@@ -50,28 +50,16 @@ const allServices = [
 		</section>
 
 		<section class="services-detail">
-			<div class="container">
-				{allServices.map((service, index) => (
-					<div class={`service-block ${index % 2 !== 0 ? 'reverse' : ''}`}>
-						<div class="service-content animate-fade">
-							<div class="service-icon">{service.icon}</div>
-							<h2>{service.title}</h2>
-							<p>{service.description}</p>
-							<ul class="feature-list">
-								{service.features.map(feature => (
-									<li>
-										<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-										{feature}
-									</li>
-								))}
-							</ul>
-							<a href="http://bitlybr.net/virada" class="btn btn-primary">Fazer Inscrição</a>
-						</div>
-						<div class="service-visual animate-fade" style="animation-delay: 0.2s;">
-							<img src={service.image} alt={service.title} />
-						</div>
-					</div>
-				))}
+			<div class="container banners-container">
+				<a href="/domine-o-controle-de-hemorragias" class="curso-banner-link animate-fade" style="animation-delay: 0.1s;">
+					<img src="/cursos/hemorragias.png" alt="Domine o Controle de Hemorragias" />
+				</a>
+				<a href="https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20Recupera%C3%A7%C3%A3o%20de%20Afogados" target="_blank" rel="noopener noreferrer" class="curso-banner-link animate-fade" style="animation-delay: 0.2s;">
+					<img src="/cursos/afogados.png" alt="Recuperação de Afogados" />
+				</a>
+				<a href="https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20programa%20Guarda-Vidas%20em%20Portugal" target="_blank" rel="noopener noreferrer" class="curso-banner-link animate-fade" style="animation-delay: 0.3s;">
+					<img src="/cursos/guarda-vidas.png" alt="Guarda-Vidas em Portugal" />
+				</a>
 			</div>
 		</section>
 
@@ -90,7 +78,7 @@ const allServices = [
 
 <style>
 	.page-hero {
-		padding: 200px 0 100px;
+		padding: 160px 0 40px;
 		background: var(--dark-surface);
 		text-align: center;
 		border-bottom: 1px solid var(--glass-border);
@@ -109,57 +97,35 @@ const allServices = [
 	}
 
 	.services-detail {
-		padding: 120px 0;
+		padding: 40px 0 120px;
 	}
 
-	.service-block {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 100px;
-		align-items: center;
-		margin-bottom: 150px;
-	}
-
-	.service-block.reverse .service-content { order: 2; }
-	.service-block.reverse .service-visual { order: 1; }
-
-	.service-icon {
-		font-size: 3rem;
-		margin-bottom: 25px;
-		display: block;
-	}
-
-	.service-content h2 {
-		font-size: 2.5rem;
-		margin-bottom: 20px;
-	}
-
-	.service-content p {
-		font-size: 1.1rem;
-		color: var(--text-muted);
-		margin-bottom: 35px;
-		line-height: 1.8;
-	}
-
-	.feature-list {
-		list-style: none;
-		margin-bottom: 40px;
-		display: grid;
-		gap: 15px;
-	}
-
-	.feature-list li {
+	.banners-container {
 		display: flex;
+		flex-direction: column;
+		gap: 40px;
 		align-items: center;
-		gap: 12px;
-		font-weight: 600;
-		color: #fff;
 	}
 
-	.service-visual img {
+	.curso-banner-link {
+		display: block;
 		width: 100%;
-		border-radius: 30px;
-		box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+		max-width: 1000px;
+		border-radius: 20px;
+		overflow: hidden;
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.curso-banner-link img {
+		width: 100%;
+		height: auto;
+		display: block;
+		border-radius: 20px;
+	}
+
+	.curso-banner-link:hover {
+		transform: scale(1.02);
+		box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 	}
 
 	.cta-banner {
@@ -175,14 +141,6 @@ const allServices = [
 	.cta-banner p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 40px; max-width: 700px; margin-inline: auto; }
 
 	@media (max-width: 992px) {
-		.service-block {
-			grid-template-columns: 1fr;
-			gap: 60px;
-			text-align: center;
-		}
-		.service-block.reverse .service-content { order: 1; }
-		.service-block.reverse .service-visual { order: 2; }
-		.feature-list { justify-content: center; text-align: left; }
 		.page-hero h1 { font-size: 3rem; }
 	}
 </style>
