@@ -272,10 +272,30 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 				}
 			});
 
-			document.getElementById('captureForm').addEventListener('submit', (e) => {
+			document.getElementById('captureForm').addEventListener('submit', async (e) => {
 				e.preventDefault();
-				// Após capturar, redireciona para o link original do botão
-				window.location.href = "http://bitlybr.net/virada";
+				const btn = document.querySelector('.popup-submit-btn');
+				btn.disabled = true;
+				btn.textContent = 'Enviando...';
+
+				const payload = {
+					nome: document.getElementById('leadName').value,
+					email: document.getElementById('leadEmail').value,
+					telefone: document.getElementById('leadPhone').value,
+					aba: 'popup hemorragia'
+				};
+
+				try {
+					await fetch('https://script.google.com/macros/s/AKfycbwa_hnBR5cnUuSvm3gagIpBztQx4MAfHYXqIIAcjYh3Hmk9H5zkqtMILBQPB7O9ziKi/exec', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify(payload),
+						mode: 'no-cors'
+					});
+				} catch (err) {
+					// Mesmo com erro, redireciona
+				}
+				window.location.href = "https://pay.kiwify.com.br/DSavxbo";
 			});
 		</script>
 	</main>
