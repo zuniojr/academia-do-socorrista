@@ -28,7 +28,7 @@ const cursos = [
 		nivel: "Intermediário",
 		nivelCor: "#f59e0b",
 		topicos: [],
-		cta: "https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20Recupera%C3%A7%C3%A3o%20de%20Afogados",
+		cta: "/recuperacao-de-afogados-na-pratica",
 		ctaTexto: "Quero me Inscrever"
 	},
 	{
@@ -61,7 +61,9 @@ const cursos = [
 				{cursos.map((curso, index) => (
 					<div class="curso-row animate-fade" style={`animation-delay: ${0.15 * index}s`}>
 						<div class="curso-banner">
-							<img src={curso.imagem} alt={curso.nome} onerror="this.style.display='none'; this.parentElement.classList.add('no-image')" />
+							<a href={curso.cta} target="_blank" rel="noopener noreferrer" style="display: block; width: 100%; height: 100%;">
+								<img src={curso.imagem} alt={curso.nome} onerror="this.style.display='none'; this.parentElement.classList.add('no-image')" />
+							</a>
 						</div>
 
 						<div class="curso-content glass-card">
