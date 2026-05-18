@@ -1,0 +1,299 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "Salvamento em Altura | Academia do Socorrista";
+const description = "Lista de espera para o curso de Salvamento em Altura. Torne-se um socorrista capacitado.";
+---
+
+<Layout title={title} description={description}>
+	<Header />
+	
+	<main>
+		<!-- HERO BANNER -->
+		<section class="hero">
+			<div class="hero-banner">
+				<img src="/images/salvamento-em-altura-banner.png" alt="Curso de Salvamento em Altura - Em Construção" />
+			</div>
+		</section>
+
+		<!-- FORM SECTION -->
+		<section class="form-section">
+			<h2>Entre para a lista de espera do Salvamento em Altura</h2>
+			<p class="subtitle">Cadastre o seu melhor email para ser avisado da próxima turma!</p>
+
+			<form id="waitlist-form" class="signup-form">
+				<input type="text" id="field-name" name="name" placeholder="Seu primeiro nome" required />
+				<input type="email" id="field-email" name="email" placeholder="Digite seu melhor e-mail" required />
+				<input type="tel" id="field-phone" name="phone" placeholder="(DDD) + Número do Whatsapp" required />
+				<button type="submit" id="btn-submit" class="btn-submit">INSCREVER-SE <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></button>
+			</form>
+
+			<div id="form-success" style="display:none; max-width:600px; margin:20px auto 0; background: rgba(0,180,80,0.12); border:1px solid rgba(0,200,80,0.4); border-radius:8px; padding:20px; text-align:center;">
+				<p style="color:#4ade80; font-weight:700; font-size:1.1rem;">✅ Inscrição realizada com sucesso!</p>
+				<p style="color:#a0b4c8; font-size:0.95rem; margin-top:8px;">Você será avisado assim que a turma abrir. Fique de olho no seu e-mail!</p>
+			</div>
+
+			<div id="form-error" style="display:none; max-width:600px; margin:20px auto 0; background: rgba(220,50,50,0.12); border:1px solid rgba(220,50,50,0.4); border-radius:8px; padding:20px; text-align:center;">
+				<p style="color:#f87171; font-weight:700; font-size:1rem;">❌ Ocorreu um erro. Tente novamente.</p>
+			</div>
+
+			<p class="lgpd-text">De acordo com as Leis 12.965/2014 e 13.709/2018, que regulam o uso da Internet e o tratamento de dados pessoais no Brasil, autorizo enviar notificações por e-mail ou outros meios e concordo com sua Política de Privacidade.</p>
+		</section>
+
+		<!-- ABOUT SECTION -->
+		<section class="about-section">
+			<div class="about-content">
+				<h2>O que é o SALVAMENTO EM ALTURA</h2>
+				<p>O SALVAMENTO EM ALTURA é um treinamento que vai ensinar <strong>TUDO</strong> o que você precisa para atuar em situações críticas e de difícil acesso.</p>
+				<p>Seja muito bem-vindo ao treinamento completo e personalizado, adaptado às normas e exigências atuais para socorristas de elite.</p>
+				<p>Nossos instrutores têm vasta experiência, garantindo que você esteja totalmente preparado para realizar resgates com segurança e eficiência.</p>
+			</div>
+		</section>
+
+		<!-- CTA SECTION -->
+		<section class="cta-section">
+			<div class="cta-content">
+				<h2>Pronto para salvar vidas em situações críticas?</h2>
+				<p>Não espere a emergência acontecer para descobrir que você não está preparado. Torne-se um Socorrista capacitado hoje mesmo.</p>
+				<a href="#waitlist-form" class="btn-cta">
+					<i class="fas fa-ticket-alt" style="margin-right: 8px;"></i> Fazer Inscrição Agora
+				</a>
+				<p class="cta-scarcity">Vagas limitadas para as turmas deste mês!</p>
+			</div>
+		</section>
+	</main>
+
+	<Footer />
+</Layout>
+
+<style>
+	/* Custom styles for this page */
+	.hero {
+		background: #000514; /* Dark background */
+		text-align: center;
+		padding: 50px 20px 0;
+	}
+
+	.hero-banner {
+		max-width: 1000px;
+		margin: 0 auto;
+		display: flex;
+		justify-content: center;
+	}
+
+	.hero-banner img {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+
+	.form-section {
+		background: #0f172a; /* Slate 900 */
+		padding: 70px 20px;
+		text-align: center;
+		color: #ffffff;
+	}
+
+	.form-section h2 {
+		font-size: clamp(1.8rem, 4vw, 2.5rem);
+		font-weight: 900;
+		margin-bottom: 15px;
+		line-height: 1.2;
+	}
+
+	.form-section .subtitle {
+		font-size: clamp(1rem, 2.5vw, 1.2rem);
+		font-weight: 500;
+		margin-bottom: 40px;
+		color: #cbd5e1;
+	}
+
+	.signup-form {
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.signup-form input {
+		width: 100%;
+		padding: 16px 20px;
+		margin-bottom: 15px;
+		border: 1px solid rgba(255,255,255,0.15);
+		border-radius: 6px;
+		background: #ffffff;
+		font-size: 1rem;
+		color: #333;
+		outline: none;
+		transition: border-color 0.3s;
+	}
+
+	.signup-form input::placeholder {
+		color: #94a3b8;
+	}
+
+	.signup-form input:focus {
+		border-color: #f5a623;
+		box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.2);
+	}
+
+	.btn-submit {
+		width: 100%;
+		padding: 18px;
+		background: #f5a623;
+		color: #000;
+		font-size: 1.1rem;
+		font-weight: 800;
+		border: none;
+		border-radius: 6px;
+		cursor: pointer;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		transition: background 0.3s, transform 0.2s;
+	}
+
+	.btn-submit:hover {
+		background: #d98620;
+		transform: translateY(-2px);
+	}
+
+	.lgpd-text {
+		font-size: 0.75rem;
+		color: #f5a623;
+		margin-top: 20px;
+		line-height: 1.6;
+		max-width: 800px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	/* ABOUT SECTION */
+	.about-section {
+		background: #e2e8f0;
+		padding: 80px 20px;
+		color: #0f172a;
+		text-align: center;
+	}
+
+	.about-content {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	.about-section h2 {
+		font-size: clamp(1.8rem, 4vw, 2.5rem);
+		font-weight: 900;
+		margin-bottom: 35px;
+		text-transform: uppercase;
+	}
+
+	.about-section p {
+		font-size: 1.1rem;
+		line-height: 1.8;
+		margin-bottom: 20px;
+		color: #334155;
+	}
+
+	.about-section p strong {
+		color: #0f172a;
+	}
+
+	/* CTA SECTION */
+	.cta-section {
+		background: #0b1120;
+		padding: 100px 20px;
+		text-align: center;
+	}
+
+	.cta-content {
+		background: #0f172a;
+		border-radius: 20px;
+		padding: 60px 40px;
+		max-width: 1000px;
+		margin: 0 auto;
+		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+		border: 1px solid rgba(255,255,255,0.05);
+	}
+
+	.cta-content h2 {
+		font-size: clamp(1.8rem, 4vw, 2.8rem);
+		font-weight: 900;
+		color: #ffffff;
+		margin-bottom: 20px;
+	}
+
+	.cta-content p {
+		font-size: 1.1rem;
+		color: #cbd5e1;
+		margin-bottom: 40px;
+		line-height: 1.6;
+	}
+
+	.btn-cta {
+		display: inline-block;
+		background: #ff5722;
+		color: #ffffff;
+		font-size: 1.2rem;
+		font-weight: 800;
+		padding: 18px 40px;
+		border-radius: 8px;
+		text-decoration: none;
+		transition: background 0.3s, transform 0.2s;
+		box-shadow: 0 10px 20px rgba(255, 87, 34, 0.3);
+	}
+
+	.btn-cta:hover {
+		background: #e64a19;
+		transform: translateY(-3px);
+	}
+
+	.cta-scarcity {
+		font-size: 0.9rem !important;
+		color: #94a3b8 !important;
+		margin-top: 15px !important;
+		margin-bottom: 0 !important;
+	}
+</style>
+
+<script is:inline>
+	document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
+		e.preventDefault();
+
+		var btn = document.getElementById('btn-submit');
+		btn.textContent = 'Enviando...';
+		btn.disabled = true;
+
+		var payload = {
+			nome: document.getElementById('field-name').value,
+			email: document.getElementById('field-email').value,
+			telefone: document.getElementById('field-phone').value,
+			aba: 'Lista de Espera - Salvamento em Altura'
+		};
+
+		try {
+			await fetch('https://script.google.com/macros/s/AKfycbwUkzOL8srj3iOS8E4eT5CvtahLQ5ogw00bAZbk626MO3jSqrNg8VCjC11MVHPqVTy8/exec', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload),
+				mode: 'no-cors'
+			});
+
+			document.getElementById('waitlist-form').style.display = 'none';
+			document.getElementById('form-success').style.display = 'block';
+			document.getElementById('form-error').style.display = 'none';
+
+		} catch (err) {
+			document.getElementById('form-error').style.display = 'block';
+			btn.innerHTML = 'INSCREVER-SE <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>';
+			btn.disabled = false;
+		}
+	});
+
+	document.querySelector('.btn-cta').addEventListener('click', function(e) {
+		e.preventDefault();
+		document.querySelector(this.getAttribute('href')).scrollIntoView({
+			behavior: 'smooth'
+		});
+		document.getElementById('field-name').focus();
+	});
+</script>
