@@ -129,7 +129,7 @@ const contactItems = [
 					<div class="map-placeholder">
 						<h3 class="hero-like-title"><span class="text-gradient">Reaja Melhor em Situações de Emergência</span></h3>
 						<p>Mais do que aprender técnicas, você aprende a fazer diferença.<br>Conheça nossos cursos e evolua com quem leva emergências a sério.</p>
-						<a href="https://academia-do-socorrista.vercel.app/cursos" class="coverage-badge">Conheça Nossos Cursos</a>
+						<a href="/cursos" class="coverage-badge">Conheça Nossos Cursos</a>
 					</div>
 				</div>
 			</div>
@@ -339,5 +339,9 @@ const contactItems = [
 		.form-row { grid-template-columns: 1fr; }
 		.contact-form-area { padding: 40px 25px; }
 		.hero-like-title { font-size: 2.8rem; }
+	}
+
+	@media (max-width: 400px) {
+		.hero-like-title { font-size: 2rem; }
 	}
 </style>

@@ -659,7 +659,7 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 
 	.benefits-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 		gap: 30px;
 	}
 
@@ -762,7 +762,7 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 
 	.faq-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 		gap: 30px;
 	}
 
@@ -805,4 +805,10 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 		.g-text h2 { font-size: 1.8rem; }
 		.faq-grid { grid-template-columns: 1fr; }
 	}
+@media (max-width: 768px) {
+  .sales-hero .main-title { font-size: 2rem; }
+  .hero-alert { font-size: 1.2rem; }
+  .guarantee-box { padding: 30px 20px; }
+  .faq-item { padding: 20px; }
+}
 </style>
