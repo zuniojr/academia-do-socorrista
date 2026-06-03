@@ -18,6 +18,13 @@ const description = "Chegou a hora de executar. Você encontrou o caminho verdad
 
 		<section class="hero-content">
 			<div class="container text-center relative-z">
+				<div class="brand-badge">
+					<svg viewBox="0 0 24 24" fill="var(--teste-magenta)" stroke="none" class="brand-icon">
+						<path d="M12 2L3 6v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V6l-9-4z"/>
+						<path d="M16 11h-3V8h-2v3H8v2h3v3h2v-3h3v-2z" fill="var(--teste-dark-bg)"/>
+					</svg>
+					<span>Academia do Socorrista</span>
+				</div>
 				<h1 class="main-headline">
 					<span class="highlight-magenta">Chegou a hora de executar.</span> Você encontrou o caminho verdadeiro para salvar vidas com segurança.
 				</h1>
@@ -162,6 +169,25 @@ const description = "Chegou a hora de executar. Você encontrou o caminho verdad
 
 	.text-center { text-align: center; }
 	.relative-z { position: relative; z-index: 10; }
+
+	/* BRAND LOGO */
+	.brand-badge {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: #ffffff;
+		margin-bottom: 35px;
+		letter-spacing: -0.02em;
+		font-family: 'Outfit', 'Montserrat', sans-serif;
+	}
+
+	.brand-icon {
+		width: 26px;
+		height: 26px;
+	}
 
 	/* MOBILE */
 	@media (max-width: 768px) {
