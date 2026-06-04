@@ -20,43 +20,19 @@ const description = "Chegou a hora de executar. Você encontrou o caminho verdad
 			<div class="container text-center relative-z">
 				<div class="brand-badge">
 					<svg viewBox="0 0 200 200" class="brand-icon" xmlns="http://www.w3.org/2000/svg">
-						<!-- Estrela da Vida (Star of Life) - 6 pontas -->
-						<defs>
-							<linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-								<stop offset="0%" stop-color="#FF0044"/>
-								<stop offset="100%" stop-color="#FF4444"/>
-							</linearGradient>
-						</defs>
-						<!-- 6 braços da estrela -->
-						<g fill="url(#starGrad)">
-							<!-- Braço superior -->
-							<rect x="85" y="10" width="30" height="75" rx="4"/>
-							<!-- Braço inferior -->
-							<rect x="85" y="115" width="30" height="75" rx="4"/>
-							<!-- Braço superior esquerdo -->
-							<rect x="85" y="10" width="30" height="75" rx="4" transform="rotate(60 100 100)"/>
-							<!-- Braço inferior direito -->
-							<rect x="85" y="115" width="30" height="75" rx="4" transform="rotate(60 100 100)"/>
-							<!-- Braço superior direito -->
-							<rect x="85" y="10" width="30" height="75" rx="4" transform="rotate(-60 100 100)"/>
-							<!-- Braço inferior esquerdo -->
-							<rect x="85" y="115" width="30" height="75" rx="4" transform="rotate(-60 100 100)"/>
-						</g>
-						<!-- Centro circular -->
-						<circle cx="100" cy="100" r="30" fill="url(#starGrad)"/>
-						<!-- Bastão de Asclépio (Rod of Asclepius) -->
-						<g fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round">
-							<!-- Bastão vertical -->
-							<line x1="100" y1="76" x2="100" y2="124"/>
-							<!-- Serpente enrolada -->
-							<path d="M100 120 C106 118, 112 114, 108 110 C104 106, 96 108, 94 112 C92 116, 96 114, 100 112 C104 110, 108 106, 106 102 C104 98, 96 100, 94 104 C92 108, 96 103, 100 101 C104 99, 108 95, 106 91 C104 87, 96 89, 100 86" fill="none"/>
-							<!-- Cabeça da serpente -->
-							<circle cx="100" cy="84" r="3" fill="#ffffff" stroke="none"/>
+						<!-- Asterisco / Estrela da Vida APH - 6 braços -->
+						<g fill="#FF2222">
+							<!-- Braço vertical -->
+							<rect x="80" y="10" width="40" height="180" rx="6"/>
+							<!-- Braço diagonal direita -->
+							<rect x="80" y="10" width="40" height="180" rx="6" transform="rotate(60 100 100)"/>
+							<!-- Braço diagonal esquerda -->
+							<rect x="80" y="10" width="40" height="180" rx="6" transform="rotate(-60 100 100)"/>
 						</g>
 					</svg>
 					<div class="brand-text">
-						<span class="brand-text-top">academia do</span>
-						<span class="brand-text-bottom">SOCORRISTA</span>
+						<span class="brand-text-top">Academia do</span>
+						<span class="brand-text-bottom">Socorrista</span>
 					</div>
 				</div>
 				<h1 class="main-headline">
@@ -209,38 +185,36 @@ const description = "Chegou a hora de executar. Você encontrou o caminho verdad
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		gap: 14px;
+		gap: 16px;
 		margin-bottom: 40px;
 		font-family: 'Outfit', 'Montserrat', sans-serif;
 	}
 
 	.brand-icon {
-		width: 52px;
-		height: 52px;
-		filter: drop-shadow(0 0 8px rgba(255, 0, 68, 0.4));
+		width: 56px;
+		height: 56px;
 	}
 
 	.brand-text {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		line-height: 1.15;
+		line-height: 1.1;
 	}
 
 	.brand-text-top {
-		font-size: 0.95rem;
-		font-weight: 400;
+		font-size: 1.35rem;
+		font-weight: 800;
 		color: #ffffff;
-		letter-spacing: 0.08em;
-		text-transform: lowercase;
+		letter-spacing: 0.02em;
 	}
 
 	.brand-text-bottom {
-		font-size: 1.5rem;
+		font-size: 1.65rem;
 		font-weight: 800;
-		color: #ffffff;
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
+		color: #f0a070;
+		letter-spacing: 0.02em;
+		font-style: italic;
 	}
 
 	/* MOBILE */
