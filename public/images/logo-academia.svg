@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 160" width="520" height="160">
+
+  <!-- Asterisco (Estrela da Vida) -->
+  <g transform="translate(80, 80)">
+    <!-- Braço vertical -->
+    <rect x="-18" y="-62" width="36" height="124" rx="8" fill="#E8352A"/>
+    <!-- Braço diagonal direita (60°) -->
+    <rect x="-18" y="-62" width="36" height="124" rx="8" fill="#E8352A" transform="rotate(60)"/>
+    <!-- Braço diagonal esquerda (-60°) -->
+    <rect x="-18" y="-62" width="36" height="124" rx="8" fill="#E8352A" transform="rotate(-60)"/>
+
+    <!-- Reflexo de luz para dar profundidade -->
+    <rect x="-8" y="-62" width="14" height="124" rx="6" fill="#F05545" opacity="0.6"/>
+    <rect x="-8" y="-62" width="14" height="124" rx="6" fill="#F05545" opacity="0.4" transform="rotate(60)"/>
+    <rect x="-8" y="-62" width="14" height="124" rx="6" fill="#F05545" opacity="0.4" transform="rotate(-60)"/>
+  </g>
+
+  <!-- Texto "Academia do" -->
+  <text
+    x="165"
+    y="72"
+    font-family="'Montserrat', 'Arial Black', Arial, sans-serif"
+    font-weight="800"
+    font-size="62"
+    fill="#FFFFFF"
+    letter-spacing="-1"
+  >Academia do</text>
+
+  <!-- Texto "Socorrista" -->
+  <text
+    x="165"
+    y="145"
+    font-family="'Montserrat', 'Arial Black', Arial, sans-serif"
+    font-weight="800"
+    font-size="72"
+    fill="#F07020"
+    letter-spacing="-1"
+  >Socorrista</text>
+
+</svg>
