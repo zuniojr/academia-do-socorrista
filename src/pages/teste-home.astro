@@ -11,12 +11,13 @@ const description = "Chegou a hora de executar. Você encontrou o caminho verdad
 	<Header />
 	
 	<main class="teste-home-main">
-		<div class="hero-bg">
-			<img src="/images/dashboard-aph-bg.png" alt="Background de Tecnologia em APH" class="bg-blur-image" />
-			<div class="gradient-overlay"></div>
-		</div>
+		<div class="hero-content-wrapper">
+			<div class="hero-bg">
+				<img src="/images/dashboard-aph-bg.png" alt="Background de Tecnologia em APH" class="bg-blur-image" />
+				<div class="gradient-overlay"></div>
+			</div>
 
-		<section class="hero-content">
+			<section class="hero-content">
 			<div class="container text-center relative-z">
 				<div class="brand-badge" style="margin-top: 40px; margin-bottom: 60px;">
 					<img src="/images/logo-academia.svg" alt="Academia do Socorrista" style="max-height: 50px; width: auto;" />
@@ -38,6 +39,49 @@ const description = "Chegou a hora de executar. Você encontrou o caminho verdad
 				</a>
 			</div>
 		</section>
+		</div><!-- /.hero-content-wrapper -->
+
+		<!-- DOBRA: O QUE É A ACADEMIA DO SOCORRISTA -->
+		<section class="what-is-section" id="o-que-e">
+			<div class="container">
+				<h2 class="what-is-title">
+					O que é <span class="what-is-highlight">a Academia do Socorrista?</span>
+				</h2>
+				<p class="what-is-subtitle">
+					Uma plataforma que une <span class="what-is-blue">aprendizado, execução e comunidade</span>,<br>
+					trabalhando juntos para salvar vidas de verdade.
+				</p>
+
+				<!-- TABS -->
+				<div class="what-is-tabs">
+					<button class="tab-btn active" data-tab="plataforma">Plataforma de Aulas</button>
+					<button class="tab-btn" data-tab="protocolos">Protocolos APH</button>
+					<button class="tab-btn" data-tab="comunidade">Comunidade</button>
+					<button class="tab-btn" data-tab="certificacao">Certificação</button>
+					<button class="tab-btn" data-tab="suporte">Suporte</button>
+				</div>
+
+				<!-- MOCKUP DA PLATAFORMA -->
+				<div class="platform-mockup-wrapper">
+					<div class="mockup-glow"></div>
+					<div class="mockup-frame">
+						<div class="mockup-browser-bar">
+							<div class="mockup-dots">
+								<span class="dot red"></span>
+								<span class="dot yellow"></span>
+								<span class="dot green"></span>
+							</div>
+							<div class="mockup-url">
+								<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="m7 11v-4a5 5 0 0 1 10 0v4"></path></svg>
+								academiasocorrista.com.br
+							</div>
+						</div>
+						<img src="/images/platform-mockup.png" alt="Plataforma Academia do Socorrista - Dashboard de cursos" class="mockup-image" loading="lazy" />
+					</div>
+				</div>
+			</div>
+		</section>
+
 	</main>
 	<Footer />
 </Layout>
@@ -54,23 +98,28 @@ const description = "Chegou a hora de executar. Você encontrou o caminho verdad
 
 	.teste-home-main {
 		position: relative;
-		min-height: 100vh;
 		background: var(--teste-dark-bg);
 		overflow: hidden;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding-top: 80px; /* offset para o header */
-		padding-bottom: 80px;
 	}
 
 	/* BACKGROUND COM IMAGEM DESFOCADA E GRADIENTE */
+	/* HERO WRAPPER */
+	.hero-content-wrapper {
+		position: relative;
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding-top: 80px;
+		padding-bottom: 80px;
+	}
+
 	.hero-bg {
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
-		height: 100%;
+		height: 100vh;
 		z-index: 1;
 		pointer-events: none;
 	}
@@ -226,4 +275,207 @@ const description = "Chegou a hora de executar. Você encontrou o caminho verdad
 			max-width: 350px;
 		}
 	}
+
+	/* ==============================================
+	   DOBRA: O QUE É A ACADEMIA DO SOCORRISTA
+	   ============================================== */
+	.what-is-section {
+		position: relative;
+		background: #f5f5f7;
+		padding: 100px 0 80px 0;
+		z-index: 3;
+	}
+
+	.what-is-title {
+		text-align: center;
+		font-size: clamp(2rem, 4vw, 3rem);
+		font-weight: 800;
+		color: #1a1a2e;
+		margin-bottom: 16px;
+		font-family: 'Outfit', 'Montserrat', sans-serif;
+		line-height: 1.2;
+	}
+
+	.what-is-highlight {
+		color: #1a1a2e;
+		font-weight: 900;
+	}
+
+	.what-is-subtitle {
+		text-align: center;
+		font-size: clamp(1rem, 1.8vw, 1.2rem);
+		color: #555;
+		line-height: 1.6;
+		max-width: 650px;
+		margin: 0 auto 40px auto;
+		font-family: 'Plus Jakarta Sans', sans-serif;
+	}
+
+	.what-is-blue {
+		color: var(--teste-blue);
+		text-decoration: underline;
+		text-decoration-color: rgba(59, 130, 246, 0.4);
+		text-underline-offset: 3px;
+		text-decoration-thickness: 2px;
+	}
+
+	/* TABS */
+	.what-is-tabs {
+		display: flex;
+		justify-content: center;
+		gap: 8px;
+		margin-bottom: 48px;
+		flex-wrap: wrap;
+	}
+
+	.tab-btn {
+		padding: 12px 24px;
+		border-radius: 50px;
+		border: 1.5px solid #d1d5db;
+		background: #fff;
+		color: #555;
+		font-size: 0.9rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.25s ease;
+		font-family: 'Plus Jakarta Sans', sans-serif;
+	}
+
+	.tab-btn:hover {
+		border-color: #999;
+		color: #333;
+	}
+
+	.tab-btn.active {
+		background: #1a1a2e;
+		color: #fff;
+		border-color: #1a1a2e;
+	}
+
+	/* MOCKUP */
+	.platform-mockup-wrapper {
+		position: relative;
+		max-width: 1000px;
+		margin: 0 auto;
+	}
+
+	.mockup-glow {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 80%;
+		height: 80%;
+		background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	.mockup-frame {
+		position: relative;
+		z-index: 1;
+		border-radius: 16px;
+		overflow: hidden;
+		box-shadow: 
+			0 25px 60px rgba(0, 0, 0, 0.15),
+			0 10px 25px rgba(0, 0, 0, 0.08),
+			0 0 0 1px rgba(0, 0, 0, 0.05);
+		background: #1e1e2e;
+		transition: transform 0.4s ease, box-shadow 0.4s ease;
+	}
+
+	.mockup-frame:hover {
+		transform: translateY(-4px);
+		box-shadow: 
+			0 35px 80px rgba(0, 0, 0, 0.2),
+			0 15px 35px rgba(0, 0, 0, 0.1),
+			0 0 0 1px rgba(0, 0, 0, 0.05);
+	}
+
+	.mockup-browser-bar {
+		background: #2a2a3e;
+		padding: 12px 16px;
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		border-bottom: 1px solid rgba(255,255,255,0.06);
+	}
+
+	.mockup-dots {
+		display: flex;
+		gap: 6px;
+	}
+
+	.mockup-dots .dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+	}
+
+	.dot.red { background: #ff5f57; }
+	.dot.yellow { background: #febc2e; }
+	.dot.green { background: #28c840; }
+
+	.mockup-url {
+		background: rgba(255,255,255,0.08);
+		border-radius: 8px;
+		padding: 6px 14px;
+		font-size: 0.75rem;
+		color: rgba(255,255,255,0.5);
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		flex: 1;
+		max-width: 350px;
+		font-family: 'Plus Jakarta Sans', monospace;
+	}
+
+	.mockup-image {
+		width: 100%;
+		display: block;
+		height: auto;
+	}
+
+	/* MOBILE - WHAT IS SECTION */
+	@media (max-width: 768px) {
+		.what-is-section {
+			padding: 60px 0 50px 0;
+		}
+
+		.what-is-tabs {
+			gap: 6px;
+			padding: 0 10px;
+		}
+
+		.tab-btn {
+			padding: 8px 16px;
+			font-size: 0.8rem;
+		}
+
+		.mockup-frame {
+			border-radius: 10px;
+		}
+
+		.mockup-browser-bar {
+			padding: 8px 12px;
+		}
+
+		.mockup-dots .dot {
+			width: 8px;
+			height: 8px;
+		}
+	}
 </style>
+
+<script>
+	// Interatividade dos tabs
+	document.addEventListener('DOMContentLoaded', () => {
+		const tabs = document.querySelectorAll('.tab-btn');
+		tabs.forEach(tab => {
+			tab.addEventListener('click', () => {
+				tabs.forEach(t => t.classList.remove('active'));
+				tab.classList.add('active');
+			});
+		});
+	});
+</script>
