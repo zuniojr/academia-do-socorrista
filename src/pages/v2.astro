@@ -1,0 +1,243 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "Academia do Socorrista | Treinamento Avançado";
+const description = "Domine o Controle de Hemorragias e esteja preparado para salvar vidas em situações de alto risco com as melhores técnicas de resgate.";
+---
+
+<Layout title={title} description={description}>
+	<Header />
+	<main>
+		<Hero />
+		
+		<section id="sobre" class="about">
+			<div class="container about-inner">
+				<div class="about-image animate-fade">
+					<img src="/images/socorrista-heroico.png" alt="Socorrista Heroico em Pose Confiante - Academia do Socorrista" />
+					<a href="https://academia-do-socorrista.vercel.app/domine-o-controle-de-hemorragias" class="experience-badge" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">
+						<span class="exp-years" style="font-size: 1.8rem;">Inscreva-se</span>
+					</a>
+				</div>
+				<div class="about-text animate-fade" style="animation-delay: 0.2s;">
+					<h2>Metodologia Baseada em <span class="text-gradient">Protocolos Internacionais</span></h2>
+					<p>Nosso treinamento é construído sobre bases sólidas, utilizando as diretrizes mais recentes. Preparamos você para agir no momento em que cada segundo conta.</p>
+					
+					<div class="benefits-list">
+						<div class="benefit-item">
+							<span class="benefit-icon">⏱️</span>
+							<div class="benefit-content">
+								<h4>Ação Imediata</h4>
+								<p>Técnicas focadas na resposta rápida para preservar a vida em minutos críticos.</p>
+							</div>
+						</div>
+						<div class="benefit-item">
+							<span class="benefit-icon">🧠</span>
+							<div class="benefit-content">
+								<h4>Controle Emocional</h4>
+								<p>Treinamento para manter a calma e a precisão sob extrema pressão.</p>
+							</div>
+						</div>
+						<div class="benefit-item">
+							<span class="benefit-icon">🛡️</span>
+							<div class="benefit-content">
+								<h4>Conhecimento Prático</h4>
+								<p>Exercícios simulados e cenários reais para garantir a máxima retenção do aprendizado.</p>
+							</div>
+						</div>
+					</div>
+
+					<a href="https://academia-do-socorrista.vercel.app/domine-o-controle-de-hemorragias" class="btn btn-primary">Garantir Inscrição</a>
+				</div>
+			</div>
+		</section>
+
+		<section id="consultoria" class="emergency-cta">
+			<div class="container">
+				<div class="glass-card emergency-box animate-fade">
+					<div class="emergency-content">
+						<h2>Pronto para salvar vidas em situações críticas?</h2>
+						<p>Não espere a emergência acontecer para descobrir que você não está preparado. Torne-se um Socorrista capacitado hoje mesmo.</p>
+						<div class="emergency-actions">
+							<a href="https://academia-do-socorrista.vercel.app/domine-o-controle-de-hemorragias" class="btn btn-primary btn-large">
+								🚑 Fazer Inscrição Agora
+							</a>
+							<span class="emergency-note">Vagas limitadas para as turmas deste mês!</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer />
+
+	<a href="https://bitlybr.net/whatsapp_AS" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+		<svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+	</a>
+</Layout>
+
+<style>
+	/* About Section */
+	.about {
+		padding: 120px 0;
+		background: var(--dark);
+	}
+
+	.about-inner {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 80px;
+		align-items: center;
+	}
+
+	.about-image {
+		position: relative;
+	}
+
+	.about-image img {
+		width: 100%;
+		border-radius: 24px;
+		box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+	}
+
+	.experience-badge {
+		position: absolute;
+		bottom: -30px;
+		right: -30px;
+		background: var(--primary);
+		padding: 30px;
+		border-radius: 24px;
+		text-align: center;
+		box-shadow: 0 20px 40px var(--primary-glow);
+		color: var(--dark);
+	}
+
+	.exp-years {
+		display: block;
+		font-size: 2.5rem;
+		font-weight: 800;
+		line-height: 1;
+	}
+
+	.exp-text {
+		font-size: 0.9rem;
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+
+	.section-badge {
+		color: var(--primary);
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		font-size: 0.85rem;
+		margin-bottom: 15px;
+		display: block;
+	}
+
+	.about-text h2 {
+		font-size: 3rem;
+		margin-bottom: 25px;
+		line-height: 1.2;
+	}
+
+	.about-text p {
+		color: var(--text-muted);
+		font-size: 1.1rem;
+		margin-bottom: 40px;
+	}
+
+	.benefits-list {
+		display: flex;
+		flex-direction: column;
+		gap: 30px;
+		margin-bottom: 50px;
+	}
+
+	.benefit-item {
+		display: flex;
+		gap: 20px;
+	}
+
+	.benefit-icon {
+		font-size: 1.8rem;
+		flex-shrink: 0;
+	}
+
+	.benefit-content h4 {
+		font-size: 1.2rem;
+		margin-bottom: 5px;
+	}
+
+	.benefit-content p {
+		font-size: 0.95rem;
+		margin-bottom: 0;
+	}
+
+	/* Emergency Section */
+	.emergency-cta {
+		padding: 60px 0 120px;
+	}
+
+	.emergency-box {
+		padding: 80px 40px;
+		text-align: center;
+		background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+	}
+
+	.emergency-box h2 {
+		font-size: 2.5rem;
+		margin-bottom: 20px;
+	}
+
+	.emergency-box p {
+		font-size: 1.2rem;
+		color: var(--text-muted);
+		margin-bottom: 40px;
+	}
+
+	.emergency-actions {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 20px;
+	}
+
+	.btn-large {
+		padding: 20px 45px;
+		font-size: 1.2rem;
+	}
+
+	.emergency-note {
+		font-size: 0.9rem;
+		color: var(--text-muted);
+	}
+
+	@media (max-width: 992px) {
+		.about-inner {
+			grid-template-columns: 1fr;
+			gap: 60px;
+			text-align: center;
+		}
+		.about-image {
+			order: 2;
+			max-width: 600px;
+			margin: 0 auto;
+		}
+		.experience-badge {
+			right: 20px;
+			bottom: 20px;
+			padding: 20px;
+		}
+		.benefits-list {
+			text-align: left;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.about-text h2 { font-size: 2rem; }
+		.emergency-box h2 { font-size: 1.8rem; }
+	}
+</style>
