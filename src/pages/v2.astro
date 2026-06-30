@@ -102,18 +102,18 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 		<!-- ============ APRENDA DE ONDE ESTIVER ============ -->
 		<section class="learn-anywhere">
 			<div class="container learn-anywhere__inner">
-				<div class="learn-anywhere__image animate-fade">
-					<img src="/images/devices-mockup.png" alt="Plataforma de cursos acessível em computador e celular" />
-				</div>
-				<div class="learn-anywhere__content animate-fade" style="animation-delay: 0.2s;">
-					<h2>Aprenda de onde estiver. <span class="text-gradient">Quando quiser.</span></h2>
-					<p>Nossa plataforma é moderna, intuitiva e 100% online. Acesse seus cursos de qualquer dispositivo e tenha uma experiência completa de aprendizado.</p>
+				<div class="learn-anywhere__content animate-fade">
+					<h2>Aprenda de onde estiver.<br/>Quando quiser.</h2>
+					<p>Nossa plataforma é moderna, intuitiva e 100% online. Acesse pelo computador, tablet ou celular e tenha uma experiência completa de ensino.</p>
 					<ul class="learn-anywhere__list">
-						<li>✅ Estude a seu próprio ritmo</li>
-						<li>✅ Material de apoio para download</li>
-						<li>✅ Conteúdo para todos os dispositivos</li>
-						<li>✅ Certificado digital com QR Code</li>
+						<li><span class="check-icon">✓</span> Vídeos em alta qualidade</li>
+						<li><span class="check-icon">✓</span> Materiais de apoio para download</li>
+						<li><span class="check-icon">✓</span> Acompanhamento do seu progresso</li>
+						<li><span class="check-icon">✓</span> Certificado digital com QR Code</li>
 					</ul>
+				</div>
+				<div class="learn-anywhere__image animate-fade" style="animation-delay: 0.2s;">
+					<img src="/images/devices-platform.png" alt="Plataforma de cursos acessível em computador, tablet e celular" />
 				</div>
 			</div>
 		</section>
@@ -482,7 +482,7 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 	/* Learn Anywhere Section */
 	.learn-anywhere {
 		padding: 100px 0;
-		background: var(--dark);
+		background: #ffffff;
 	}
 
 	.learn-anywhere__inner {
@@ -494,19 +494,18 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 
 	.learn-anywhere__image img {
 		width: 100%;
-		border-radius: 20px;
-		box-shadow: 0 30px 60px rgba(0,0,0,0.4);
 	}
 
 	.learn-anywhere__content h2 {
 		font-size: 2.5rem;
 		line-height: 1.2;
 		margin-bottom: 20px;
+		color: #0d1321;
 	}
 
 	.learn-anywhere__content p {
 		font-size: 1.05rem;
-		color: var(--text-muted);
+		color: #555555;
 		margin-bottom: 30px;
 	}
 
@@ -520,10 +519,15 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 
 	.learn-anywhere__list li {
 		font-size: 1.05rem;
-		color: rgba(255,255,255,0.85);
+		color: #333333;
 		display: flex;
 		align-items: center;
 		gap: 10px;
+	}
+
+	.check-icon {
+		color: var(--primary);
+		font-weight: bold;
 	}
 
 	/* Why Study Section */
