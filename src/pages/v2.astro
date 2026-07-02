@@ -180,6 +180,34 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 			</div>
 		</section>
 
+		<!-- ============ RECUPERAÇÃO DE AFOGADOS ============ -->
+		<section class="afogados-hero">
+			<div class="container afogados-hero__inner">
+				<div class="afogados-hero__visual animate-fade">
+					<img src="/images/salvamento-em-altura-construcao.png" alt="Curso Recuperação de Afogados na Prática" class="afogados-hero__img" />
+					<div class="glass-card afogados-hero__trust">
+						<div class="trust-icon">🏊</div>
+						<div class="trust-info">
+							<h4 style="color: var(--primary);">Acesso Imediato</h4>
+							<p>Conteúdo 100% Online</p>
+						</div>
+					</div>
+				</div>
+				<div class="afogados-hero__content animate-fade" style="animation-delay: 0.3s;">
+					<div class="badge-premium">
+						<span class="dot"></span>
+						Novo Curso
+					</div>
+					<h2>Recuperação de <span class="text-gradient">Afogados na Prática</span></h2>
+					<p>Aprenda as técnicas essenciais de resgate aquático e recuperação de afogados com um treinamento prático e baseado em protocolos internacionais.</p>
+					<div class="afogados-hero__actions">
+						<a href="https://academia-do-socorrista.vercel.app/recuperacao-de-afogados-na-pratica" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Quero me Inscrever</a>
+						<a href="https://academia-do-socorrista.vercel.app/recuperacao-de-afogados-na-pratica" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Conheça o Curso</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
 		<!-- ============ POR QUE ESCOLHER ============ -->
 		<section class="why-choose">
 			<div class="container why-choose__inner">
@@ -719,6 +747,65 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 	@keyframes float {
 		0%, 100% { transform: translateY(0); }
 		50% { transform: translateY(-20px); }
+	}
+
+	/* ===== RECUPERAÇÃO DE AFOGADOS ===== */
+	.afogados-hero {
+		padding: 120px 0;
+		background: linear-gradient(135deg, #0d1321 0%, #111b2e 50%, #0a0f1a 100%);
+		overflow: hidden;
+	}
+
+	.afogados-hero__inner {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 60px;
+		align-items: center;
+	}
+
+	.afogados-hero__content h2 {
+		font-size: 3.2rem;
+		line-height: 1.1;
+		margin-bottom: 25px;
+		font-weight: 800;
+	}
+
+	.afogados-hero__content p {
+		font-size: 1.15rem;
+		color: var(--text-muted);
+		margin-bottom: 40px;
+		max-width: 520px;
+	}
+
+	.afogados-hero__actions {
+		display: flex;
+		gap: 20px;
+		flex-wrap: wrap;
+	}
+
+	.afogados-hero__visual {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.afogados-hero__img {
+		width: 100%;
+		max-width: 380px;
+		border-radius: 24px;
+		filter: drop-shadow(0 30px 60px rgba(0,0,0,0.5));
+		animation: float 6s ease-in-out infinite;
+	}
+
+	.afogados-hero__trust {
+		position: absolute;
+		bottom: 20px;
+		right: -20px;
+		display: flex;
+		align-items: center;
+		gap: 15px;
+		padding: 16px 24px;
 	}
 
 	/* ===== POR QUE ESCOLHER ===== */
