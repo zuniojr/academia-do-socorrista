@@ -182,27 +182,19 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 
 		<!-- ============ RECUPERAÇÃO DE AFOGADOS ============ -->
 		<section class="afogados-hero">
-			<div class="container afogados-hero__inner">
-				<div class="afogados-hero__visual animate-fade">
-					<img src="/images/salvamento-em-altura-construcao.png" alt="Curso Recuperação de Afogados na Prática" class="afogados-hero__img" />
-					<div class="glass-card afogados-hero__trust">
-						<div class="trust-icon">🏊</div>
-						<div class="trust-info">
-							<h4 style="color: var(--primary);">Acesso Imediato</h4>
-							<p>Conteúdo 100% Online</p>
+			<div class="afogados-hero__bg animate-fade">
+				<div class="container">
+					<div class="afogados-hero__content">
+						<div class="badge-premium">
+							<span class="dot"></span>
+							Novo Curso
 						</div>
-					</div>
-				</div>
-				<div class="afogados-hero__content animate-fade" style="animation-delay: 0.3s;">
-					<div class="badge-premium">
-						<span class="dot"></span>
-						Novo Curso
-					</div>
-					<h2>Recuperação de <span class="text-gradient">Afogados na Prática</span></h2>
-					<p>Aprenda as técnicas essenciais de resgate aquático e recuperação de afogados com um treinamento prático e baseado em protocolos internacionais.</p>
-					<div class="afogados-hero__actions">
-						<a href="https://academia-do-socorrista.vercel.app/recuperacao-de-afogados-na-pratica" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Quero me Inscrever</a>
-						<a href="https://academia-do-socorrista.vercel.app/recuperacao-de-afogados-na-pratica" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Conheça o Curso</a>
+						<h2>Recuperação de <span class="text-gradient">Afogados na Prática</span></h2>
+						<p>Aprenda as técnicas essenciais de resgate aquático e recuperação de afogados com um treinamento prático e baseado em protocolos internacionais.</p>
+						<div class="afogados-hero__actions">
+							<a href="https://academia-do-socorrista.vercel.app/recuperacao-de-afogados-na-pratica" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Quero me Inscrever</a>
+							<a href="https://academia-do-socorrista.vercel.app/recuperacao-de-afogados-na-pratica" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Conheça o Curso</a>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -751,61 +743,67 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 
 	/* ===== RECUPERAÇÃO DE AFOGADOS ===== */
 	.afogados-hero {
-		padding: 120px 0;
-		background: linear-gradient(135deg, #0d1321 0%, #111b2e 50%, #0a0f1a 100%);
-		overflow: hidden;
+		padding: 0;
+		background: #0a0f1a;
 	}
 
-	.afogados-hero__inner {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 60px;
+	.afogados-hero__bg {
+		position: relative;
+		overflow: hidden;
+		background-color: #0a0f1a;
+		background-image: url('/images/hero-afogados.png');
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
+		min-height: 520px;
+		display: flex;
 		align-items: center;
+		width: 100%;
+	}
+
+	.afogados-hero__bg::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(to right, #0a0f1a 35%, rgba(10, 15, 26, 0.6) 55%, transparent 80%);
+		z-index: 1;
+	}
+
+	.afogados-hero__bg .container {
+		width: 100%;
+	}
+
+	.afogados-hero__content {
+		position: relative;
+		z-index: 2;
+		max-width: 580px;
+		padding: 80px 0;
+		text-align: left;
 	}
 
 	.afogados-hero__content h2 {
-		font-size: 3.2rem;
-		line-height: 1.1;
-		margin-bottom: 25px;
+		font-size: clamp(2rem, 3.8vw, 3.2rem);
+		line-height: 1.15;
+		margin-bottom: 20px;
 		font-weight: 800;
+		color: #ffffff;
 	}
 
 	.afogados-hero__content p {
-		font-size: 1.15rem;
-		color: var(--text-muted);
-		margin-bottom: 40px;
-		max-width: 520px;
+		font-size: 1.1rem;
+		color: #C8CDD7;
+		margin-bottom: 30px;
+		max-width: 500px;
 	}
 
 	.afogados-hero__actions {
 		display: flex;
 		gap: 20px;
 		flex-wrap: wrap;
-	}
-
-	.afogados-hero__visual {
-		position: relative;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.afogados-hero__img {
-		width: 100%;
-		max-width: 380px;
-		border-radius: 24px;
-		filter: drop-shadow(0 30px 60px rgba(0,0,0,0.5));
-		animation: float 6s ease-in-out infinite;
-	}
-
-	.afogados-hero__trust {
-		position: absolute;
-		bottom: 20px;
-		right: -20px;
-		display: flex;
-		align-items: center;
-		gap: 15px;
-		padding: 16px 24px;
+		justify-content: flex-start;
 	}
 
 	/* ===== POR QUE ESCOLHER ===== */
