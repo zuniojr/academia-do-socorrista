@@ -12,17 +12,16 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 	<main>
 		<!-- ============ HERO PRINCIPAL ============ -->
 		<section class="hero-main">
-			<div class="container hero-main__inner">
-				<div class="hero-main__content animate-fade">
-					<h1>Aprenda Atendimento <span class="text-gradient">Pré-Hospitalar</span> com quem vive o resgate todos os dias.</h1>
-					<p>Cursos online desenvolvidos por profissionais experientes para formar socorristas preparados para agir nas situações mais críticas.</p>
-					<div class="hero-main__actions">
-						<a href="#cursos" class="btn btn-primary">Conheça os Cursos →</a>
-						<a href="#consultoria" class="btn btn-outline-hero">Começar Agora →</a>
+			<div class="container">
+				<div class="hero-main__inner animate-fade">
+					<div class="hero-main__content">
+						<h1>Aprenda Atendimento <span class="text-red-hero">Pré-Hospitalar</span> com quem vive o resgate todos os dias.</h1>
+						<p>Cursos online desenvolvidos por profissionais experientes para formar socorristas preparados para agir nas situações mais críticas.</p>
+						<div class="hero-main__actions">
+							<a href="#cursos" class="btn btn-primary-hero">Conheça os Cursos <span class="arrow">&gt;</span></a>
+							<a href="#consultoria" class="btn btn-outline-hero">Começar Agora <span class="arrow">&gt;</span></a>
+						</div>
 					</div>
-				</div>
-				<div class="hero-main__image animate-fade" style="animation-delay: 0.3s;">
-					<img src="/images/paramedics-ambulance.png" alt="Socorristas atendendo paciente na ambulância" />
 				</div>
 			</div>
 			<div class="container">
@@ -282,23 +281,51 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 	}
 
 	.hero-main__inner {
-		display: grid;
-		grid-template-columns: 1.2fr 0.8fr;
-		gap: 60px;
-		align-items: stretch;
+		position: relative;
+		border-radius: 12px;
+		overflow: hidden;
+		background-image: url('/images/paramedics-ambulance.png');
+		background-size: cover;
+		background-position: center right;
+		min-height: 480px;
+		display: flex;
+		align-items: center;
 		margin-bottom: 50px;
 	}
 
+	.hero-main__inner::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(to right, #07111D 45%, rgba(7, 17, 29, 0.8) 60%, transparent 100%);
+		z-index: 1;
+	}
+
+	.hero-main__content {
+		position: relative;
+		z-index: 2;
+		width: 50%;
+		padding: 50px 30px 50px 40px;
+	}
+
 	.hero-main__content h1 {
-		font-size: 3.5rem;
+		font-size: clamp(2rem, 3.8vw, 3.5rem);
 		line-height: 1.1;
 		margin-bottom: 20px;
 		font-weight: 800;
+		color: #ffffff;
+	}
+
+	.text-red-hero {
+		color: #E53935;
 	}
 
 	.hero-main__content p {
 		font-size: 1.1rem;
-		color: var(--text-muted);
+		color: #C8CDD7;
 		margin-bottom: 30px;
 		max-width: 500px;
 	}
@@ -309,12 +336,11 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 		flex-wrap: wrap;
 	}
 
-	.btn-outline-hero {
-		background: transparent;
-		border: 2px solid rgba(255,255,255,0.2);
-		color: white;
+	.btn-primary-hero {
+		background-color: #D62828;
+		color: #ffffff;
 		padding: 14px 28px;
-		border-radius: 12px;
+		border-radius: 6px;
 		font-weight: 700;
 		font-size: 1rem;
 		cursor: pointer;
@@ -322,25 +348,36 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 		text-decoration: none;
 		display: inline-flex;
 		align-items: center;
-		gap: 8px;
+		gap: 12px;
+	}
+
+	.btn-primary-hero:hover {
+		background-color: #B71C1C;
+	}
+
+	.btn-outline-hero {
+		background: transparent;
+		border: 1px solid #41506B;
+		color: white;
+		padding: 14px 28px;
+		border-radius: 6px;
+		font-weight: 700;
+		font-size: 1rem;
+		cursor: pointer;
+		transition: all 0.3s;
+		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
 	}
 
 	.btn-outline-hero:hover {
-		background: rgba(255,255,255,0.1);
-		border-color: rgba(255,255,255,0.4);
+		background: rgba(255,255,255,0.05);
 	}
 
-	.hero-main__image {
-		display: flex;
-		align-items: stretch;
-	}
-
-	.hero-main__image img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		border-radius: 24px;
-		display: block;
+	.arrow {
+		font-weight: bold;
+		font-size: 1.1rem;
 	}
 
 	.hero-main__badges {
@@ -879,20 +916,22 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 
 	@media (max-width: 992px) {
 		.hero-main__inner {
-			grid-template-columns: 1fr;
+			background-position: center;
 			text-align: center;
+			justify-content: center;
+		}
+		.hero-main__inner::before {
+			background: rgba(7, 17, 29, 0.85);
+		}
+		.hero-main__content {
+			width: 100%;
+			padding: 40px 20px;
 		}
 		.hero-main__content p {
 			max-width: 100%;
 		}
 		.hero-main__actions {
 			justify-content: center;
-		}
-		.hero-main__image {
-			order: -1;
-		}
-		.hero-main__image img {
-			max-width: 350px;
 		}
 		.about-inner {
 			grid-template-columns: 1fr;
