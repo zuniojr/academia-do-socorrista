@@ -12,8 +12,8 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 	<main>
 		<!-- ============ HERO PRINCIPAL ============ -->
 		<section class="hero-main">
-			<div class="container">
-				<div class="hero-main__inner animate-fade">
+			<div class="hero-main__inner animate-fade">
+				<div class="container">
 					<div class="hero-main__content">
 						<h1>Aprenda Atendimento <span class="text-red-hero">Pré-Hospitalar</span> com quem vive o resgate todos os dias.</h1>
 						<p>Cursos online desenvolvidos por profissionais experientes para formar socorristas preparados para agir nas situações mais críticas.</p>
@@ -45,10 +45,6 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 					<div class="hero-main__badge">
 						<span class="hero-main__badge-icon">💳</span>
 						<span>Pagamento Facilitado</span>
-					</div>
-					<div class="hero-main__badge">
-						<span class="hero-main__badge-icon">👨‍🏫</span>
-						<span>Instrutores Certificados</span>
 					</div>
 				</div>
 			</div>
@@ -282,18 +278,17 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 
 	.hero-main__inner {
 		position: relative;
-		border-radius: 12px;
 		overflow: hidden;
 		background-color: #000000;
 		background-image: url('/images/paramedics-ambulance.png');
 		background-size: contain;
 		background-repeat: no-repeat;
 		background-position: right center;
-		min-height: 400px;
-		aspect-ratio: 3.1 / 1;
+		min-height: 550px;
 		display: flex;
 		align-items: center;
 		margin-bottom: 50px;
+		width: 100%;
 	}
 
 	.hero-main__inner::before {
@@ -303,20 +298,20 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background: linear-gradient(to right, #000000 35%, rgba(0, 0, 0, 0.7) 50%, transparent 75%);
+		background: linear-gradient(to right, #000000 40%, rgba(0, 0, 0, 0.6) 55%, transparent 75%);
 		z-index: 1;
 	}
 
 	.hero-main__content {
 		position: relative;
 		z-index: 2;
-		width: 50%;
-		padding: 50px 30px 50px 40px;
+		max-width: 600px;
+		padding: 60px 0;
 	}
 
 	.hero-main__content h1 {
 		font-size: clamp(2rem, 3.8vw, 3.5rem);
-		line-height: 1.1;
+		line-height: 1.15;
 		margin-bottom: 20px;
 		font-weight: 800;
 		color: #ffffff;
@@ -385,7 +380,7 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 
 	.hero-main__badges {
 		display: grid;
-		grid-template-columns: repeat(6, 1fr);
+		grid-template-columns: repeat(5, 1fr);
 		gap: 16px;
 		padding-top: 40px;
 		border-top: 1px solid rgba(255,255,255,0.08);
