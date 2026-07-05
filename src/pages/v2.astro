@@ -187,16 +187,6 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 						<a href="https://academia-do-socorrista.vercel.app/domine-o-controle-de-hemorragias" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Conheça o Curso</a>
 					</div>
 				</div>
-				<div class="domine-hero__visual animate-fade" style="animation-delay: 0.3s;">
-					<img src="/images/controle-de-hemorragia.png" alt="Plataforma Academia do Socorrista no celular" class="domine-hero__phone" />
-					<div class="glass-card domine-hero__trust">
-						<div class="trust-icon">⚕️</div>
-						<div class="trust-info">
-							<h4 style="color: var(--primary);">Acesso Imediato</h4>
-							<p>Conteúdo 100% Online</p>
-						</div>
-					</div>
-				</div>
 			</div>
 		</section>
 
@@ -612,16 +602,39 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 
 	/* ===== DOMINE O CONTROLE DE HEMORRAGIAS ===== */
 	.domine-hero {
-		padding: 120px 0;
-		background: linear-gradient(135deg, #0a0f1a 0%, #111b2e 50%, #0d1321 100%);
+		position: relative;
 		overflow: hidden;
+		background-color: #ffffff;
+		background-image: url('/images/controle-de-hemorragia-bg.png');
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: right center;
+		padding: 120px 0;
+	}
+
+	.domine-hero::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(to right, #ffffff 40%, rgba(255, 255, 255, 0.6) 60%, transparent 80%);
+		z-index: 1;
 	}
 
 	.domine-hero__inner {
+		position: relative;
+		z-index: 2;
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1.2fr 0.8fr;
 		gap: 60px;
 		align-items: center;
+	}
+
+	.domine-hero__content {
+		position: relative;
+		z-index: 2;
 	}
 
 	.domine-hero__content h2 {
@@ -629,21 +642,28 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 		line-height: 1.1;
 		margin-bottom: 25px;
 		font-weight: 800;
+		color: var(--dark);
+	}
+
+	.domine-hero .text-gradient {
+		background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
 	}
 
 	.domine-hero__content p {
 		font-size: 1.15rem;
-		color: var(--text-muted);
+		color: #334155;
 		margin-bottom: 40px;
 		max-width: 520px;
 	}
 
-	.badge-premium {
+	.domine-hero .badge-premium {
 		display: inline-flex;
 		align-items: center;
 		gap: 10px;
-		background: var(--glass);
-		border: 1px solid var(--glass-border);
+		background: rgba(0, 0, 0, 0.05);
+		border: 1px solid rgba(0, 0, 0, 0.1);
 		padding: 8px 20px;
 		border-radius: 100px;
 		color: var(--primary);
@@ -654,16 +674,16 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 		margin-bottom: 25px;
 	}
 
-	.dot {
+	.domine-hero .dot {
 		width: 8px;
 		height: 8px;
 		background: var(--primary);
 		border-radius: 50%;
 		box-shadow: 0 0 10px var(--primary);
-		animation: pulse 2s infinite;
+		animation: pulse-orange 2s infinite;
 	}
 
-	@keyframes pulse {
+	@keyframes pulse-orange {
 		0% { transform: scale(1); opacity: 1; }
 		50% { transform: scale(1.5); opacity: 0.5; }
 		100% { transform: scale(1); opacity: 1; }
@@ -675,10 +695,10 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 		flex-wrap: wrap;
 	}
 
-	.btn-outline {
+	.domine-hero .btn-outline {
 		background: transparent;
-		border: 2px solid var(--primary);
-		color: var(--primary);
+		border: 2px solid var(--dark);
+		color: var(--dark);
 		padding: 14px 28px;
 		border-radius: 12px;
 		font-weight: 700;
@@ -691,54 +711,9 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 		gap: 8px;
 	}
 
-	.btn-outline:hover {
-		background: var(--primary);
-		color: var(--dark);
-	}
-
-	.domine-hero__visual {
-		position: relative;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.domine-hero__phone {
-		width: 100%;
-		max-width: 380px;
-		border-radius: 24px;
-		filter: drop-shadow(0 30px 60px rgba(0,0,0,0.5));
-		animation: float 6s ease-in-out infinite;
-	}
-
-	.domine-hero__trust {
-		position: absolute;
-		bottom: 20px;
-		left: -20px;
-		display: flex;
-		align-items: center;
-		gap: 15px;
-		padding: 16px 24px;
-	}
-
-	.trust-icon {
-		font-size: 2rem;
-	}
-
-	.trust-info h4 {
-		font-size: 1rem;
-		margin-bottom: 2px;
-	}
-
-	.trust-info p {
-		font-size: 0.8rem;
-		color: var(--text-muted);
-		margin-bottom: 0;
-	}
-
-	@keyframes float {
-		0%, 100% { transform: translateY(0); }
-		50% { transform: translateY(-20px); }
+	.domine-hero .btn-outline:hover {
+		background: var(--dark);
+		color: #ffffff;
 	}
 
 	/* ===== RECUPERAÇÃO DE AFOGADOS ===== */
