@@ -1,0 +1,156 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "Cursos | Academia do Socorrista";
+const description = "Conheça nossos treinamentos completos: avaliação de cena, controle de hemorragias, manejo de vias aéreas e tratamento de choque.";
+
+const allServices = [
+  {
+    title: 'Avaliação de Cena e Segurança',
+    description: 'Protocolos rigorosos para garantir a integridade da equipe e das vítimas antes de qualquer intervenção médica de risco.',
+    features: ['Análise de riscos', 'Comunicação Tática', 'Isolamento da área', 'Triagem inicial'],
+    icon: '🛡️',
+    image: 'https://images.unsplash.com/photo-1583324113626-70df0f4deaab?q=80&w=800&auto=format&fit=crop'
+  },
+  {
+    title: 'Controle de Hemorragias',
+    description: 'Aprenda os mais recentes protocolos baseados no PHTLS e TCCC para controle agressivo de hemorragias massivas.',
+    features: ['Uso correto do torniquete', 'Preenchimento de feridas (Wound Packing)', 'Curativos compressivos', 'Hemostáticos'],
+    icon: '🩸',
+    image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=800&auto=format&fit=crop'
+  },
+  {
+    title: 'Manejo de Vias Aéreas',
+    description: 'Domine as técnicas fundamentais e avançadas para manutenção da via aérea fluida em pacientes traumatizados.',
+    features: ['Manobras manuais (Jaw Thrust)', 'Cânulas Orofaringeas e Nasofaringeas', 'Manejo com Supraglóticos', 'Identificação de trauma de face'],
+    icon: '🫁',
+    image: 'https://images.unsplash.com/photo-1516841273335-e39b37888115?q=80&w=800&auto=format&fit=crop'
+  },
+  {
+    title: 'Tratamento de Choque',
+    description: 'Treinamento intensivo na identificação e intervenção de quadros de choque hipovolêmico sistêmico.',
+    features: ['Identificação dos sinais vitais', 'Prevenção de Hipotermia', 'Reposicionamentos práticos', 'Estabilização contínua'],
+    icon: '⚕️',
+    image: 'https://images.unsplash.com/photo-1542884748-2b87b36c6b90?q=80&w=800&auto=format&fit=crop'
+  }
+];
+---
+
+<Layout title={title} description={description}>
+	<Header />
+	<main>
+		<section class="page-hero">
+			<div class="container animate-fade">
+				<span class="section-badge">Treinamento Especializado</span>
+				<h1>Nossos <span class="text-gradient">Cursos</span></h1>
+				<p>Adquira a maestria necessária para salvar vidas em cenários reais e críticos.</p>
+			</div>
+		</section>
+
+		<section class="services-detail">
+			<div class="container banners-container">
+				<a href="/domine-o-controle-de-hemorragias" class="curso-banner-link animate-fade" style="animation-delay: 0.1s;">
+					<img src="/cursos/hemorragias.png" alt="Domine o Controle de Hemorragias" />
+				</a>
+				<a href="https://api.whatsapp.com/send?phone=5547996372129&text=Quero%20saber%20mais%20sobre%20o%20curso%20de%20Recupera%C3%A7%C3%A3o%20de%20Afogados" target="_blank" rel="noopener noreferrer" class="curso-banner-link animate-fade" style="animation-delay: 0.2s;">
+					<img src="/cursos/afogados.png" alt="Recuperação de Afogados" />
+				</a>
+				<a href="/startportugal" target="_blank" rel="noopener noreferrer" class="curso-banner-link animate-fade" style="animation-delay: 0.3s;">
+					<img src="/cursos/guarda-vidas.png" alt="Guarda-Vidas em Portugal" />
+				</a>
+			</div>
+		</section>
+
+		<section class="cta-banner">
+			<div class="container">
+				<div class="glass-card animate-fade">
+					<h2>Pronto para assumir a linha de frente?</h2>
+					<p>Nenhum resgate bem sucedido é sorte. Torne-se um profissional essencial e altamente capacitado, conversando com nossa equipe.</p>
+					<a href="https://academia-do-socorrista.vercel.app/domine-o-controle-de-hemorragias" class="btn btn-outline">Conversar com a Equipe</a>
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	.page-hero {
+		padding: 160px 0 40px;
+		background: var(--dark-surface);
+		text-align: center;
+		border-bottom: 1px solid var(--glass-border);
+	}
+
+	.page-hero h1 {
+		font-size: 4rem;
+		margin-bottom: 20px;
+	}
+
+	.page-hero p {
+		font-size: 1.2rem;
+		color: var(--text-muted);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.services-detail {
+		padding: 40px 0 120px;
+	}
+
+	.banners-container {
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+		align-items: center;
+	}
+
+	.curso-banner-link {
+		display: block;
+		width: 100%;
+		max-width: 1000px;
+		border-radius: 20px;
+		overflow: hidden;
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.curso-banner-link img {
+		width: 100%;
+		height: auto;
+		display: block;
+		border-radius: 20px;
+	}
+
+	.curso-banner-link:hover {
+		transform: scale(1.02);
+		box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+	}
+
+	.cta-banner {
+		padding-bottom: 150px;
+	}
+
+	.cta-banner .glass-card {
+		padding: 80px 40px;
+		text-align: center;
+	}
+
+	.cta-banner h2 { font-size: 2.5rem; margin-bottom: 20px; }
+	.cta-banner p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 40px; max-width: 700px; margin-inline: auto; }
+
+	@media (max-width: 992px) {
+		.page-hero h1 { font-size: 3rem; }
+	}
+
+	@media (max-width: 768px) {
+		.page-hero h1 { font-size: 2rem; }
+		.cta-banner .glass-card {
+			padding: 40px 20px;
+		}
+		.cta-banner h2 {
+			font-size: 1.8rem;
+		}
+	}
+</style>
