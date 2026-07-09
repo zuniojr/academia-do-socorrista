@@ -19,10 +19,39 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 				<p class="description">ATENDA e faça o melhor para seu paciente com agilidade e<br>SEGURANÇA NA PRÁTICA.</p>
 				<p class="description">Conteúdo atualizado e aulas totalmente em vídeo.</p>
 				
-				<div class="video-container">
-					<!-- Vídeo original -->
-					<iframe width="100%" height="100%" src="https://www.youtube.com/embed/aVW01hpFb2M" title="Domine o controle de hemorragias" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-				</div>
+			<div class="video-container">
+				<div id="yt-player-hemorragias"></div>
+			</div>
+			<script>
+				var tag = document.createElement('script');
+				tag.src = "https://www.youtube.com/iframe_api";
+				var firstScriptTag = document.getElementsByTagName('script')[0];
+				firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+				var player;
+				window.onYouTubeIframeAPIReady = function() {
+					player = new YT.Player('yt-player-hemorragias', {
+						videoId: 'aVW01hpFb2M',
+						width: '100%',
+						height: '100%',
+						playerVars: {
+							'rel': 0,
+							'cc_load_policy': 0,
+							'cc_lang_pref': 'none'
+						},
+						events: {
+							'onReady': function(event) {
+								event.target.setOption('captions', 'track', {});
+							},
+							'onStateChange': function(event) {
+								if (event.data === YT.PlayerState.PLAYING) {
+									event.target.setOption('captions', 'track', {});
+								}
+							}
+						}
+					});
+				};
+			</script>
 
 				<div class="hero-alert">
 					Controle de Hemorragias: Conhecimento que salva.
@@ -508,6 +537,11 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 		border-radius: 8px;
 		overflow: hidden;
 		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+	}
+
+	.video-container #yt-player-hemorragias {
+		width: 100%;
+		height: 100%;
 	}
 
 	.hero-alert {
