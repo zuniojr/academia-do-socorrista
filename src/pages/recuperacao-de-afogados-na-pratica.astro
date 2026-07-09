@@ -559,6 +559,13 @@ const whatsappUrl = "https://api.whatsapp.com/send?phone=5547996372129&text=Tenh
 		var firstScriptTag = document.getElementsByTagName('script')[0];
 		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+		function disableCaptions(p) {
+			try {
+				p.setOption('captions', 'track', {});
+				p.unloadModule('captions');
+			} catch(e) {}
+		}
+
 		var player;
 		window.onYouTubeIframeAPIReady = function() {
 			player = new YT.Player('yt-player', {
@@ -570,11 +577,14 @@ const whatsappUrl = "https://api.whatsapp.com/send?phone=5547996372129&text=Tenh
 				},
 				events: {
 					'onReady': function(event) {
-						event.target.setOption('captions', 'track', {});
+						disableCaptions(event.target);
+					},
+					'onApiChange': function(event) {
+						disableCaptions(event.target);
 					},
 					'onStateChange': function(event) {
-						if (event.data === YT.PlayerState.PLAYING) {
-							event.target.setOption('captions', 'track', {});
+						if (event.data === YT.PlayerState.PLAYING || event.data === YT.PlayerState.BUFFERING) {
+							disableCaptions(event.target);
 						}
 					}
 				}

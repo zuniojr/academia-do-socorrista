@@ -28,6 +28,13 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 				var firstScriptTag = document.getElementsByTagName('script')[0];
 				firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+				function disableCaptions(p) {
+					try {
+						p.setOption('captions', 'track', {});
+						p.unloadModule('captions');
+					} catch(e) {}
+				}
+
 				var player;
 				window.onYouTubeIframeAPIReady = function() {
 					player = new YT.Player('yt-player-hemorragias', {
@@ -41,11 +48,14 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 						},
 						events: {
 							'onReady': function(event) {
-								event.target.setOption('captions', 'track', {});
+								disableCaptions(event.target);
+							},
+							'onApiChange': function(event) {
+								disableCaptions(event.target);
 							},
 							'onStateChange': function(event) {
-								if (event.data === YT.PlayerState.PLAYING) {
-									event.target.setOption('captions', 'track', {});
+								if (event.data === YT.PlayerState.PLAYING || event.data === YT.PlayerState.BUFFERING) {
+									disableCaptions(event.target);
 								}
 							}
 						}
