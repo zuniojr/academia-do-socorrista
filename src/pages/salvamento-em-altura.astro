@@ -1,266 +1,485 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-
 const title = "Salvamento em Altura | Academia do Socorrista";
-const description = "Lista de espera para o curso de Salvamento em Altura. Torne-se um socorrista capacitado.";
+const description = "Torne-se um especialista em salvamento em altura e acesso por cordas. Treinamento completo com as principais técnicas de resgate.";
 ---
 
-<Layout title={title} description={description}>
-	<Header />
-	
-	<main>
-		<!-- HERO BANNER -->
-		<section class="hero">
-			<div class="hero-banner">
-				<img src="/images/salvamento-em-altura-construcao.png" alt="Curso de Salvamento em Altura - Em Construção" />
-			</div>
-		</section>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{title}</title>
+	<meta name="description" content={description}>
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+	<style>
+		* { margin: 0; padding: 0; box-sizing: border-box; }
 
-		<!-- FORM SECTION -->
-		<section class="form-section">
-			<h2>Entre para a lista de espera do Salvamento em Altura</h2>
-			<p class="subtitle">Cadastre o seu melhor email para ser avisado da próxima turma!</p>
-
-			<form id="waitlist-form" class="signup-form">
-				<input type="text" id="field-name" name="name" placeholder="Seu primeiro nome" required />
-				<input type="email" id="field-email" name="email" placeholder="Digite seu melhor e-mail" required />
-				<input type="tel" id="field-phone" name="phone" placeholder="(DDD) + Número do Whatsapp" required />
-				<button type="submit" id="btn-submit" class="btn-submit">INSCREVER-SE <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></button>
-			</form>
-
-			<div id="form-success" style="display:none; max-width:600px; margin:20px auto 0; background: rgba(0,180,80,0.12); border:1px solid rgba(0,200,80,0.4); border-radius:8px; padding:20px; text-align:center;">
-				<p style="color:#4ade80; font-weight:700; font-size:1.1rem;">✅ Inscrição realizada com sucesso!</p>
-				<p style="color:#a0b4c8; font-size:0.95rem; margin-top:8px;">Você será avisado assim que a turma abrir. Fique de olho no seu e-mail!</p>
-			</div>
-
-			<div id="form-error" style="display:none; max-width:600px; margin:20px auto 0; background: rgba(220,50,50,0.12); border:1px solid rgba(220,50,50,0.4); border-radius:8px; padding:20px; text-align:center;">
-				<p style="color:#f87171; font-weight:700; font-size:1rem;">❌ Ocorreu um erro. Tente novamente.</p>
-			</div>
-
-			<p class="lgpd-text">De acordo com as Leis 12.965/2014 e 13.709/2018, que regulam o uso da Internet e o tratamento de dados pessoais no Brasil, autorizo enviar notificações por e-mail ou outros meios e concordo com sua Política de Privacidade.</p>
-		</section>
-
-		<!-- ABOUT SECTION -->
-		<section class="about-section">
-			<div class="about-content">
-				<h2>O que é o SALVAMENTO EM ALTURA</h2>
-				<p>O SALVAMENTO EM ALTURA é um treinamento que vai ensinar <strong>TUDO</strong> o que você precisa para atuar em situações críticas e de difícil acesso.</p>
-				<p>Seja muito bem-vindo ao treinamento completo e personalizado, adaptado às normas e exigências atuais para socorristas de elite.</p>
-				<p>Nossos instrutores têm vasta experiência, garantindo que você esteja totalmente preparado para realizar resgates com segurança e eficiência.</p>
-			</div>
-		</section>
-
-		<!-- CTA SECTION -->
-		<section class="cta-banner">
-			<div class="container">
-				<div class="glass-card animate-fade">
-					<h2>Pronto para assumir a linha de frente?</h2>
-					<p>Nenhum resgate bem sucedido é sorte. Torne-se um profissional essencial e altamente capacitado, conversando com nossa equipe.</p>
-					<a href="https://academia-do-socorrista.vercel.app/domine-o-controle-de-hemorragias" class="btn btn-outline">Conversar com a Equipe</a>
-				</div>
-			</div>
-		</section>
-	</main>
-
-	<Footer />
-</Layout>
-
-<style>
-	/* Custom styles for this page */
-	.hero {
-		background: #ffffff; /* White background */
-		text-align: center;
-		padding: 120px 20px 50px;
-	}
-
-	.hero-banner {
-		max-width: 1000px;
-		margin: 0 auto;
-		border-radius: 12px;
-		overflow: hidden;
-		box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-	}
-
-	.hero-banner img {
-		width: 100%;
-		height: auto;
-		display: block;
-	}
-
-	.form-section {
-		background: #0f172a; /* Slate 900 */
-		padding: 70px 20px;
-		text-align: center;
-		color: #ffffff;
-	}
-
-	.form-section h2 {
-		font-size: clamp(1.8rem, 4vw, 2.5rem);
-		font-weight: 900;
-		margin-bottom: 15px;
-		line-height: 1.2;
-	}
-
-	.form-section .subtitle {
-		font-size: clamp(1rem, 2.5vw, 1.2rem);
-		font-weight: 500;
-		margin-bottom: 40px;
-		color: #cbd5e1;
-	}
-
-	.signup-form {
-		max-width: 600px;
-		margin: 0 auto;
-	}
-
-	.signup-form input {
-		width: 100%;
-		padding: 16px 20px;
-		margin-bottom: 15px;
-		border: 1px solid rgba(255,255,255,0.15);
-		border-radius: 6px;
-		background: #ffffff;
-		font-size: 1rem;
-		color: #333;
-		outline: none;
-		transition: border-color 0.3s;
-	}
-
-	.signup-form input::placeholder {
-		color: #94a3b8;
-	}
-
-	.signup-form input:focus {
-		border-color: #f5a623;
-		box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.2);
-	}
-
-	.btn-submit {
-		width: 100%;
-		padding: 18px;
-		background: #f5a623;
-		color: #000;
-		font-size: 1.1rem;
-		font-weight: 800;
-		border: none;
-		border-radius: 6px;
-		cursor: pointer;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		transition: background 0.3s, transform 0.2s;
-	}
-
-	.btn-submit:hover {
-		background: #d98620;
-		transform: translateY(-2px);
-	}
-
-	.lgpd-text {
-		font-size: 0.75rem;
-		color: #f5a623;
-		margin-top: 20px;
-		line-height: 1.6;
-		max-width: 800px;
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	/* ABOUT SECTION */
-	.about-section {
-		background: #e2e8f0;
-		padding: 80px 20px;
-		color: #0f172a;
-		text-align: center;
-	}
-
-	.about-content {
-		max-width: 900px;
-		margin: 0 auto;
-	}
-
-	.about-section h2 {
-		font-size: clamp(1.8rem, 4vw, 2.5rem);
-		font-weight: 900;
-		margin-bottom: 35px;
-		text-transform: uppercase;
-	}
-
-	.about-section p {
-		font-size: 1.1rem;
-		line-height: 1.8;
-		margin-bottom: 20px;
-		color: #334155;
-	}
-
-	.about-section p strong {
-		color: #0f172a;
-	}
-
-	/* CTA SECTION */
-	.cta-banner {
-		padding-top: 100px;
-		padding-bottom: 150px;
-	}
-
-	.cta-banner .glass-card {
-		padding: 80px 40px;
-		text-align: center;
-	}
-
-	.cta-banner h2 { font-size: 2.5rem; margin-bottom: 20px; }
-	.cta-banner p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 40px; max-width: 700px; margin-inline: auto; }
-
-	@media (max-width: 768px) {
-		.hero {
-			padding: 80px 15px 30px;
+		:root {
+			--dark: #0d1b2a;
+			--dark-2: #1b2838;
+			--dark-3: #152238;
+			--orange: #F5A623;
+			--orange-dark: #d98620;
+			--neon-green: #c8e600;
+			--white: #FFFFFF;
+			--muted: #a0b4c8;
+			--light-bg: #e8ecf1;
 		}
-		.cta-banner {
-			padding-top: 60px;
-			padding-bottom: 80px;
+
+		body {
+			font-family: 'Montserrat', sans-serif;
+			background-color: var(--dark);
+			color: var(--white);
 		}
-		.cta-banner .glass-card {
+
+		/* ─── TOP BANNER ──────────────────────────────── */
+		.top-banner {
+			background: var(--neon-green);
+			text-align: center;
+			padding: 12px 20px;
+		}
+
+		.top-banner p {
+			font-size: 1.3rem;
+			font-weight: 800;
+			color: #000;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+		}
+
+		/* ─── LOGO SECTION ────────────────────────────── */
+		.logo-section {
+			background: var(--white);
+			text-align: center;
 			padding: 40px 20px;
 		}
-		.cta-banner h2 {
-			font-size: 1.8rem;
+
+		.logo-section img {
+			max-width: 320px;
+			width: 100%;
+			height: auto;
 		}
-	}
-</style>
 
-<script is:inline>
-	document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
-		e.preventDefault();
-
-		var btn = document.getElementById('btn-submit');
-		btn.textContent = 'Enviando...';
-		btn.disabled = true;
-
-		var payload = {
-			nome: document.getElementById('field-name').value,
-			email: document.getElementById('field-email').value,
-			telefone: document.getElementById('field-phone').value,
-			aba: 'lista espera Altura'
-		};
-
-		try {
-			await fetch('https://script.google.com/macros/s/AKfycbwa_hnBR5cnUuSvm3gagIpBztQx4MAfHYXqIIAcjYh3Hmk9H5zkqtMILBQPB7O9ziKi/exec', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(payload),
-				mode: 'no-cors'
-			});
-
-			document.getElementById('waitlist-form').style.display = 'none';
-			document.getElementById('form-success').style.display = 'block';
-			document.getElementById('form-error').style.display = 'none';
-
-		} catch (err) {
-			document.getElementById('form-error').style.display = 'block';
-			btn.innerHTML = 'INSCREVER-SE <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>';
-			btn.disabled = false;
+		/* ─── HERO ────────────────────────────────────── */
+		.hero {
+			background: var(--dark);
+			text-align: center;
+			padding: 50px 20px 0;
 		}
-	});
 
-</script>
+		.hero-banner {
+			max-width: 800px;
+			margin: 0 auto;
+			border-radius: 12px;
+			overflow: hidden;
+			box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+		}
+
+		.hero-banner img {
+			width: 100%;
+			height: auto;
+			display: block;
+		}
+
+		/* ─── FORM SECTION ────────────────────────────── */
+		.form-section {
+			background: var(--dark);
+			padding: 50px 20px 30px;
+			text-align: center;
+		}
+
+		.form-section h2 {
+			font-size: clamp(1.5rem, 4vw, 2.5rem);
+			font-weight: 900;
+			margin-bottom: 15px;
+			line-height: 1.2;
+		}
+
+		.form-section .subtitle {
+			font-size: clamp(1rem, 2.5vw, 1.3rem);
+			font-weight: 700;
+			margin-bottom: 30px;
+			color: var(--white);
+		}
+
+		.signup-form {
+			max-width: 600px;
+			margin: 0 auto;
+		}
+
+		.signup-form input {
+			width: 100%;
+			padding: 16px 20px;
+			margin-bottom: 12px;
+			border: 1px solid rgba(255,255,255,0.15);
+			border-radius: 6px;
+			background: var(--white);
+			font-family: 'Montserrat', sans-serif;
+			font-size: 1rem;
+			color: #333;
+			outline: none;
+			transition: border-color 0.3s;
+		}
+
+		.signup-form input::placeholder {
+			color: #999;
+		}
+
+		.signup-form input:focus {
+			border-color: var(--orange);
+			box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.2);
+		}
+
+		.btn-submit {
+			width: 100%;
+			padding: 18px;
+			background: var(--orange);
+			color: #000;
+			font-family: 'Montserrat', sans-serif;
+			font-size: 1.1rem;
+			font-weight: 800;
+			border: none;
+			border-radius: 6px;
+			cursor: pointer;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			transition: background 0.3s, transform 0.2s;
+			box-shadow: 0 6px 20px rgba(245, 166, 35, 0.3);
+		}
+
+		.btn-submit:hover {
+			background: var(--orange-dark);
+			transform: translateY(-2px);
+		}
+
+		.lgpd-text {
+			font-size: 0.75rem;
+			color: var(--orange);
+			margin-top: 15px;
+			line-height: 1.6;
+			max-width: 800px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		/* ─── WHAT IS SECTION ─────────────────────────── */
+		.about-section {
+			background: var(--light-bg);
+			padding: 70px 20px;
+		}
+
+		.about-content {
+			max-width: 900px;
+			margin: 0 auto;
+		}
+
+		.about-section h2 {
+			font-size: clamp(1.5rem, 4vw, 2.5rem);
+			font-weight: 900;
+			color: #1a1a1a;
+			text-align: center;
+			margin-bottom: 35px;
+		}
+
+		.about-section p {
+			color: #3a3a3a;
+			font-size: 1.05rem;
+			line-height: 1.9;
+			margin-bottom: 20px;
+		}
+
+		.about-section p strong {
+			color: #000;
+		}
+
+		/* ─── GUIDES SECTION ──────────────────────────── */
+		.guides-section {
+			background: var(--light-bg);
+			padding: 20px 20px 70px;
+		}
+
+		.guides-section h2 {
+			font-size: clamp(1.5rem, 4vw, 2.8rem);
+			font-weight: 900;
+			color: #1a1a1a;
+			text-align: center;
+			margin-bottom: 50px;
+			text-transform: uppercase;
+		}
+
+		.guides-grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 50px;
+			max-width: 1100px;
+			margin: 0 auto;
+		}
+
+		.guide-card {
+			text-align: center;
+		}
+
+		.guide-photo {
+			width: 100%;
+			max-width: 400px;
+			aspect-ratio: 1;
+			object-fit: cover;
+			border-radius: 16px;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+			margin-bottom: 20px;
+		}
+
+		.guide-card h3 {
+			font-size: 1.5rem;
+			font-weight: 800;
+			color: #1a1a1a;
+			margin-bottom: 20px;
+		}
+
+		.guide-card p {
+			color: #444;
+			font-size: 0.95rem;
+			line-height: 1.8;
+			margin-bottom: 15px;
+			text-align: left;
+		}
+
+		/* ─── DISCLAIMER ──────────────────────────────── */
+		.disclaimer {
+			background: #455a64;
+			padding: 25px 20px;
+			text-align: center;
+		}
+
+		.disclaimer p {
+			font-size: 0.8rem;
+			color: rgba(255,255,255,0.8);
+			max-width: 900px;
+			margin: 0 auto;
+			line-height: 1.7;
+		}
+
+		/* ─── FOOTER ──────────────────────────────────── */
+		.footer {
+			background: var(--dark-3);
+			padding: 50px 20px 30px;
+			text-align: center;
+		}
+
+		.social-icons {
+			display: flex;
+			justify-content: center;
+			gap: 20px;
+			margin-bottom: 30px;
+		}
+
+		.social-icons a {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			background: rgba(255,255,255,0.08);
+			color: var(--white);
+			font-size: 1.3rem;
+			text-decoration: none;
+			transition: background 0.3s, transform 0.3s;
+		}
+
+		.social-icons a:hover {
+			background: var(--orange);
+			color: #000;
+			transform: translateY(-3px);
+		}
+
+		.footer-links {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: 8px 25px;
+			margin-bottom: 25px;
+		}
+
+		.footer-links a {
+			color: var(--muted);
+			text-decoration: none;
+			font-size: 0.85rem;
+			transition: color 0.3s;
+		}
+
+		.footer-links a:hover {
+			color: var(--orange);
+		}
+
+		.footer-copy {
+			font-size: 0.8rem;
+			color: rgba(255,255,255,0.5);
+		}
+
+		/* ─── RESPONSIVE ──────────────────────────────── */
+		@media (max-width: 768px) {
+			.guides-grid {
+				grid-template-columns: 1fr;
+				gap: 40px;
+			}
+
+			.guide-photo {
+				max-width: 300px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			.top-banner p {
+				font-size: 1rem;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<!-- TOP BANNER -->
+	<div class="top-banner">
+		<p>OFERTA ENCERRADA</p>
+	</div>
+
+	<!-- LOGO SECTION -->
+	<div class="logo-section">
+		<img src="/images/logo-start-portugal.jpg" alt="Start Portugal - Viagem, Trabalho e Curtição" />
+	</div>
+
+	<!-- HERO BANNER -->
+	<section class="hero">
+		<div class="hero-banner">
+			<img src="/images/Salvamento-em-altura.jpg" alt="Treinamento de Salvamento em Altura e Resgate em Cordas" />
+		</div>
+	</section>
+
+	<!-- FORM SECTION -->
+	<section class="form-section">
+		<h2>Entre para a lista de espera do curso de Salvamento em Altura</h2>
+		<p class="subtitle">Cadastre o seu melhor e-mail para ser avisado da próxima turma!</p>
+
+		<form id="waitlist-form" class="signup-form">
+			<input type="text" id="field-name" name="name" placeholder="Seu primeiro nome" required />
+			<input type="email" id="field-email" name="email" placeholder="Digite seu melhor e-mail" required />
+			<input type="tel" id="field-phone" name="phone" placeholder="(DDD) + Número do Whatsapp" required />
+			<button type="submit" id="btn-submit" class="btn-submit">INSCREVER-SE ✈</button>
+		</form>
+
+		<div id="form-success" style="display:none; max-width:600px; margin:20px auto 0; background: rgba(0,180,80,0.12); border:1px solid rgba(0,200,80,0.4); border-radius:8px; padding:20px; text-align:center;">
+			<p style="color:#4ade80; font-weight:700; font-size:1.1rem;">✅ Inscrição realizada com sucesso!</p>
+			<p style="color:#a0b4c8; font-size:0.95rem; margin-top:8px;">Você será avisado assim que uma nova turma abrir. Fique de olho no seu e-mail!</p>
+		</div>
+
+		<div id="form-error" style="display:none; max-width:600px; margin:20px auto 0; background: rgba(220,50,50,0.12); border:1px solid rgba(220,50,50,0.4); border-radius:8px; padding:20px; text-align:center;">
+			<p style="color:#f87171; font-weight:700; font-size:1rem;">❌ Ocorreu um erro. Tente novamente ou entre em contato pelo WhatsApp.</p>
+		</div>
+
+		<p class="lgpd-text">De acordo com as Leis 12.965/2014 e 13.709/2018, que regulam o uso da Internet e o tratamento de dados pessoais no Brasil, autorizo enviar notificações por e-mail ou outros meios e concordo com sua Política de Privacidade.</p>
+	</section>
+
+	<script is:inline>
+		document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
+			e.preventDefault();
+
+			var btn = document.getElementById('btn-submit');
+			btn.textContent = 'Enviando...';
+			btn.disabled = true;
+
+			var payload = {
+				nome: document.getElementById('field-name').value,
+				email: document.getElementById('field-email').value,
+				telefone: document.getElementById('field-phone').value
+			};
+
+			try {
+				await fetch('https://script.google.com/macros/s/AKfycbwUkzOL8srj3iOS8E4eT5CvtahLQ5ogw00bAZbk626MO3jSqrNg8VCjC11MVHPqVTy8/exec', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(payload),
+					mode: 'no-cors'
+				});
+
+				document.getElementById('waitlist-form').style.display = 'none';
+				document.getElementById('form-success').style.display = 'block';
+				document.getElementById('form-error').style.display = 'none';
+
+			} catch (err) {
+				document.getElementById('form-error').style.display = 'block';
+				btn.textContent = 'INSCREVER-SE ✈';
+				btn.disabled = false;
+			}
+		});
+	</script>
+
+	<!-- ABOUT SECTION -->
+	<section class="about-section">
+		<div class="about-content">
+			<h2>O que é o curso de Salvamento em Altura</h2>
+			<p>O curso de Salvamento em Altura é um treinamento completo focado nas técnicas essenciais de resgate, nós, amarrações, ancoragens e acesso por corda.</p>
+			<p>Seja muito bem-vindo a este treinamento prático projetado tanto para profissionais de resgate quanto para quem deseja dominar as principais diretrizes de segurança física em altura.</p>
+			<p>Nossos instrutores possuem anos de experiência operacional, garantindo que você esteja totalmente capacitado para agir com rapidez e precisão.</p>
+		</div>
+	</section>
+
+	<!-- GUIDES SECTION -->
+	<section class="guides-section">
+		<h2>Quem São os Guias</h2>
+		<div class="guides-grid">
+			<div class="guide-card">
+				<img class="guide-photo" src="/images/lucas.jpg" alt="Lucas Da Rocha" />
+				<h3>Lucas Da Rocha</h3>
+				<p>Assim como você, eu comecei do zero, mas hoje sou guarda-vidas no Brasil e em Portugal. Digo isso para lembrar que já passei por muitos perrengues por não ter certeza de estar fazendo o processo correto. Lembro-me das noites em que ficava acordado, preocupado com os próximos passos, e das vezes em que quase desisti por não saber se estava no caminho certo. No entanto, cada desafio me tornou mais forte e mais determinado a alcançar meus objetivos.</p>
+				<p>Vamos começar uma jornada juntos e a boa notícia é que você não precisa se arriscar para saber se vai dar certo. Estou aqui para compartilhar minhas experiências e guiá-lo por cada etapa do processo. Você precisa apenas seguir os passos de quem já percorreu o caminho. Juntos, podemos transformar sua paixão em uma carreira de sucesso, evitando os erros que eu cometi e aproveitando ao máximo cada oportunidade.</p>
+				<p>Eu entendo as suas dúvidas e inseguranças, pois já estive no seu lugar. Mas confie em mim, com dedicação e orientação correta, tudo é possível. Estou aqui para garantir que você alcance seus sonhos de forma segura e eficiente.</p>
+			</div>
+
+			<div class="guide-card">
+				<img class="guide-photo" src="/images/braga.jpg" alt="Helber Braga" />
+				<h3>Helber Braga</h3>
+				<p>Sou apaixonado por salvamento aquático e atendimento pré-hospitalar.</p>
+				<p>Sempre fui fascinado pelo mar e pela forma como podemos ajudar pessoas em situações de emergência. Isso me levou a me especializar em salvamento aquático, uma área que considero crucial e muitas vezes subestimada.</p>
+				<p>Acredito firmemente que muitos afogamentos podem ser evitados com as técnicas e os conhecimentos certos. É por isso que dedico tanto tempo e esforço para me aperfeiçoar e ensinar o que sei a outros. Meu maior objetivo é contribuir para a diminuição de mortes por afogamento. Cada vida salva é uma vitória, e é isso que me motiva todos os dias.</p>
+				<p>Trabalhar como guarda-vidas não é apenas uma profissão para mim, é uma missão. Eu me empenho em educar as pessoas sobre os perigos do mar e a importância de respeitar suas forças. Ver alguém ser resgatado com sucesso e saber que fiz parte dessa história é uma sensação indescritível.</p>
+				<p>Quero continuar fazendo a diferença e, ao mesmo tempo, inspirar outras pessoas a se juntarem a essa causa. A prevenção é a chave, e acredito que, com educação e treinamento adequados, podemos salvar muitas vidas.</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- DISCLAIMER -->
+	<div class="disclaimer">
+		<p>Nem os meus resultados, nem de alunos ou mentorados são típicos. Tudo é fruto de muita dedicação e esforço. Ou seja: este programa não garante a obtenção de resultados. O quão rápido e o quão longe você poderá chegar só e somente você poderá dizer. Este site não é afiliado do Facebook e nem Google. Facebook e Google são marcas registradas com todos os direitos reservados.</p>
+	</div>
+
+	<!-- FOOTER -->
+	<footer class="footer">
+		<div class="social-icons">
+			<a href="https://api.whatsapp.com/send?phone=5547996372129" target="_blank" rel="noopener" aria-label="WhatsApp">
+				<i class="fab fa-whatsapp"></i>
+			</a>
+			<a href="https://www.instagram.com/academiadosocorrista/" target="_blank" rel="noopener" aria-label="Instagram">
+				<i class="fab fa-instagram"></i>
+			</a>
+			<a href="https://www.facebook.com/academiadosocorrista" target="_blank" rel="noopener" aria-label="Facebook">
+				<i class="fab fa-facebook-f"></i>
+			</a>
+			<a href="https://www.youtube.com/@AcademiadoSocorrista" target="_blank" rel="noopener" aria-label="YouTube">
+				<i class="fab fa-youtube"></i>
+			</a>
+		</div>
+
+		<div class="footer-links">
+			<a href="/termos-de-uso">Termos de Uso</a>
+			<a href="/consideracoes-importantes">Considerações Importantes</a>
+			<a href="/politica-de-privacidade">Política de Privacidade</a>
+			<a href="/trabalhe-conosco">Trabalhe Conosco</a>
+			<a href="/contato">Contato</a>
+		</div>
+
+		<p class="footer-copy">© 2025, Academia do Socorrista. Todos os direitos reservados.</p>
+	</footer>
+</body>
+</html>
