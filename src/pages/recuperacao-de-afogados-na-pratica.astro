@@ -83,6 +83,11 @@ const whatsappUrl = "https://api.whatsapp.com/send?phone=5547996372129&text=Tenh
 			border: none;
 		}
 
+		.video-wrapper #yt-player {
+			width: 100%;
+			height: 100%;
+		}
+
 		/* ─── CTA BAND ──────────────────────────────────── */
 		.cta-band {
 			background: var(--dark-2);
@@ -546,12 +551,36 @@ const whatsappUrl = "https://api.whatsapp.com/send?phone=5547996372129&text=Tenh
 	<h1>RECUPERAÇÃO<br>DE AFOGADOS<br>NA PRÁTICA</h1>
 	<p class="hero-subtitle">A vítima está fora da água. Mas será que ela está realmente salva?</p>
 	<div class="video-wrapper">
-		<iframe 
-			src="https://www.youtube.com/embed/Y899_4FUS-U?cc_load_policy=0&rel=0" 
-			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-			allowfullscreen>
-		</iframe>
+		<div id="yt-player"></div>
 	</div>
+	<script>
+		var tag = document.createElement('script');
+		tag.src = "https://www.youtube.com/iframe_api";
+		var firstScriptTag = document.getElementsByTagName('script')[0];
+		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+		var player;
+		window.onYouTubeIframeAPIReady = function() {
+			player = new YT.Player('yt-player', {
+				videoId: 'Y899_4FUS-U',
+				playerVars: {
+					'rel': 0,
+					'cc_load_policy': 0,
+					'cc_lang_pref': 'none'
+				},
+				events: {
+					'onReady': function(event) {
+						event.target.setOption('captions', 'track', {});
+					},
+					'onStateChange': function(event) {
+						if (event.data === YT.PlayerState.PLAYING) {
+							event.target.setOption('captions', 'track', {});
+						}
+					}
+				}
+			});
+		};
+	</script>
 </section>
 
 <!-- ─── CTA 1 ─────────────────────────────────────────── -->
