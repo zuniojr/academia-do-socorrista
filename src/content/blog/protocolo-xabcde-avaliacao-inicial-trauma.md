@@ -2,7 +2,7 @@
 title: "Protocolo XABCDE: A Sequência de Avaliação Inicial do Trauma"
 description: "Entenda o protocolo XABCDE segundo o PHTLS, a regra de ouro para a avaliação sistemática do paciente de trauma no atendimento pré-hospitalar (APH)."
 pubDate: "2024-08-18"
-heroImage: "/blog/Protocolo-XABCDE.png"
+heroImage: "/blog/protocolo-xabcde.png"
 ---
 
 No caos de uma cena de trauma, onde o tempo é o recurso mais escasso, a ordem de tratamento é o que diferencia o socorrista comum do socorrista de elite. O protocolo XABCDE, consolidado pelo PHTLS (*Prehospital Trauma Life Support*), é a sequência sistemática que garante que as maiores ameaças à vida sejam tratadas primeiro.
