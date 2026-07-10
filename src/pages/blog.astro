@@ -33,7 +33,6 @@ const posts = (await getCollection('blog')).sort(
 								<span class="category-badge">Emergência</span>
 							</div>
 							<div class="post-content">
-								<span class="post-date">{post.data.pubDate.toLocaleDateString('pt-BR')}</span>
 								<h3><a href={`/blog/${post.slug}/`}>{post.data.title}</a></h3>
 								<p>{post.data.description}</p>
 								<a href={`/blog/${post.slug}/`} class="read-more">Ler Artigo Completo →</a>
@@ -124,12 +123,6 @@ const posts = (await getCollection('blog')).sort(
 		padding: 30px;
 	}
 
-	.post-date {
-		font-size: 0.85rem;
-		color: var(--text-muted);
-		margin-bottom: 15px;
-		display: block;
-	}
 
 	.post-content h3 {
 		font-size: 1.4rem;
