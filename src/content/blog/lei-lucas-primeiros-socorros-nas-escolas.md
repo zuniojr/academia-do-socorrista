@@ -68,9 +68,8 @@ A **Academia do Socorrista** oferece treinamentos de primeiros socorros desenvol
 
 ---
 
-## Conclusão: Cumprir a Lei é o Mínimo. Salvar Vidas é o Objetivo.
+## Cumprir a Lei é o Mínimo. Salvar Vidas é o Objetivo.
 
 A Lei Lucas existe porque uma criança perdeu a vida em um momento em que alguém por perto poderia ter agido — e não sabia como. Cumprir essa lei não é burocracia: é um compromisso real com a vida de cada aluno que entra na sua escola todos os dias.
 
 **Não espere a tragédia acontecer.** Entre em contato com a Academia do Socorrista e capacite sua equipe para agir quando mais importa.
-
