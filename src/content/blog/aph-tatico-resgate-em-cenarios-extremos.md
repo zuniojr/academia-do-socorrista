@@ -30,3 +30,4 @@ No ambiente tático, as causas de morte evitáveis são tratadas na ordem de let
 O treinamento tático prepara o profissional para operar sob o "efeito túnel" e o estresse extremo. Não se trata apenas de saber aplicar um curativo, mas de decidir **quando** aplicá-lo com segurança. Instituições policiais, equipes de operações especiais e socorristas de elite buscam na Academia do Socorrista a excelência técnica necessária para garantir que ninguém seja deixado para trás.
 
 Se você busca elevar seu nível de prontidão para cenários onde a vida depende de segundos e decisões estratégicas, o APH Tático é o seu próximo passo. Na Academia do Socorrista, treinamos para o pior cenário, para que você seja o melhor profissional.
+

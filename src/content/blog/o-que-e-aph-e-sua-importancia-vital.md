@@ -31,3 +31,4 @@ Um socorrista precisa reunir conhecimento teórico atualizado com frieza tática
 A disseminação de protocolos eficientes e fundamentados em ciência comprovada é a revolução vigente no APH moderno. Tecnologias como treinamento em estabilização tática, manejo de Via Aérea com dispositivos extraglóticos, e adoção civil do uso de torniquetes mudaram a cara do resgate no mundo.
 
 Investir na formação em APH é se munir de responsabilidade cívica e capacidade real de operar mudanças quando caos assumir o controle. A Academia do Socorrista orgulha-se de fornecer o treinamento de excelência que formará os heróis fardados (ou não) que atuarão nesses primeiros e mais preciosos minutos de uma emergência.
+

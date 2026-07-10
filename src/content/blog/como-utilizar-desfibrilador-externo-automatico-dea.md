@@ -34,3 +34,4 @@ O DEA é um dispositivo inteligente que guia o socorrista por voz. Siga estas et
 ## Academia do Socorrista: Treinamento em DEA e RCP
 
 Ter um DEA no local de trabalho ou condomínio é excelente, mas saber Operá-lo com calma e técnica é o que realmente faz a diferença. Na Academia do Socorrista, oferecemos módulos práticos de Suporte Básico de Vida (SBV) para garantir que você esteja preparado para ser o herói da vida real quando o tempo for o fator determinante.
+

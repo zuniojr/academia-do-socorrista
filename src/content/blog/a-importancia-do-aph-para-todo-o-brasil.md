@@ -50,3 +50,4 @@ A democratização do conhecimento em primeiros socorros e Atendimento Pré-Hosp
 Para atuar no Brasil inteiro e ser um diferencial em meio ao caos, a preparação é o único caminho. Conheça os treinamentos da **Academia do Socorrista** e faça parte do seleto grupo de profissionais essenciais e altamente capacitados que realmente salvam vidas.
 
 **Pronto para assumir a linha de frente?** Conheça nossos cursos de Controle de Hemorragias e Recuperação de Afogados e dê o primeiro passo na sua jornada como socorrista de elite.
+

@@ -34,3 +34,4 @@ Exposição completa da vítima para busca de lesões ocultas, seguida de preven
 ## Conclusão: O Papel da Academia do Socorrista
 
 Dominar o XABCDE não é apenas decorar letras, mas sim automatizar processos para que, sob pressão, suas mãos saibam exatamente o que fazer. Na Academia do Socorrista, nossas simulações realistas e instrutores experientes transformam esse conhecimento em competência tática. Cada segundo conta, e saber o que vem depois do "X" é o que salva vidas.
+

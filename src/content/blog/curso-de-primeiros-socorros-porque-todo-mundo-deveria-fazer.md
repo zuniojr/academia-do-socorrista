@@ -29,3 +29,4 @@ Primeiros socorros são as ações iniciais de ajuda prestadas a uma vítima de 
 ## Conclusão: Não Espere a Emergência Acontecer
 
 O pior momento para aprender primeiros socorros é quando você mais precisa deles. Por isso, a Academia do Socorrista oferece cursos práticos, dinâmicos e baseados nos protocolos mais modernos do mundo. Não seja apenas um espectador em uma emergência; seja a pessoa que faz a diferença. Invista em conhecimento, invista na vida.
+

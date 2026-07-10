@@ -29,3 +29,4 @@ Por muitos anos, o uso do torniquete foi rotulado como a "medida de último caso
 - **Sinalização:** Anote sempre o horário oficial da aplicação do torniquete no próprio dispositivo ou na testa do paciente. O tempo em campo afeta as ações cirúrgicas posteriores.
 
 Para o socorrista profissional e civil, possuir e saber utilizar esses equipamentos dita radicalmente o seu índice de efetividade e de vidas salvas cotidianamente!
+
