@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.academiadosocorrista.com.br/sitemap-index.xml
+Sitemap: https://www.academiadosocorrista.com.br/sitemap-0.xml
