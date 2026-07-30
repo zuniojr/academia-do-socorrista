@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 
-# Sitemap
+# Sitemaps
 Sitemap: https://www.academiadosocorrista.com.br/sitemap-index.xml
+Sitemap: https://www.academiadosocorrista.com.br/sitemap-0.xml
+Sitemap: https://www.academiadosocorrista.com.br/sitemap.xml
