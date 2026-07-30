@@ -1,6 +1,4 @@
 ---
----
----
 title: "Como Prevenir o Afogamento: Guia Completo para Salvar Vidas"
 description: "Aprenda técnicas essenciais de prevenção de afogamento e como agir rapidamente para salvar vidas. Guia completo sobre segurança aquática, sinais de alerta e procedimentos de emergência pré-hospitalar (APH)."
 pubDate: "2026-07-31"
