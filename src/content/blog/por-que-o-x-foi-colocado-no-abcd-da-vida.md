@@ -2,7 +2,7 @@
 title: "Controle de Hemorragia: Por Que o X Veio Antes do ABCD da Vida"
 description: "O controle de hemorragia agora vem antes do ABCD da vida. Entenda por que o X foi adicionado ao protocolo, o que mudou na prioridade do socorro e como salvar vidas com essa técnica."
 pubDate: "2026-07-30"
-heroImage: "/blog/torniquete-aph.png"
+heroImage: "/blog/torniquete-aph.avif"
 ---
 
 Por décadas, qualquer socorrista aprendia o mesmo protocolo: **Airway, Breathing, Circulation, Disability** — o famoso ABCD da vida. A ordem era sagrada: garanta a via aérea primeiro, depois respiração, depois circulação. Mas algo mudou. Uma nova letra apareceu antes do A, transformando para sempre a lógica do atendimento pré-hospitalar. Essa letra é o **X**, e ela representa o **controle de hemorragia** — entender por que ela chegou ali pode literalmente salvar vidas.

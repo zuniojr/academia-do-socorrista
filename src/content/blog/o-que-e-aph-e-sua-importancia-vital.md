@@ -2,7 +2,7 @@
 title: "O que é APH (Atendimento Pré-Hospitalar) e sua Importância Vital"
 description: "Entenda os fundamentos do Atendimento Pré-Hospitalar (APH) e porque o rápido socorro é o fator chave entre a vida e a morte nas emergências médicas e de trauma."
 pubDate: "2024-08-10"
-heroImage: "/blog/aph-ambulance-rescue.png"
+heroImage: "/blog/aph-ambulance-rescue.avif"
 ---
 
 O Atendimento Pré-Hospitalar (APH) é o socorro prestado a uma vítima de agravo à saúde (trauma ou problema clínico) antes de sua chegada a uma unidade hospitalar. Este momento inicial de intervenção é frequentemente conhecido como "a hora de ouro" (*Golden Hour*), um período crítico no qual ações rápidas e precisas elevam exponencialmente as taxas de sobrevida e minimizam sequelas.

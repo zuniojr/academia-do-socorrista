@@ -2,7 +2,7 @@
 title: "A Importância do APH para Todo o Brasil: Salvando Vidas de Norte a Sul"
 description: "Descubra a importância vital do Atendimento Pré-Hospitalar (APH) no Brasil. Saiba como a capacitação de socorristas impacta diretamente a sobrevivência em emergências de norte a sul do país."
 pubDate: "2026-05-18"
-heroImage: "/blog/aph-brasil.png"
+heroImage: "/blog/aph-brasil.avif"
 ---
 
 O **Atendimento Pré-Hospitalar (APH)** é, sem sombra de dúvidas, a espinha dorsal do sistema de emergências médicas no Brasil. Em um país de dimensões continentais, com realidades geográficas e estruturais tão distintas, a presença de profissionais altamente capacitados para os primeiros socorros não é apenas uma necessidade de saúde pública, mas sim uma missão heroica e diária.

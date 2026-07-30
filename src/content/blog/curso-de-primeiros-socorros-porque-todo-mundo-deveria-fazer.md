@@ -2,9 +2,8 @@
 title: "Curso de Primeiros Socorros: Por Que Todo Mundo Deveria Fazer e Como Começar"
 description: "Aprenda por que o conhecimento em primeiros socorros não é exclusivo para profissionais de saúde e como estar preparado pode ser a diferença entre a vida e a morte de quem você ama."
 pubDate: "2024-08-25"
-heroImage: "/blog/primeiros-socorros-curso.png"
+heroImage: "/blog/primeiros-socorros-curso.avif"
 ---
-
 Muitas vezes pensamos em primeiros socorros como algo restrito a médicos, enfermeiros ou bombeiros. No entanto, a realidade é que a maioria das emergências ocorre em casa, no trabalho ou em locais públicos, onde o primeiro auxílio será prestado por quem estiver por perto: você. Na Academia do Socorrista, acreditamos que salvar vidas é uma responsabilidade compartilhada.
 
 ## O Que São Primeiros Socorros?

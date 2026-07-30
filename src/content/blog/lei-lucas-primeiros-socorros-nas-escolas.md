@@ -2,7 +2,7 @@
 title: "Lei Lucas: Por Que Primeiros Socorros nas Escolas São Obrigação — e Não Opcional"
 description: "Entenda o que é a Lei Lucas (Lei nº 13.722/2018), por que ela existe, seus impactos práticos nas escolas brasileiras e o que a gestão escolar precisa fazer para estar em conformidade."
 pubDate: "2026-07-10"
-heroImage: "/blog/lei-lucas.png"
+heroImage: "/blog/lei-lucas.avif"
 ---
 
 A **Lei Lucas (Lei nº 13.722/2018)** é um marco fundamental na segurança escolar brasileira. Ela torna **obrigatória a capacitação em noções básicas de primeiros socorros** para professores e funcionários de estabelecimentos de ensino públicos e privados de educação básica, bem como de estabelecimentos de recreação infantil.

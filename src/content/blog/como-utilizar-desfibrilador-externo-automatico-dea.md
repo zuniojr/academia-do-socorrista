@@ -2,7 +2,7 @@
 title: "Como Utilizar o Desfibrilador Externo Automático (DEA): Guia Prático de RCP"
 description: "Aprenda o passo a passo de como operar um Desfibrilador Externo Automático (DEA) e como ele pode reverter uma parada cardiorrespiratória em poucos minutos."
 pubDate: "2024-08-20"
-heroImage: "/blog/dea-operation.png"
+heroImage: "/blog/dea-operation.avif"
 ---
 
 A Parada Cardiorrespiratória (PCR) é uma das maiores emergências médicas. Quando o coração para de bater de forma coordenada (geralmente em Fibrilação Ventricular), a única maneira de reverter o processo é através do choque elétrico: a desfibrilação. O DEA (*Desfibrilador Externo Automático*) é um equipamento vital projetado para ser operado até por leigos treinados.
