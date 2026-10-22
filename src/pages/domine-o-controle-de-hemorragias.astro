@@ -1,23 +1,26 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import VisualEditor from '../components/admin/VisualEditor.astro';
+import domineData from '../data/pages/domine-o-controle-de-hemorragias.json';
 
-const title = "Domine o Controle de Hemorragias | Academia do Socorrista";
-const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento correto. ATENDA e faça o melhor para seu paciente com agilidade e SEGURANÇA NA PRÁTICA.";
+const title = domineData.meta?.title || "Domine o Controle de Hemorragias | Academia do Socorrista";
+const description = domineData.meta?.description || "Conquiste o RACIOCÍNIO ideal para fazer o atendimento correto. ATENDA e faça o melhor para seu paciente com agilidade e SEGURANÇA NA PRÁTICA.";
 ---
 
 <Layout title={title} description={description}>
+	<VisualEditor pageId="domine-o-controle-de-hemorragias" pageName="Curso: Domine o Controle de Hemorragias" />
 	<!-- Header Omitido para Foco na Venda -->
 	
 	<main class="sales-page">
 		<!-- Hero Section -->
 		<section class="sales-hero">
 			<div class="container animate-fade">
-				<p class="top-badge">A C A D E M I A &nbsp;&nbsp; D O &nbsp;&nbsp; S O C O R R I S T A</p>
-				<h1 class="main-title">DOMINE O<br>CONTROLE DE<br>HEMORRAGIAS</h1>
+				<p class="top-badge" data-editable-id="hero.badge" data-editable-label="Hero - Top Badge" data-editable-type="text">{domineData.hero?.badge || 'A C A D E M I A    D O    S O C O R R I S T A'}</p>
+				<h1 class="main-title" data-editable-id="hero.title" data-editable-label="Hero - Título Principal" data-editable-type="textarea" style="white-space: pre-line;">{domineData.hero?.title || 'DOMINE O\nCONTROLE DE\nHEMORRAGIAS'}</h1>
 				
-				<p class="subtitle">Conquiste o RACIOCÍNIO ideal para fazer o atendimentos correto.</p>
-				<p class="description">ATENDA e faça o melhor para seu paciente com agilidade e<br>SEGURANÇA NA PRÁTICA.</p>
-				<p class="description">Conteúdo atualizado e aulas totalmente em vídeo.</p>
+				<p class="subtitle" data-editable-id="hero.subtitle" data-editable-label="Hero - Subtítulo" data-editable-type="text">{domineData.hero?.subtitle || 'Conquiste o RACIOCÍNIO ideal para fazer o atendimentos correto.'}</p>
+				<p class="description" data-editable-id="hero.description1" data-editable-label="Hero - Descrição 1" data-editable-type="text">{domineData.hero?.description1 || 'ATENDA e faça o melhor para seu paciente com agilidade e SEGURANÇA NA PRÁTICA.'}</p>
+				<p class="description" data-editable-id="hero.description2" data-editable-label="Hero - Descrição 2" data-editable-type="text">{domineData.hero?.description2 || 'Conteúdo atualizado e aulas totalmente em vídeo.'}</p>
 				
 			<div class="video-container">
 				<div id="yt-player-hemorragias"></div>
@@ -63,21 +66,30 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 				};
 			</script>
 
-				<div class="hero-alert">
-					Controle de Hemorragias: Conhecimento que salva.
+				<div class="hero-alert" data-editable-id="hero.alert" data-editable-label="Hero - Mensagem de Destaque" data-editable-type="text">
+					{domineData.hero?.alert || 'Controle de Hemorragias: Conhecimento que salva.'}
 				</div>
 
-				<a href="#" class="btn btn-large cta-button green-btn pulse-btn open-popup">GARANTA SUA VAGA AGORA</a>
+				<a 
+					href={domineData.hero?.ctaUrl || "#"} 
+					class="btn btn-large cta-button green-btn pulse-btn open-popup"
+					data-editable-id="hero.ctaText"
+					data-editable-href-id="hero.ctaUrl"
+					data-editable-label="Hero - Botão de Ação"
+					data-editable-type="button"
+				>
+					{domineData.hero?.ctaText || 'GARANTA SUA VAGA AGORA'}
+				</a>
 			</div>
 		</section>
 
 		<!-- Sobre o Curso Section -->
 		<section class="about-course">
 			<div class="container text-center-mobile">
-				<h2 class="about-title">O que é o curso Controte de Hemorragia?</h2>
+				<h2 class="about-title" data-editable-id="about.title" data-editable-label="Sobre - Título" data-editable-type="text">{domineData.about?.title || 'O que é o curso Controte de Hemorragia?'}</h2>
 				<div class="about-text-container">
-					<p>É um treinamento essencial que ensina técnicas vitais para parar sangramentos em situações de emergência. Este curso é ideal para profissionais de saúde, socorristas, guarda vidas, professores, pais, e qualquer pessoa que queira estar preparada para agir em momentos críticos.</p>
-					<p>Estar preparado para situações de emergência pode fazer a diferença entre a vida e a morte. Com este curso, você estará equipado com o conhecimento e as habilidades necessárias para intervir de maneira eficaz em situações críticas, proporcionando segurança e tranquilidade para você e para aqueles ao seu redor.</p>
+					<p data-editable-id="about.paragraph1" data-editable-label="Sobre - Parágrafo 1" data-editable-type="textarea">{domineData.about?.paragraph1 || 'É um treinamento essencial que ensina técnicas vitais para parar sangramentos em situações de emergência. Este curso é ideal para profissionais de saúde, socorristas, guarda vidas, professores, pais, e qualquer pessoa que queira estar preparada para agir em momentos críticos.'}</p>
+					<p data-editable-id="about.paragraph2" data-editable-label="Sobre - Parágrafo 2" data-editable-type="textarea">{domineData.about?.paragraph2 || 'Estar preparado para situações de emergência pode fazer a diferença entre a vida e a morte. Com este curso, você estará equipado com o conhecimento e as habilidades necessárias para intervir de maneira eficaz em situações críticas, proporcionando segurança e tranquilidade para você e para aqueles ao seu redor.'}</p>
 				</div>
 			</div>
 		</section>
@@ -85,7 +97,7 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 		<!-- Conteúdo do Curso Section -->
 		<section class="course-modules-section">
 			<div class="course-modules-title-wrapper">
-				<h2 class="about-title text-center">O CONTEÚDO do curso</h2>
+				<h2 class="about-title text-center" data-editable-id="modules.title" data-editable-label="Conteúdo - Título" data-editable-type="text">{domineData.modules?.title || 'O CONTEÚDO do curso'}</h2>
 			</div>
 			
 			<div class="modules-stack">
@@ -113,7 +125,16 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 			</div>
 
 			<div class="container text-center mt-5">
-				<a href="#" class="btn btn-large cta-button green-btn pulse-btn open-popup">QUERO ENTRAR PARA O CURSO</a>
+				<a 
+					href={domineData.modules?.ctaUrl || "#"} 
+					class="btn btn-large cta-button green-btn pulse-btn open-popup"
+					data-editable-id="modules.ctaText"
+					data-editable-href-id="modules.ctaUrl"
+					data-editable-label="Conteúdo - Botão de Ação"
+					data-editable-type="button"
+				>
+					{domineData.modules?.ctaText || 'QUERO ENTRAR PARA O CURSO'}
+				</a>
 			</div>
 			</div>
 		</section>
@@ -123,15 +144,21 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 			<div class="container">
 				<div class="instructor-grid">
 					<div class="instructor-image">
-						<img src="/images/braga.avif" alt="Helber Braga">
+						<img 
+							src={domineData.instructor?.image || "/images/braga.avif"} 
+							alt={domineData.instructor?.name || "Helber Braga"}
+							data-editable-id="instructor.image"
+							data-editable-label="Instrutor - Foto"
+							data-editable-type="image"
+						/>
 					</div>
 					<div class="instructor-text">
-						<span class="section-badge">Quem é seu guia</span>
-						<h2>Helber Braga</h2>
-						<p>Sou apaixonado por salvamento aquático e atendimento pré-hospitalar.</p>
-						<p>No campo do atendimento pré-hospitalar, cada segundo conta. Durante uma emergência, a capacidade de controlar uma hemorragia pode significar a diferença entre a vida e a morte. Eu tenho visto em primeira mão o impacto que o conhecimento e a habilidade de parar um sangramento podem ter em salvar vidas. Quando estamos na linha de frente, somos os primeiros a chegar e a última esperança para muitos. Essa responsabilidade exige que estejamos sempre preparados e bem treinados.</p>
-						<p>Acredito firmemente que muitas mortes podem ser evitadas com as técnicas e os conhecimentos certos. É por isso que dedico tanto tempo e esforço para me aperfeiçoar e ensinar o que sei a outros.</p>
-						<p>Quero continuar fazendo a diferença e, ao mesmo tempo, inspirar outras pessoas a se juntarem a essa causa. Acredito que, com educação e treinamento adequados, podemos salvar muitas vidas.</p>
+						<span class="section-badge" data-editable-id="instructor.badge" data-editable-label="Instrutor - Badge" data-editable-type="text">{domineData.instructor?.badge || 'Quem é seu guia'}</span>
+						<h2 data-editable-id="instructor.name" data-editable-label="Instrutor - Nome" data-editable-type="text">{domineData.instructor?.name || 'Helber Braga'}</h2>
+						<p data-editable-id="instructor.paragraph1" data-editable-label="Instrutor - Parágrafo 1" data-editable-type="textarea">{domineData.instructor?.paragraph1 || 'Sou apaixonado por salvamento aquático e atendimento pré-hospitalar.'}</p>
+						<p data-editable-id="instructor.paragraph2" data-editable-label="Instrutor - Parágrafo 2" data-editable-type="textarea">{domineData.instructor?.paragraph2 || 'No campo do atendimento pré-hospitalar, cada segundo conta. Durante uma emergência, a capacidade de controlar uma hemorragia pode significar a diferença entre a vida e a morte. Eu tenho visto em primeira mão o impacto que o conhecimento e a habilidade de parar um sangramento podem ter em salvar vidas. Quando estamos na linha de frente, somos os primeiros a chegar e a última esperança para muitos. Essa responsabilidade exige que estejamos sempre preparados e bem treinados.'}</p>
+						<p data-editable-id="instructor.paragraph3" data-editable-label="Instrutor - Parágrafo 3" data-editable-type="textarea">{domineData.instructor?.paragraph3 || 'Acredito firmemente que muitas mortes podem ser evitadas com as técnicas e os conhecimentos certos. É por isso que dedico tanto tempo e esforço para me aperfeiçoar e ensinar o que sei a outros.'}</p>
+						<p data-editable-id="instructor.paragraph4" data-editable-label="Instrutor - Parágrafo 4" data-editable-type="textarea">{domineData.instructor?.paragraph4 || 'Quero continuar fazendo a diferença e, ao mesmo tempo, inspirar outras pessoas a se juntarem a essa causa. Acredito que, com educação e treinamento adequados, podemos salvar muitas vidas.'}</p>
 					</div>
 				</div>
 			</div>
@@ -140,10 +167,10 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 		<!-- Features/Benefits -->
 		<section class="benefits-section">
 			<div class="container text-center">
-				<h2>Não tem desculpa</h2>
-				<p class="subtitle">Comece seu curso AGORA e termine quando quiser.</p>
-				<p>Um curso nada tradicional. Você terá acesso a todo conhecimento e estratégias sem enrolação, direto ao ponto.</p>
-				<p>Podendo assistir de onde quiser e quando quiser. Você tem acesso ao curso por 1 ano!</p>
+				<h2 data-editable-id="benefits.title" data-editable-label="Benefícios - Título" data-editable-type="text">{domineData.benefits?.title || 'Não tem desculpa'}</h2>
+				<p class="subtitle" data-editable-id="benefits.subtitle" data-editable-label="Benefícios - Subtítulo" data-editable-type="text">{domineData.benefits?.subtitle || 'Comece seu curso AGORA e termine quando quiser.'}</p>
+				<p data-editable-id="benefits.paragraph1" data-editable-label="Benefícios - Parágrafo 1" data-editable-type="textarea">{domineData.benefits?.paragraph1 || 'Um curso nada tradicional. Você terá acesso a todo conhecimento e estratégias sem enrolação, direto ao ponto.'}</p>
+				<p data-editable-id="benefits.paragraph2" data-editable-label="Benefícios - Parágrafo 2" data-editable-type="textarea">{domineData.benefits?.paragraph2 || 'Podendo assistir de onde quiser e quando quiser. Você tem acesso ao curso por 1 ano!'}</p>
 
 				<div class="benefits-grid mt-5">
 					<div class="benefit-card glass-card">
@@ -203,7 +230,16 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 				</div>
 
 				<div class="text-center mt-5">
-					<a href="#" class="btn btn-primary btn-large pulse-btn open-popup">LIBERAR ACESSO</a>
+					<a 
+						href={domineData.benefits?.ctaUrl || "#"} 
+						class="btn btn-primary btn-large pulse-btn open-popup"
+						data-editable-id="benefits.ctaText"
+						data-editable-href-id="benefits.ctaUrl"
+						data-editable-label="Benefícios - Botão de Ação"
+						data-editable-type="button"
+					>
+						{domineData.benefits?.ctaText || 'LIBERAR ACESSO'}
+					</a>
 				</div>
 			</div>
 		</section>
@@ -213,13 +249,19 @@ const description = "Conquiste o RACIOCÍNIO ideal para fazer o atendimento corr
 			<div class="container">
 				<div class="guarantee-box glass-card">
 					<div class="g-image">
-						<img src="/images/Selo7dias-1-1024x740.avif" alt="Garantia 7 Dias">
+						<img 
+							src={domineData.guarantee?.image || "/images/Selo7dias-1-1024x740.avif"} 
+							alt="Garantia 7 Dias"
+							data-editable-id="guarantee.image"
+							data-editable-label="Garantia - Imagem do Selo"
+							data-editable-type="image"
+						/>
 					</div>
 					<div class="g-text">
-						<h2>100% de GARANTIA para você experimentar</h2>
-						<p>Confiamos tanto na qualidade deste produto que ofereço esta garantia de satisfação incondicional ou todo o seu dinheiro de volta.</p>
-						<p>Assumimos todo o risco desta aquisição para você.</p>
-						<p>Já fui chamado até de maluco por colegas de profissão. Alguns me dizem que oferecer todo o programa e ainda dar a oportunidade de o cliente desistir da compra 7 dias depois é loucura, mas o seu aprendizado é nossa prioridade.</p>
+						<h2 data-editable-id="guarantee.title" data-editable-label="Garantia - Título" data-editable-type="text">{domineData.guarantee?.title || '100% de GARANTIA para você experimentar'}</h2>
+						<p data-editable-id="guarantee.paragraph1" data-editable-label="Garantia - Parágrafo 1" data-editable-type="textarea">{domineData.guarantee?.paragraph1 || 'Confiamos tanto na qualidade deste produto que ofereço esta garantia de satisfação incondicional ou todo o seu dinheiro de volta.'}</p>
+						<p data-editable-id="guarantee.paragraph2" data-editable-label="Garantia - Parágrafo 2" data-editable-type="textarea">{domineData.guarantee?.paragraph2 || 'Assumimos todo o risco desta aquisição para você.'}</p>
+						<p data-editable-id="guarantee.paragraph3" data-editable-label="Garantia - Parágrafo 3" data-editable-type="textarea">{domineData.guarantee?.paragraph3 || 'Já fui chamado até de maluco por colegas de profissão. Alguns me dizem que oferecer todo o programa e ainda dar a oportunidade de o cliente desistir da compra 7 dias depois é loucura, mas o seu aprendizado é nossa prioridade.'}</p>
 					</div>
 				</div>
 			</div>

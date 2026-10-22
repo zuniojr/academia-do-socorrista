@@ -1,0 +1,1049 @@
+---
+interface Props {
+  pageId?: string;
+  pageName: string;
+}
+
+const { pageId = 'sobre', pageName } = Astro.props;
+---
+
+<!-- Painel do Editor Visual In-Context (Carregado e exibido exclusivamente para administradores logados) -->
+<div id="as-visual-editor-root" class="as-editor-hidden">
+  <!-- Barra Superior de Edição -->
+  <header class="as-admin-bar">
+    <div class="as-bar-left">
+      <span class="as-bar-badge">MODO EDIÇÃO</span>
+      <span class="as-bar-title">{pageName}</span>
+      <span id="as-save-status" class="as-status-clean">Nenhuma alteração pendente</span>
+    </div>
+    <div class="as-bar-right">
+      <button id="as-btn-discard" class="as-btn as-btn-discard" disabled>Descartar</button>
+      <button id="as-btn-save" class="as-btn as-btn-save" disabled>💾 Salvar Rascunho</button>
+      <a href="/admin" class="as-btn as-btn-admin">Painel Admin ↗</a>
+      <button id="as-btn-exit" class="as-btn as-btn-exit">Sair</button>
+    </div>
+  </header>
+
+  <!-- Sidebar Lateral Contextual -->
+  <aside id="as-editor-sidebar" class="as-sidebar as-sidebar-closed">
+    <div class="as-sidebar-header">
+      <div>
+        <span class="as-sidebar-tag">Campo Selecionado</span>
+        <h3 id="as-field-label">Nenhum campo selecionado</h3>
+      </div>
+      <button id="as-btn-close-sidebar" class="as-btn-close" aria-label="Fechar painel">&times;</button>
+    </div>
+
+    <div class="as-sidebar-body">
+      <div id="as-field-container">
+        <p class="as-empty-hint">Passe o mouse sobre qualquer elemento da página e clique para editar seu conteúdo, imagem ou link.</p>
+      </div>
+    </div>
+
+    <div class="as-sidebar-footer">
+      <small>As alterações são aplicadas e pré-visualizadas instantaneamente na página.</small>
+    </div>
+  </aside>
+
+  <!-- Modal Integrado da Biblioteca de Mídia para Seleção de Imagens -->
+  <div id="as-media-modal" class="as-modal-overlay">
+    <div class="as-modal-card">
+      <div class="as-modal-header">
+        <h3>Biblioteca de Mídia</h3>
+        <button id="as-btn-close-media-modal" class="as-modal-close">&times;</button>
+      </div>
+      <div class="as-modal-toolbar">
+        <input 
+          type="text" 
+          id="as-media-search" 
+          class="as-input-text" 
+          placeholder="Buscar imagens por nome..." 
+          style="flex: 1; max-width: 320px;"
+        />
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <input type="file" id="as-media-upload-input" accept=".avif,.webp,.jpg,.jpeg,.png" style="display: none;" />
+          <button type="button" id="as-btn-media-upload" class="as-btn as-btn-admin" style="padding: 0.45rem 0.8rem; font-size: 0.8rem;">
+            📤 Enviar Imagem
+          </button>
+          <a href="/admin/midia" target="_blank" class="as-btn as-btn-admin" style="padding: 0.45rem 0.8rem; font-size: 0.8rem;">
+            Abrir Biblioteca ↗
+          </a>
+        </div>
+      </div>
+      <div id="as-media-modal-body" class="as-modal-body">
+        <div id="as-media-loading" style="text-align: center; color: #9ca3af; padding: 2rem;">
+          Carregando imagens disponíveis...
+        </div>
+        <div id="as-media-grid" class="as-media-grid"></div>
+      </div>
+      <div class="as-modal-footer">
+        <button type="button" id="as-btn-cancel-media" class="as-btn as-btn-discard" style="color: #e5e7eb;">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast de Notificação -->
+  <div id="as-toast" class="as-toast"></div>
+</div>
+
+<style>
+  .as-editor-hidden {
+    display: none !important;
+  }
+
+  /* Admin Bar */
+  .as-admin-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 52px;
+    background: #090d16;
+    border-bottom: 1px solid #1f2937;
+    z-index: 999999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .as-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .as-bar-badge {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .as-bar-title {
+    color: #f3f4f6;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  #as-save-status {
+    font-size: 0.8rem;
+    transition: color 0.2s;
+  }
+
+  .as-status-clean {
+    color: #9ca3af;
+  }
+
+  .as-status-dirty {
+    color: #f59e0b;
+    font-weight: 600;
+  }
+
+  .as-status-saving {
+    color: #3b82f6;
+    font-weight: 600;
+  }
+
+  .as-status-saved {
+    color: #10b981;
+    font-weight: 600;
+  }
+
+  .as-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .as-btn {
+    padding: 0.4rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .as-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .as-btn-discard {
+    background: #1f2937;
+    color: #9ca3af;
+    border: 1px solid #374151;
+  }
+
+  .as-btn-discard:hover:not(:disabled) {
+    background: #374151;
+    color: #f3f4f6;
+  }
+
+  .as-btn-save {
+    background: #ef4444;
+    color: white;
+  }
+
+  .as-btn-save:hover:not(:disabled) {
+    background: #dc2626;
+  }
+
+  .as-btn-admin {
+    background: transparent;
+    color: #9ca3af;
+    border: 1px solid #374151;
+  }
+
+  .as-btn-admin:hover {
+    color: #f3f4f6;
+    border-color: #6b7280;
+  }
+
+  .as-btn-exit {
+    background: transparent;
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  .as-btn-exit:hover {
+    background: rgba(239, 68, 68, 0.15);
+  }
+
+  /* Sidebar */
+  .as-sidebar {
+    position: fixed;
+    top: 52px;
+    right: 0;
+    bottom: 0;
+    width: 360px;
+    background: #0d131f;
+    border-left: 1px solid #1f2937;
+    z-index: 999998;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .as-sidebar-closed {
+    transform: translateX(100%);
+  }
+
+  .as-sidebar-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #1f2937;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .as-sidebar-tag {
+    font-size: 0.7rem;
+    color: #ef4444;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .as-sidebar-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #f9fafb;
+    font-weight: 600;
+  }
+
+  .as-btn-close {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+  }
+
+  .as-btn-close:hover {
+    color: #f3f4f6;
+  }
+
+  .as-sidebar-body {
+    padding: 1.5rem;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .as-sidebar-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #1f2937;
+    background: #090d16;
+  }
+
+  .as-sidebar-footer small {
+    color: #6b7280;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    display: block;
+  }
+
+  .as-empty-hint {
+    color: #6b7280;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  /* Form Elements na Sidebar */
+  :global(.as-field-group) {
+    margin-bottom: 1.25rem;
+  }
+
+  :global(.as-field-label) {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #d1d5db;
+    margin-bottom: 0.4rem;
+  }
+
+  :global(.as-input-text),
+  :global(.as-textarea) {
+    width: 100%;
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 6px;
+    padding: 0.65rem 0.85rem;
+    color: #f9fafb;
+    font-size: 0.875rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+  }
+
+  :global(.as-input-text:focus),
+  :global(.as-textarea:focus) {
+    border-color: #ef4444;
+  }
+
+  :global(.as-textarea) {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  :global(.as-image-preview-wrap) {
+    width: 100%;
+    height: 120px;
+    background: #000;
+    border: 1px solid #374151;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+
+  :global(.as-image-preview-wrap img) {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+  }
+
+  :global(.as-btn-pick-media) {
+    width: 100%;
+    margin-top: 0.5rem;
+    background: rgba(99, 102, 241, 0.15);
+    color: #a5b4fc;
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  :global(.as-btn-pick-media:hover) {
+    background: rgba(99, 102, 241, 0.25);
+    color: #c7d2fe;
+  }
+
+  /* Modal de Mídia */
+  .as-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    z-index: 2000000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .as-modal-card {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 12px;
+    max-width: 800px;
+    width: 100%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  }
+
+  .as-modal-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #1f2937;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .as-modal-header h3 {
+    margin: 0;
+    color: #f9fafb;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .as-modal-close {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .as-modal-toolbar {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #1f2937;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .as-modal-body {
+    padding: 1.25rem 1.5rem;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .as-media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 1rem;
+  }
+
+  .as-modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #1f2937;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* Toast */
+  .as-toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: #1f2937;
+    color: #f9fafb;
+    border-left: 4px solid #ef4444;
+    padding: 0.85rem 1.25rem;
+    border-radius: 6px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    font-size: 0.875rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    z-index: 1000000;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.25s ease;
+    pointer-events: none;
+  }
+
+  .as-toast.as-toast-show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .as-toast.as-toast-success {
+    border-left-color: #10b981;
+  }
+</style>
+
+<script define:vars={{ pageId, pageName }}>
+  async function initVisualEditor() {
+    try {
+      const res = await fetch('/api/admin/auth-status');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!data.authenticated) return; // Visitante público normal: nada é injetado
+
+      const root = document.getElementById('as-visual-editor-root');
+      if (!root) return;
+      root.classList.remove('as-editor-hidden');
+      document.body.style.paddingTop = '52px';
+
+      setupEditor(pageId, pageName);
+    } catch {
+      // Ignora falha para usuários públicos
+    }
+  }
+
+  function setupEditor(currentPageId, currentPageName) {
+    let activeElement = null;
+    let originalData = {};
+    let workingData = {};
+    let isDirty = false;
+    let currentSha = '';
+    let cachedMediaList = [];
+
+    const sidebar = document.getElementById('as-editor-sidebar');
+    const fieldContainer = document.getElementById('as-field-container');
+    const fieldLabel = document.getElementById('as-field-label');
+    const btnCloseSidebar = document.getElementById('as-btn-close-sidebar');
+    const btnDiscard = document.getElementById('as-btn-discard');
+    const btnSave = document.getElementById('as-btn-save');
+    const btnExit = document.getElementById('as-btn-exit');
+    const saveStatus = document.getElementById('as-save-status');
+
+    // Carrega dados iniciais da página via API
+    async function loadPageData() {
+      try {
+        const res = await fetch(`/api/admin/content?page=${encodeURIComponent(currentPageId)}`);
+        if (res.ok) {
+          const json = await res.json();
+          originalData = JSON.parse(JSON.stringify(json.data || {}));
+          workingData = JSON.parse(JSON.stringify(json.data || {}));
+          currentSha = json.sha || '';
+        }
+      } catch (err) {
+        console.error(`Falha ao carregar rascunho de ${currentPageId}:`, err);
+      }
+    }
+    loadPageData();
+
+    // Mapeamento dos elementos editáveis no DOM
+    const editableElements = document.querySelectorAll('[data-editable-id]');
+    
+    // Injeção de estilo dinâmico suave para os elementos editáveis
+    const styleEl = document.createElement('style');
+    styleEl.innerHTML = `
+      [data-editable-id] {
+        position: relative;
+        cursor: pointer;
+        transition: outline 0.15s ease, background-color 0.15s ease;
+      }
+      [data-editable-id]:hover {
+        outline: 2px dashed #ef4444 !important;
+        outline-offset: 4px;
+        background-color: rgba(239, 68, 68, 0.08) !important;
+        border-radius: 4px;
+      }
+      [data-editable-id].as-active-field {
+        outline: 2px solid #ef4444 !important;
+        outline-offset: 4px;
+        background-color: rgba(239, 68, 68, 0.12) !important;
+        border-radius: 4px;
+      }
+    `;
+    document.head.appendChild(styleEl);
+
+    // Seleção de elemento ao clicar
+    editableElements.forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        selectElement(el);
+      });
+    });
+
+    function selectElement(el) {
+      if (activeElement) {
+        activeElement.classList.remove('as-active-field');
+      }
+      activeElement = el;
+      activeElement.classList.add('as-active-field');
+
+      const fieldId = el.getAttribute('data-editable-id') || '';
+      const label = el.getAttribute('data-editable-label') || fieldId;
+      const type = el.getAttribute('data-editable-type') || 'text';
+      const hrefId = el.getAttribute('data-editable-href-id');
+
+      if (fieldLabel) fieldLabel.textContent = label;
+
+      const currentValue = getValueByPath(workingData, fieldId) ?? (el.tagName === 'IMG' ? el.getAttribute('src') : el.textContent?.trim()) ?? '';
+
+      if (fieldContainer) {
+        fieldContainer.innerHTML = '';
+        const wrapper = document.createElement('div');
+
+        // 1. Edição do tipo Imagem
+        if (type === 'image') {
+          const imgGroup = document.createElement('div');
+          imgGroup.className = 'as-field-group';
+
+          const previewWrap = document.createElement('div');
+          previewWrap.className = 'as-image-preview-wrap';
+          const previewImg = document.createElement('img');
+          previewImg.src = currentValue || '';
+          previewImg.alt = 'Prévia da Imagem';
+          previewWrap.appendChild(previewImg);
+          imgGroup.appendChild(previewWrap);
+
+          const lbl = document.createElement('label');
+          lbl.className = 'as-field-label';
+          lbl.textContent = `Caminho da Imagem:`;
+          imgGroup.appendChild(lbl);
+
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.className = 'as-input-text';
+          input.value = currentValue;
+          input.placeholder = 'Ex: /images/foto.webp';
+          input.addEventListener('input', () => {
+            updateImageValue(fieldId, input.value, el, previewImg);
+          });
+          imgGroup.appendChild(input);
+
+          const btnPickMedia = document.createElement('button');
+          btnPickMedia.type = 'button';
+          btnPickMedia.className = 'as-btn-pick-media';
+          btnPickMedia.innerHTML = '🖼️ Escolher da Biblioteca de Mídia';
+          btnPickMedia.onclick = () => {
+            openMediaModal((selectedPath) => {
+              input.value = selectedPath;
+              updateImageValue(fieldId, selectedPath, el, previewImg);
+            });
+          };
+          imgGroup.appendChild(btnPickMedia);
+
+          wrapper.appendChild(imgGroup);
+        }
+        // 2. Edição do tipo Textarea
+        else if (type === 'textarea') {
+          const group = document.createElement('div');
+          group.className = 'as-field-group';
+
+          const lbl = document.createElement('label');
+          lbl.className = 'as-field-label';
+          lbl.textContent = `Texto do elemento:`;
+          group.appendChild(lbl);
+
+          const textarea = document.createElement('textarea');
+          textarea.className = 'as-textarea';
+          textarea.value = currentValue;
+          textarea.addEventListener('input', () => {
+            updateFieldValue(fieldId, textarea.value, el);
+          });
+          group.appendChild(textarea);
+          wrapper.appendChild(group);
+        }
+        // 3. Edição do tipo Link ou Botão (Texto + Destino URL)
+        else if (type === 'link' || type === 'button') {
+          const textGroup = document.createElement('div');
+          textGroup.className = 'as-field-group';
+
+          const lblText = document.createElement('label');
+          lblText.className = 'as-field-label';
+          lblText.textContent = `Texto do Botão / Link:`;
+          textGroup.appendChild(lblText);
+
+          const inputText = document.createElement('input');
+          inputText.type = 'text';
+          inputText.className = 'as-input-text';
+          inputText.value = currentValue;
+          inputText.addEventListener('input', () => {
+            updateFieldValue(fieldId, inputText.value, el);
+          });
+          textGroup.appendChild(inputText);
+          wrapper.appendChild(textGroup);
+
+          // Campo da URL se houver hrefId ou se for tag <a>
+          if (hrefId || el.tagName === 'A') {
+            const urlGroup = document.createElement('div');
+            urlGroup.className = 'as-field-group';
+
+            const lblUrl = document.createElement('label');
+            lblUrl.className = 'as-field-label';
+            lblUrl.textContent = `URL de Destino (Link / WhatsApp / Checkout):`;
+            urlGroup.appendChild(lblUrl);
+
+            const inputUrl = document.createElement('input');
+            inputUrl.type = 'text';
+            inputUrl.className = 'as-input-text';
+            const currentHref = (hrefId ? getValueByPath(workingData, hrefId) : null) ?? el.getAttribute('href') ?? '';
+            inputUrl.value = currentHref;
+            inputUrl.placeholder = 'https://... ou /pagina';
+
+            inputUrl.addEventListener('input', () => {
+              if (hrefId) {
+                setValueByPath(workingData, hrefId, inputUrl.value);
+              }
+              el.setAttribute('href', inputUrl.value);
+              setDirty(true);
+            });
+
+            urlGroup.appendChild(inputUrl);
+            wrapper.appendChild(urlGroup);
+          }
+        }
+        // 4. Edição de Texto Simples (Default)
+        else {
+          const group = document.createElement('div');
+          group.className = 'as-field-group';
+
+          const lbl = document.createElement('label');
+          lbl.className = 'as-field-label';
+          lbl.textContent = `Texto de "${label}":`;
+          group.appendChild(lbl);
+
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.className = 'as-input-text';
+          input.value = currentValue;
+          input.addEventListener('input', () => {
+            updateFieldValue(fieldId, input.value, el);
+          });
+          group.appendChild(input);
+          wrapper.appendChild(group);
+        }
+
+        fieldContainer.appendChild(wrapper);
+      }
+
+      if (sidebar) sidebar.classList.remove('as-sidebar-closed');
+    }
+
+    function updateFieldValue(path, newValue, targetEl) {
+      setValueByPath(workingData, path, newValue);
+      // Atualiza o texto preservando eventuais nós filhos decorativos (ou substituindo texto direto)
+      if (targetEl.tagName !== 'IMG') {
+        targetEl.textContent = newValue;
+      }
+      setDirty(true);
+    }
+
+    function updateImageValue(path, newPath, targetEl, previewEl) {
+      setValueByPath(workingData, path, newPath);
+      if (previewEl) previewEl.src = newPath;
+      if (targetEl.tagName === 'IMG') {
+        targetEl.setAttribute('src', newPath);
+      } else {
+        targetEl.style.backgroundImage = `url('${newPath}')`;
+      }
+      setDirty(true);
+    }
+
+    function setDirty(state) {
+      isDirty = state;
+      if (btnDiscard) btnDiscard.disabled = !isDirty;
+      if (btnSave) btnSave.disabled = !isDirty;
+
+      if (saveStatus) {
+        if (isDirty) {
+          saveStatus.textContent = '● Alterações não salvas';
+          saveStatus.className = 'as-status-dirty';
+        } else {
+          saveStatus.textContent = 'Nenhuma alteração pendente';
+          saveStatus.className = 'as-status-clean';
+        }
+      }
+    }
+
+    // Descartar alterações
+    btnDiscard?.addEventListener('click', () => {
+      if (!isDirty) return;
+      if (!confirm('Deseja realmente descartar todas as alterações não salvas?')) return;
+
+      workingData = JSON.parse(JSON.stringify(originalData));
+      
+      // Restaura elementos no DOM
+      editableElements.forEach((el) => {
+        const fieldId = el.getAttribute('data-editable-id');
+        const hrefId = el.getAttribute('data-editable-href-id');
+        const type = el.getAttribute('data-editable-type');
+
+        if (fieldId) {
+          const val = getValueByPath(workingData, fieldId);
+          if (val !== undefined) {
+            if (type === 'image') {
+              if (el.tagName === 'IMG') el.setAttribute('src', val);
+              else el.style.backgroundImage = `url('${val}')`;
+            } else {
+              el.textContent = val;
+            }
+          }
+        }
+
+        if (hrefId) {
+          const hrefVal = getValueByPath(workingData, hrefId);
+          if (hrefVal !== undefined) el.setAttribute('href', hrefVal);
+        }
+      });
+
+      if (activeElement) {
+        selectElement(activeElement);
+      }
+      setDirty(false);
+      showToast('Alterações descartadas com sucesso.');
+    });
+
+    // Salvar rascunho
+    btnSave?.addEventListener('click', async () => {
+      if (!isDirty) return;
+
+      if (saveStatus) {
+        saveStatus.textContent = 'Salvando rascunho...';
+        saveStatus.className = 'as-status-saving';
+      }
+      btnSave.disabled = true;
+
+      try {
+        const res = await fetch('/api/admin/content', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            page: currentPageId,
+            data: workingData,
+            currentSha,
+          }),
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+          originalData = JSON.parse(JSON.stringify(workingData));
+          if (result.sha) currentSha = result.sha;
+          setDirty(false);
+          if (saveStatus) {
+            saveStatus.textContent = '✓ Rascunho salvo!';
+            saveStatus.className = 'as-status-saved';
+          }
+          showToast(result.message || 'Rascunho salvo com sucesso!', true);
+        } else {
+          throw new Error(result.error || 'Erro ao salvar rascunho.');
+        }
+      } catch (err) {
+        alert(`Atenção: ${err.message}`);
+        setDirty(true);
+      }
+    });
+
+    // Fechar sidebar
+    btnCloseSidebar?.addEventListener('click', () => {
+      if (sidebar) sidebar.classList.add('as-sidebar-closed');
+      if (activeElement) {
+        activeElement.classList.remove('as-active-field');
+        activeElement = null;
+      }
+    });
+
+    // Sair da edição
+    btnExit?.addEventListener('click', () => {
+      if (isDirty && !confirm('Você possui alterações não salvas. Deseja sair mesmo assim?')) {
+        return;
+      }
+      document.body.style.paddingTop = '0';
+      window.location.href = '/admin';
+    });
+
+    window.addEventListener('beforeunload', (e) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    });
+
+    // ==========================================
+    // Modal da Biblioteca de Mídia Integrada
+    // ==========================================
+    const mediaModal = document.getElementById('as-media-modal');
+    const btnCloseMediaModal = document.getElementById('as-btn-close-media-modal');
+    const btnCancelMedia = document.getElementById('as-btn-cancel-media');
+    const mediaGrid = document.getElementById('as-media-grid');
+    const mediaLoading = document.getElementById('as-media-loading');
+    const mediaSearch = document.getElementById('as-media-search');
+    const btnMediaUpload = document.getElementById('as-btn-media-upload');
+    const mediaUploadInput = document.getElementById('as-media-upload-input');
+    let onMediaPickCallback = null;
+
+    function openMediaModal(callback) {
+      onMediaPickCallback = callback;
+      if (mediaModal) mediaModal.style.display = 'flex';
+      loadMediaItems();
+    }
+
+    function closeMediaModal() {
+      if (mediaModal) mediaModal.style.display = 'none';
+      onMediaPickCallback = null;
+    }
+
+    btnCloseMediaModal?.addEventListener('click', closeMediaModal);
+    btnCancelMedia?.addEventListener('click', closeMediaModal);
+
+    async function loadMediaItems() {
+      if (!mediaGrid || !mediaLoading) return;
+      if (cachedMediaList.length > 0) {
+        renderMediaItems(cachedMediaList);
+        return;
+      }
+
+      mediaLoading.style.display = 'block';
+      mediaGrid.innerHTML = '';
+
+      try {
+        const res = await fetch('/api/admin/media');
+        const data = await res.json();
+        if (res.ok && data.ok) {
+          cachedMediaList = data.items || [];
+          renderMediaItems(cachedMediaList);
+        } else {
+          mediaLoading.textContent = 'Erro ao carregar imagens da biblioteca.';
+        }
+      } catch (err) {
+        mediaLoading.textContent = `Erro de conexão: ${err.message}`;
+      }
+    }
+
+    function renderMediaItems(items) {
+      if (!mediaGrid || !mediaLoading) return;
+      mediaLoading.style.display = 'none';
+      mediaGrid.innerHTML = '';
+
+      const q = (mediaSearch?.value || '').toLowerCase().trim();
+      const filtered = items.filter((it) => !q || it.name.toLowerCase().includes(q) || it.publicPath.toLowerCase().includes(q));
+
+      if (filtered.length === 0) {
+        mediaGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #9ca3af; padding: 2rem;">Nenhuma imagem encontrada.</div>';
+        return;
+      }
+
+      filtered.forEach((it) => {
+        const card = document.createElement('div');
+        card.style.cssText = 'background: #0b1120; border: 1px solid #1f2937; border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.15s; display: flex; flex-direction: column;';
+        card.innerHTML = `
+          <div style="height: 90px; width: 100%; display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden;">
+            <img 
+              src="${it.publicPath}" 
+              alt="${it.name}" 
+              style="max-width: 100%; max-height: 100%; object-fit: cover;" 
+              loading="lazy" 
+              onerror="if(!this.dataset.draftRetry){ this.dataset.draftRetry='1'; this.src='/api/admin/media/preview?path=' + encodeURIComponent('${it.publicPath}'); }"
+            />
+          </div>
+          <div style="padding: 0.5rem; font-size: 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #e5e7eb;" title="${it.name}">
+            ${it.name}
+          </div>
+        `;
+
+        card.onmouseover = () => { card.style.borderColor = '#ef4444'; card.style.transform = 'scale(1.03)'; };
+        card.onmouseout = () => { card.style.borderColor = '#1f2937'; card.style.transform = 'scale(1)'; };
+
+        card.onclick = () => {
+          if (onMediaPickCallback) {
+            onMediaPickCallback(it.publicPath);
+          }
+          closeMediaModal();
+        };
+
+        mediaGrid.appendChild(card);
+      });
+    }
+
+    mediaSearch?.addEventListener('input', () => renderMediaItems(cachedMediaList));
+
+    btnMediaUpload?.addEventListener('click', () => mediaUploadInput?.click());
+
+    mediaUploadInput?.addEventListener('change', async () => {
+      if (!mediaUploadInput.files || mediaUploadInput.files.length === 0) return;
+      const file = mediaUploadInput.files[0];
+      const formData = new FormData();
+      formData.append('folder', 'images');
+      formData.append('file', file);
+
+      if (mediaLoading) {
+        mediaLoading.style.display = 'block';
+        mediaLoading.textContent = `Enviando "${file.name}"...`;
+      }
+
+      try {
+        const res = await fetch('/api/admin/media/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await res.json();
+        if (res.ok && data.ok && data.items && data.items[0]) {
+          cachedMediaList.unshift(data.items[0]);
+          renderMediaItems(cachedMediaList);
+          if (onMediaPickCallback) {
+            onMediaPickCallback(data.items[0].publicPath);
+          }
+          closeMediaModal();
+        } else {
+          alert(`Falha no upload: ${data.error || 'Erro desconhecido.'}`);
+          renderMediaItems(cachedMediaList);
+        }
+      } catch (err) {
+        alert(`Erro de conexão: ${err.message}`);
+        renderMediaItems(cachedMediaList);
+      }
+    });
+  }
+
+  // Utilitários de manipulação de caminhos
+  function getValueByPath(obj, path) {
+    if (!obj || !path) return undefined;
+    return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined ? acc[part] : undefined), obj);
+  }
+
+  function setValueByPath(obj, path, value) {
+    const parts = path.split('.');
+    let curr = obj;
+    for (let i = 0; i < parts.length - 1; i++) {
+      if (!curr[parts[i]] || typeof curr[parts[i]] !== 'object') curr[parts[i]] = {};
+      curr = curr[parts[i]];
+    }
+    curr[parts[parts.length - 1]] = value;
+  }
+
+  function showToast(message, isSuccess = false) {
+    const toast = document.getElementById('as-toast');
+    if (!toast) return;
+    toast.textContent = message;
+    toast.className = `as-toast as-toast-show ${isSuccess ? 'as-toast-success' : ''}`;
+    setTimeout(() => {
+      toast.classList.remove('as-toast-show');
+    }, 4000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initVisualEditor);
+  } else {
+    initVisualEditor();
+  }
+</script>

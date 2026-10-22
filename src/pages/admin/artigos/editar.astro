@@ -1,0 +1,867 @@
+---
+export const prerender = false;
+
+import { isRequestAuthenticated } from '../../../lib/admin/auth.ts';
+import { getLocalArticle } from '../../../lib/admin/articles.ts';
+
+if (!isRequestAuthenticated(Astro.request)) {
+  return Astro.redirect('/admin/login');
+}
+
+const url = new URL(Astro.request.url);
+const slug = url.searchParams.get('slug') || '';
+const isNew = !slug;
+
+let initialArticle = {
+  slug: '',
+  meta: {
+    title: '',
+    description: '',
+    pubDate: new Date().toISOString().split('T')[0],
+    updatedDate: '',
+    heroImage: '',
+  },
+  body: '',
+  sha: '',
+};
+
+if (!isNew) {
+  const loaded = await getLocalArticle(slug);
+  if (loaded) {
+    initialArticle = {
+      slug: loaded.slug,
+      meta: {
+        title: loaded.meta.title,
+        description: loaded.meta.description,
+        pubDate: loaded.meta.pubDate,
+        updatedDate: loaded.meta.updatedDate || '',
+        heroImage: loaded.meta.heroImage || '',
+      },
+      body: loaded.body,
+      sha: loaded.sha || '',
+    };
+  } else {
+    return Astro.redirect('/admin/artigos');
+  }
+}
+
+// Imagens padrão disponíveis no repositório para seleção rápida
+const availableImages = [
+  '/blog/Protocolo-XABCDE.avif',
+  '/blog/aph-ambulance-rescue.avif',
+  '/blog/aph-brasil.avif',
+  '/blog/aph-tatico.avif',
+  '/blog/dea-operation.avif',
+  '/blog/lei-lucas.avif',
+  '/blog/primeiros-socorros-curso.avif',
+  '/blog/torniquete-aph.avif',
+  '/images/hero-afogados.avif',
+  '/images/paramedics-ambulance.avif',
+];
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{isNew ? 'Novo Artigo' : `Editar: ${initialArticle.meta.title}`} | Painel Admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/svg+xml" href="/images/logo-academia.svg" />
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --primary-red: #ef4444;
+      --primary-hover: #dc2626;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --success-green: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Nav */
+    .admin-nav {
+      background-color: var(--card-bg);
+      border-bottom: 1px solid var(--card-border);
+      padding: 0.85rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .nav-brand img { width: 28px; height: 28px; }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+    }
+
+    .editor-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .editor-grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      margin-bottom: 1.5rem;
+    }
+
+    .card h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 0.75rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #d1d5db;
+      margin-bottom: 0.4rem;
+    }
+
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      background: #0b1120;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--primary-red);
+    }
+
+    .form-help {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+
+    /* Markdown Editor Toolbar */
+    .md-toolbar {
+      display: flex;
+      gap: 0.35rem;
+      background: #0d131f;
+      border: 1px solid var(--card-border);
+      border-bottom: none;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      padding: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .md-btn {
+      background: #1f2937;
+      color: #e5e7eb;
+      border: 1px solid #374151;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+
+    .md-btn:hover {
+      background: #374151;
+      color: white;
+    }
+
+    .editor-textarea {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      min-height: 480px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* Action Buttons */
+    .btn {
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .btn-primary { background: var(--primary-red); color: white; }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+    .btn-secondary { background: #1f2937; color: #e5e7eb; border: 1px solid var(--card-border); }
+    .btn-secondary:hover { background: #374151; }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Quick Image Selector */
+    .image-presets {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .image-preset-thumb {
+      width: 100%;
+      height: 50px;
+      border-radius: 6px;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color 0.2s, transform 0.1s;
+    }
+
+    .image-preset-thumb:hover {
+      border-color: var(--primary-red);
+      transform: scale(1.05);
+    }
+
+    /* Feedback Alert */
+    .alert {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      display: none;
+      font-size: 0.9rem;
+    }
+
+    .alert-error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+
+    .alert-success {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #6ee7b7;
+    }
+  </style>
+</head>
+<body>
+  <header class="admin-nav">
+    <a href="/admin/artigos" class="nav-brand">
+      <img src="/images/logo-academia.svg" alt="Logo" onerror="this.style.display='none'" />
+      <span>Academia do Socorrista</span>
+    </a>
+    <div class="nav-actions">
+      <a href="/admin/artigos" class="btn btn-secondary">← Voltar para Artigos</a>
+      <a href="/admin/midia" target="_blank" class="btn btn-secondary">🖼️ Mídia</a>
+      {initialArticle.slug && (
+        <a href={`/admin/artigos/preview?slug=${initialArticle.slug}`} target="_blank" class="btn btn-secondary">
+          👁️ Pré-visualizar Rascunho
+        </a>
+      )}
+      <button id="btn-save-article" class="btn btn-primary">
+        💾 Salvar Rascunho
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="alert-box" class="alert"></div>
+
+    <form id="article-form" class="editor-grid">
+      <!-- Coluna Principal: Conteúdo -->
+      <div class="editor-main">
+        <div class="card">
+          <h2>Conteúdo do Artigo</h2>
+
+          <div class="form-group">
+            <label for="title">Título do Artigo *</label>
+            <input 
+              type="text" 
+              id="title" 
+              class="form-input" 
+              placeholder="Ex: Como Escolher Uma Praia Segura..." 
+              value={initialArticle.meta.title} 
+              required 
+            />
+            <span class="form-help">Usado como H1 e título de SEO no blog.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Descrição / Resumo *</label>
+            <textarea 
+              id="description" 
+              class="form-textarea" 
+              style="min-height: 80px;" 
+              placeholder="Resumo claro e atrativo do artigo..." 
+              required
+            >{initialArticle.meta.description}</textarea>
+            <span class="form-help">Exibido na listagem do blog e nas meta tags de compartilhamento.</span>
+          </div>
+
+          <div class="form-group">
+            <label>Corpo do Artigo (Markdown) *</label>
+            <!-- Barra de Ferramentas Markdown -->
+            <div class="md-toolbar">
+              <button type="button" class="md-btn" data-action="h2">H2</button>
+              <button type="button" class="md-btn" data-action="h3">H3</button>
+              <button type="button" class="md-btn" data-action="bold"><b>B</b></button>
+              <button type="button" class="md-btn" data-action="italic"><i>I</i></button>
+              <button type="button" class="md-btn" data-action="list">• Lista</button>
+              <button type="button" class="md-btn" data-action="link">🔗 Link</button>
+              <button type="button" class="md-btn" data-action="quote">❝ Citação</button>
+              <button type="button" class="md-btn" data-action="media" style="background: rgba(99, 102, 241, 0.2); border-color: rgba(99, 102, 241, 0.5); color: #c7d2fe;">🖼️ Inserir Imagem</button>
+            </div>
+            <textarea 
+              id="content" 
+              class="form-textarea editor-textarea" 
+              placeholder="Escreva seu artigo utilizando formatação Markdown..." 
+              required
+            >{initialArticle.body}</textarea>
+            <span class="form-help">Compatível 100% com o Astro e o Antigravity.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coluna Lateral: Metadados e Configurações -->
+      <aside class="editor-sidebar">
+        <div class="card">
+          <h2>Metadados & URL</h2>
+
+          <div class="form-group">
+            <label for="slug">Slug / URL Permanente *</label>
+            <input 
+              type="text" 
+              id="slug" 
+              class="form-input" 
+              placeholder="slug-do-artigo" 
+              value={initialArticle.slug} 
+              required 
+            />
+            <span class="form-help">URL: /blog/<strong id="slug-preview">{initialArticle.slug || 'url-do-artigo'}</strong></span>
+          </div>
+
+          <div class="form-group">
+            <label for="pubDate">Data de Publicação *</label>
+            <input 
+              type="date" 
+              id="pubDate" 
+              class="form-input" 
+              value={initialArticle.meta.pubDate} 
+              required 
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="updatedDate">Data de Atualização (Opcional)</label>
+            <input 
+              type="date" 
+              id="updatedDate" 
+              class="form-input" 
+              value={initialArticle.meta.updatedDate} 
+            />
+            <span class="form-help">Preencha apenas ao revisar um artigo antigo.</span>
+          </div>
+
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+              <label for="heroImage" style="margin-bottom: 0;">Imagem de Capa (Caminho)</label>
+              <button 
+                type="button" 
+                id="btn-open-hero-media" 
+                class="btn-outline" 
+                style="padding: 0.25rem 0.65rem; font-size: 0.75rem; background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.4); cursor: pointer; border-radius: 6px; font-weight: 600;"
+              >
+                🖼️ Biblioteca de Mídia
+              </button>
+            </div>
+            <input 
+              type="text" 
+              id="heroImage" 
+              class="form-input" 
+              placeholder="Ex: /blog/aph-tatico.avif" 
+              value={initialArticle.meta.heroImage} 
+            />
+
+            <!-- Prévia Dinâmica da Capa -->
+            <div 
+              id="hero-preview-container" 
+              style="margin-top: 0.75rem; border-radius: 8px; overflow: hidden; border: 1px solid var(--card-border); background: #0b1120; height: 130px; display: flex; align-items: center; justify-content: center; position: relative;"
+            >
+              <img 
+                id="hero-preview-img" 
+                src={initialArticle.meta.heroImage || ''} 
+                alt="Prévia da Capa" 
+                style={`max-width: 100%; max-height: 100%; object-fit: cover; width: 100%; height: 100%; display: ${initialArticle.meta.heroImage ? 'block' : 'none'};`} 
+                onerror="if(!this.dataset.draftRetry && this.src){ this.dataset.draftRetry='1'; try { const p = new URL(this.src, window.location.origin).pathname; if(p.startsWith('/blog/') || p.startsWith('/images/')){ this.src='/api/admin/media/preview?path=' + encodeURIComponent(p); return; } }catch(e){} } this.style.display='none'; document.getElementById('hero-preview-placeholder').style.display='block';"
+              />
+              <span 
+                id="hero-preview-placeholder" 
+                style={`color: var(--text-muted); font-size: 0.8rem; display: ${initialArticle.meta.heroImage ? 'none' : 'block'};`}
+              >
+                Nenhuma imagem de capa selecionada
+              </span>
+            </div>
+
+            <span class="form-help" style="margin-top: 0.6rem; display: block;">Selecione uma imagem rápida abaixo ou abra a biblioteca:</span>
+            
+            <div class="image-presets">
+              {availableImages.map((img) => (
+                <img 
+                  src={img} 
+                  alt="" 
+                  class="image-preset-thumb" 
+                  title={img} 
+                  onclick={`selectHeroImage('${img}')`} 
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Versionamento</h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.75rem;">
+            O salvamento persiste o arquivo diretamente na branch de rascunhos (<code>cms-drafts</code>), preservando os commits e o histórico Git.
+          </p>
+          <small style="color: #6b7280; font-family: monospace;">SHA: {initialArticle.sha ? initialArticle.sha.slice(0, 10) : 'novo'}</small>
+        </div>
+      </aside>
+    </form>
+  </main>
+
+  <!-- Modal Integrado da Biblioteca de Mídia para o Editor -->
+  <div id="article-media-modal" class="modal-overlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 1.5rem;">
+    <div class="modal-card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; max-width: 850px; width: 100%; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);">
+      <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+        <h3 id="media-modal-title" style="font-size: 1.15rem; font-weight: 700;">Biblioteca de Mídia</h3>
+        <button id="btn-close-media-modal" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;">×</button>
+      </div>
+
+      <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--card-border); display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+        <input 
+          type="text" 
+          id="media-modal-search" 
+          class="form-input" 
+          placeholder="Pesquisar imagem por nome..." 
+          style="max-width: 320px; padding: 0.5rem 0.8rem; font-size: 0.85rem;" 
+        />
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <input type="file" id="media-modal-upload-input" accept=".avif,.webp,.jpg,.jpeg,.png" style="display: none;" />
+          <button type="button" id="btn-media-modal-upload" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;">
+            📤 Enviar Nova Imagem
+          </button>
+          <a href="/admin/midia" target="_blank" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;">
+            Gerenciar Mídias ↗
+          </a>
+        </div>
+      </div>
+
+      <div id="media-modal-body" style="padding: 1.25rem 1.5rem; overflow-y: auto; flex: 1;">
+        <div id="media-modal-loading" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+          Carregando imagens disponíveis...
+        </div>
+        <div id="media-modal-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem;"></div>
+      </div>
+
+      <div style="padding: 1rem 1.5rem; border-top: 1px solid var(--card-border); display: flex; justify-content: flex-end;">
+        <button type="button" id="btn-cancel-media-modal" class="btn btn-secondary">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <script define:vars={{ isNew, originalSlug: initialArticle.slug, currentSha: initialArticle.sha }}>
+    const titleInput = document.getElementById('title');
+    const slugInput = document.getElementById('slug');
+    const slugPreview = document.getElementById('slug-preview');
+    const descInput = document.getElementById('description');
+    const pubDateInput = document.getElementById('pubDate');
+    const updatedDateInput = document.getElementById('updatedDate');
+    const heroImageInput = document.getElementById('heroImage');
+    const contentInput = document.getElementById('content');
+    const btnSave = document.getElementById('btn-save-article');
+    const alertBox = document.getElementById('alert-box');
+
+    // Prévia Dinâmica da Capa
+    const heroPreviewImg = document.getElementById('hero-preview-img');
+    const heroPreviewPlaceholder = document.getElementById('hero-preview-placeholder');
+
+    function updateHeroPreview(url) {
+      if (!heroPreviewImg || !heroPreviewPlaceholder) return;
+      if (url && url.trim().length > 0) {
+        heroPreviewImg.src = url.trim();
+        heroPreviewImg.style.display = 'block';
+        heroPreviewPlaceholder.style.display = 'none';
+      } else {
+        heroPreviewImg.style.display = 'none';
+        heroPreviewPlaceholder.style.display = 'block';
+      }
+    }
+
+    heroImageInput?.addEventListener('input', () => {
+      updateHeroPreview(heroImageInput.value);
+    });
+
+    window.selectHeroImage = function(url) {
+      if (heroImageInput) {
+        heroImageInput.value = url;
+        updateHeroPreview(url);
+      }
+    };
+
+    // Auto-slug apenas para artigos novos quando o usuário digita o título
+    if (isNew) {
+      titleInput?.addEventListener('input', () => {
+        const text = titleInput.value;
+        const autoSlug = text
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase()
+          .trim()
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-');
+        
+        if (slugInput) slugInput.value = autoSlug;
+        if (slugPreview) slugPreview.textContent = autoSlug || 'url-do-artigo';
+      });
+    }
+
+    slugInput?.addEventListener('input', () => {
+      if (slugPreview) slugPreview.textContent = slugInput.value || 'url-do-artigo';
+    });
+
+    // Toolbar Markdown
+    const mdButtons = document.querySelectorAll('.md-btn');
+    mdButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const action = btn.getAttribute('data-action');
+        if (action === 'media') {
+          openMediaPickerModal('markdown');
+        } else {
+          insertMarkdown(action);
+        }
+      });
+    });
+
+    function insertMarkdown(action) {
+      if (!contentInput) return;
+      const start = contentInput.selectionStart;
+      const end = contentInput.selectionEnd;
+      const selected = contentInput.value.substring(start, end);
+      let insertion = '';
+
+      switch (action) {
+        case 'h2': insertion = `\n## ${selected || 'Título da Seção'}\n`; break;
+        case 'h3': insertion = `\n### ${selected || 'Subtítulo'}\n`; break;
+        case 'bold': insertion = `**${selected || 'texto em negrito'}**`; break;
+        case 'italic': insertion = `*${selected || 'texto em itálico'}*`; break;
+        case 'list': insertion = `\n- ${selected || 'Item da lista'}\n`; break;
+        case 'link': insertion = `[${selected || 'Texto do link'}](https://exemplo.com)`; break;
+        case 'quote': insertion = `\n> ${selected || 'Texto da citação'}\n`; break;
+      }
+
+      contentInput.setRangeText(insertion, start, end, 'end');
+      contentInput.focus();
+    }
+
+    // Modal Integrado da Biblioteca de Mídia
+    const mediaModal = document.getElementById('article-media-modal');
+    const btnOpenHeroMedia = document.getElementById('btn-open-hero-media');
+    const btnCloseMediaModal = document.getElementById('btn-close-media-modal');
+    const btnCancelMediaModal = document.getElementById('btn-cancel-media-modal');
+    const mediaSearchInput = document.getElementById('media-modal-search');
+    const mediaGrid = document.getElementById('media-modal-grid');
+    const mediaLoading = document.getElementById('media-modal-loading');
+    const btnModalUpload = document.getElementById('btn-media-modal-upload');
+    const modalUploadInput = document.getElementById('media-modal-upload-input');
+    const mediaModalTitle = document.getElementById('media-modal-title');
+
+    let currentMediaTarget = 'hero'; // 'hero' ou 'markdown'
+    let cachedMediaList = [];
+
+    btnOpenHeroMedia?.addEventListener('click', () => {
+      openMediaPickerModal('hero');
+    });
+
+    btnCloseMediaModal?.addEventListener('click', closeMediaPickerModal);
+    btnCancelMediaModal?.addEventListener('click', closeMediaPickerModal);
+
+    function openMediaPickerModal(target) {
+      currentMediaTarget = target;
+      if (mediaModalTitle) {
+        mediaModalTitle.textContent = target === 'hero' 
+          ? 'Selecionar Imagem de Capa' 
+          : 'Inserir Imagem no Conteúdo';
+      }
+      if (mediaModal) mediaModal.style.display = 'flex';
+      loadMediaForModal();
+    }
+
+    function closeMediaPickerModal() {
+      if (mediaModal) mediaModal.style.display = 'none';
+    }
+
+    async function loadMediaForModal() {
+      if (!mediaGrid || !mediaLoading) return;
+      if (cachedMediaList.length > 0) {
+        renderModalMedia(cachedMediaList);
+        return;
+      }
+
+      mediaLoading.style.display = 'block';
+      mediaGrid.innerHTML = '';
+
+      try {
+        const res = await fetch('/api/admin/media');
+        const data = await res.json();
+        if (res.ok && data.ok) {
+          cachedMediaList = data.items || [];
+          renderModalMedia(cachedMediaList);
+        } else {
+          mediaLoading.textContent = 'Erro ao carregar mídias.';
+        }
+      } catch (err) {
+        mediaLoading.textContent = `Erro de conexão: ${err.message}`;
+      }
+    }
+
+    function renderModalMedia(items) {
+      if (!mediaGrid || !mediaLoading) return;
+      mediaLoading.style.display = 'none';
+      mediaGrid.innerHTML = '';
+
+      const query = (mediaSearchInput?.value || '').toLowerCase().trim();
+      const filtered = items.filter((item) => !query || item.name.toLowerCase().includes(query) || item.publicPath.toLowerCase().includes(query));
+
+      if (filtered.length === 0) {
+        mediaGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">Nenhuma imagem encontrada.</div>';
+        return;
+      }
+
+      filtered.forEach((item) => {
+        const div = document.createElement('div');
+        div.style.cssText = 'background: #0b1120; border: 1px solid var(--card-border); border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.15s, border-color 0.15s; display: flex; flex-direction: column;';
+        div.innerHTML = `
+          <div style="height: 90px; width: 100%; display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden;">
+            <img 
+              src="${item.publicPath}" 
+              alt="" 
+              style="max-width: 100%; max-height: 100%; object-fit: cover;" 
+              loading="lazy" 
+              onerror="if(!this.dataset.draftRetry){ this.dataset.draftRetry='1'; this.src='/api/admin/media/preview?path=' + encodeURIComponent('${item.publicPath}'); }"
+            />
+          </div>
+          <div style="padding: 0.5rem; font-size: 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${item.name}">
+            ${item.name}
+          </div>
+        `;
+
+        div.onmouseover = () => { div.style.borderColor = 'var(--primary-red)'; div.style.transform = 'scale(1.03)'; };
+        div.onmouseout = () => { div.style.borderColor = 'var(--card-border)'; div.style.transform = 'scale(1)'; };
+
+        div.onclick = () => {
+          onMediaSelected(item);
+        };
+
+        mediaGrid.appendChild(div);
+      });
+    }
+
+    mediaSearchInput?.addEventListener('input', () => {
+      renderModalMedia(cachedMediaList);
+    });
+
+    btnModalUpload?.addEventListener('click', () => {
+      modalUploadInput?.click();
+    });
+
+    modalUploadInput?.addEventListener('change', async () => {
+      if (!modalUploadInput.files || modalUploadInput.files.length === 0) return;
+      const file = modalUploadInput.files[0];
+      const formData = new FormData();
+      formData.append('folder', 'blog');
+      formData.append('file', file);
+
+      if (mediaLoading) {
+        mediaLoading.style.display = 'block';
+        mediaLoading.textContent = `Enviando "${file.name}"...`;
+      }
+
+      try {
+        const res = await fetch('/api/admin/media/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await res.json();
+        if (res.ok && data.ok && data.items && data.items[0]) {
+          cachedMediaList.unshift(data.items[0]);
+          renderModalMedia(cachedMediaList);
+          // Pré-seleciona a imagem recém-enviada
+          onMediaSelected(data.items[0]);
+        } else {
+          alert(`Falha no upload: ${data.error || 'Erro desconhecido.'}`);
+          renderModalMedia(cachedMediaList);
+        }
+      } catch (err) {
+        alert(`Erro de conexão: ${err.message}`);
+        renderModalMedia(cachedMediaList);
+      }
+    });
+
+    function onMediaSelected(item) {
+      if (currentMediaTarget === 'hero') {
+        if (heroImageInput) {
+          heroImageInput.value = item.publicPath;
+          updateHeroPreview(item.publicPath);
+        }
+      } else if (currentMediaTarget === 'markdown') {
+        if (contentInput) {
+          const start = contentInput.selectionStart;
+          const end = contentInput.selectionEnd;
+          const mdImg = `\n![${item.name}](${item.publicPath})\n`;
+          contentInput.setRangeText(mdImg, start, end, 'end');
+          contentInput.focus();
+        }
+      }
+      closeMediaPickerModal();
+    }
+
+    // Salvamento via API
+    btnSave?.addEventListener('click', async (e) => {
+      e.preventDefault();
+      showAlert('', false);
+
+      const title = titleInput?.value.trim();
+      const slug = slugInput?.value.trim();
+      const description = descInput?.value.trim();
+      const pubDate = pubDateInput?.value.trim();
+      const updatedDate = updatedDateInput?.value.trim();
+      const heroImage = heroImageInput?.value.trim();
+      const content = contentInput?.value.trim();
+
+      if (!title || !slug || !description || !pubDate || !content) {
+        showAlert('Preencha todos os campos obrigatórios (*).', true);
+        return;
+      }
+
+      btnSave.disabled = true;
+      btnSave.textContent = 'Salvando rascunho...';
+
+      try {
+        const res = await fetch('/api/admin/articles', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            slug,
+            originalSlug: originalSlug || undefined,
+            title,
+            description,
+            pubDate,
+            updatedDate: updatedDate || undefined,
+            heroImage: heroImage || undefined,
+            content,
+            currentSha,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.ok) {
+          showAlert(data.message || 'Rascunho salvo com sucesso!', false);
+          btnSave.textContent = '✓ Salvo com sucesso!';
+
+          if (isNew) {
+            setTimeout(() => {
+              window.location.href = `/admin/artigos/editar?slug=${data.slug}`;
+            }, 1200);
+          } else {
+            setTimeout(() => {
+              btnSave.disabled = false;
+              btnSave.textContent = '💾 Salvar Rascunho';
+            }, 2500);
+          }
+        } else {
+          showAlert(data.error || 'Erro ao salvar o artigo.', true);
+          btnSave.disabled = false;
+          btnSave.textContent = '💾 Salvar Rascunho';
+        }
+      } catch (err) {
+        showAlert(`Falha de comunicação: ${err.message}`, true);
+        btnSave.disabled = false;
+        btnSave.textContent = '💾 Salvar Rascunho';
+      }
+    });
+
+    function showAlert(msg, isError) {
+      if (!alertBox) return;
+      if (!msg) {
+        alertBox.style.display = 'none';
+        return;
+      }
+      alertBox.textContent = msg;
+      alertBox.className = `alert ${isError ? 'alert-error' : 'alert-success'}`;
+      alertBox.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

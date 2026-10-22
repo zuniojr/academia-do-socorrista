@@ -1,0 +1,1113 @@
+---
+export const prerender = false;
+
+import { isRequestAuthenticated } from '../../../lib/admin/auth.ts';
+import { listAllMedia } from '../../../lib/admin/media.ts';
+import { getGitHubConfig } from '../../../lib/admin/github.ts';
+
+if (!isRequestAuthenticated(Astro.request)) {
+  return Astro.redirect('/admin/login');
+}
+
+const mediaItems = await listAllMedia();
+const githubConfig = getGitHubConfig();
+
+// Estatísticas
+const totalImages = mediaItems.length;
+const totalBytes = mediaItems.reduce((acc, item) => acc + item.size, 0);
+const totalMB = (totalBytes / (1024 * 1024)).toFixed(2);
+const inUseCount = mediaItems.filter((i) => i.inUse).length;
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biblioteca de Mídia | Painel Administrativo</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/svg+xml" href="/images/logo-academia.svg" />
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --primary-red: #ef4444;
+      --primary-hover: #dc2626;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --success-green: #10b981;
+      --warning-yellow: #f59e0b;
+      --accent-indigo: #6366f1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation */
+    .admin-nav {
+      background-color: var(--card-bg);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .nav-brand img { width: 32px; height: 32px; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--text-main);
+    }
+
+    .btn-logout {
+      padding: 0.4rem 0.8rem;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+
+    .btn-logout:hover {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--primary-red);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1300px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+    }
+
+    /* Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .page-header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .page-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .stats-chips {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-chip {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 0.5rem 0.85rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .stat-chip strong {
+      color: var(--text-main);
+    }
+
+    /* Upload Zone */
+    .upload-card {
+      background: var(--card-bg);
+      border: 2px dashed var(--card-border);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .upload-card.dragover {
+      border-color: var(--primary-red);
+      background: rgba(239, 68, 68, 0.05);
+    }
+
+    .upload-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .upload-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .upload-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .upload-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .upload-folder-select {
+      background: #0b1120;
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 0.55rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .btn {
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary-red);
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: #1f2937;
+      color: #e5e7eb;
+      border: 1px solid var(--card-border);
+    }
+
+    .btn-secondary:hover {
+      background: #374151;
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 250px;
+      background: #0b1120;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 0.65rem 1rem;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary-red);
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      background: #0b1120;
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 0.45rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-pill:hover, .filter-pill.active {
+      background: #1f2937;
+      color: var(--text-main);
+      border-color: #4b5563;
+    }
+
+    .filter-pill.active {
+      border-color: var(--primary-red);
+      color: #fca5a5;
+    }
+
+    /* Media Grid */
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .media-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, border-color 0.2s;
+      position: relative;
+    }
+
+    .media-card:hover {
+      transform: translateY(-2px);
+      border-color: #374151;
+    }
+
+    .media-thumb-wrap {
+      width: 100%;
+      height: 180px;
+      background: #0b1120;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .media-thumb {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: transform 0.2s;
+    }
+
+    .media-thumb-wrap:hover .media-thumb {
+      transform: scale(1.05);
+    }
+
+    .badge-format {
+      position: absolute;
+      top: 0.5rem;
+      left: 0.5rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.2rem 0.45rem;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: white;
+    }
+
+    .badge-folder {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.45rem;
+      border-radius: 4px;
+      background: rgba(17, 24, 39, 0.85);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+    }
+
+    .badge-inuse {
+      position: absolute;
+      bottom: 0.5rem;
+      left: 0.5rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.45rem;
+      border-radius: 4px;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #6ee7b7;
+    }
+
+    .badge-draft {
+      position: absolute;
+      bottom: 0.5rem;
+      right: 0.5rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.45rem;
+      border-radius: 4px;
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+    }
+
+    .media-details {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .media-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 0.4rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .media-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .media-actions {
+      display: flex;
+      gap: 0.4rem;
+      margin-top: auto;
+      border-top: 1px solid var(--card-border);
+      padding-top: 0.75rem;
+    }
+
+    .action-btn-sm {
+      flex: 1;
+      padding: 0.45rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #1f2937;
+      color: #e5e7eb;
+      border: 1px solid var(--card-border);
+      cursor: pointer;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+    }
+
+    .action-btn-sm:hover {
+      background: #374151;
+      color: white;
+    }
+
+    .action-btn-danger {
+      color: #fca5a5;
+      border-color: rgba(239, 68, 68, 0.3);
+      flex: 0 0 34px;
+    }
+
+    .action-btn-danger:hover {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--primary-red);
+    }
+
+    /* Lightbox Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1.5rem;
+    }
+
+    .modal-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      max-width: 800px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 650px;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0.2rem 0.5rem;
+    }
+
+    .modal-close:hover { color: white; }
+
+    .modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .modal-image-wrap {
+      width: 100%;
+      height: 380px;
+      background: #0b1120;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .modal-image-wrap img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .modal-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .modal-info-item {
+      background: #0b1120;
+      border: 1px solid var(--card-border);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+    }
+
+    .modal-info-item span {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .modal-info-item strong {
+      font-size: 0.9rem;
+      color: var(--text-main);
+      word-break: break-all;
+    }
+
+    .modal-usage-box {
+      background: #0b1120;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .modal-usage-box h4 {
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+      color: #d1d5db;
+    }
+
+    .modal-usage-list {
+      list-style: none;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .modal-usage-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .copy-toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #10b981;
+      color: #042f2e;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+      display: none;
+      z-index: 2000;
+      animation: fadeIn 0.2s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <header class="admin-nav">
+    <a href="/admin" class="nav-brand">
+      <img src="/images/logo-academia.svg" alt="Logo" onerror="this.style.display='none'" />
+      <span>Academia do Socorrista</span>
+    </a>
+    <nav class="nav-links">
+      <a href="/admin" class="nav-link">Dashboard</a>
+      <a href="/admin/artigos" class="nav-link">Artigos</a>
+      <a href="/admin/midia" class="nav-link active">Biblioteca de Mídia</a>
+      <a href="/sobre" target="_blank" class="nav-link">Editor da Página Sobre</a>
+      <a href="/" target="_blank" class="nav-link">Site Público ↗</a>
+      <a href="/admin/logout" class="btn-logout">Sair</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- Header -->
+    <div class="page-header">
+      <div>
+        <h1>Biblioteca de Mídia</h1>
+        <p>Envie, visualize, gerencie e copie imagens salvas na branch de trabalho do repositório.</p>
+      </div>
+      <div class="stats-chips">
+        <div class="stat-chip">Total: <strong id="stat-total">{totalImages}</strong> imagens</div>
+        <div class="stat-chip">Espaço: <strong>{totalMB} MB</strong></div>
+        <div class="stat-chip">Em uso: <strong style="color: var(--success-green);">{inUseCount}</strong></div>
+      </div>
+    </div>
+
+    <!-- Upload Card -->
+    <div id="drop-zone" class="upload-card">
+      <div class="upload-icon">☁️</div>
+      <div class="upload-title">Envio Seguro de Imagens</div>
+      <div class="upload-subtitle">
+        Arraste arquivos aqui ou clique no botão abaixo. Formatos aceitos: <strong>AVIF, WebP, JPEG, PNG</strong> (Máximo de 5 MB por arquivo).
+      </div>
+      <div class="upload-actions">
+        <select id="upload-folder" class="upload-folder-select">
+          <option value="blog">Pasta: public/blog/ (Recomendado para Artigos)</option>
+          <option value="images">Pasta: public/images/ (Páginas Gerais e Logos)</option>
+        </select>
+        <input type="file" id="file-input" multiple accept=".avif,.webp,.jpg,.jpeg,.png" style="display: none;" />
+        <button id="btn-select-file" class="btn btn-primary">
+          📤 Selecionar Arquivos
+        </button>
+      </div>
+      <div id="upload-progress-box" style="display: none; margin-top: 1rem; font-size: 0.9rem;">
+        <span id="upload-status-text" style="color: #60a5fa;">Enviando imagens...</span>
+      </div>
+    </div>
+
+    <!-- Barra de Filtros -->
+    <div class="filter-bar">
+      <input 
+        type="text" 
+        id="search-media" 
+        class="search-input" 
+        placeholder="Pesquisar por nome ou caminho da imagem..." 
+      />
+      <div class="filter-group">
+        <span style="font-size: 0.8rem; color: var(--text-muted); margin-right: 0.25rem;">Formato:</span>
+        <button class="filter-pill active" data-filter-format="all">Todos</button>
+        <button class="filter-pill" data-filter-format="avif">AVIF</button>
+        <button class="filter-pill" data-filter-format="webp">WebP</button>
+        <button class="filter-pill" data-filter-format="jpeg">JPEG</button>
+        <button class="filter-pill" data-filter-format="png">PNG</button>
+      </div>
+      <div class="filter-group">
+        <span style="font-size: 0.8rem; color: var(--text-muted); margin-right: 0.25rem;">Pasta:</span>
+        <button class="filter-pill active" data-filter-folder="all">Todas</button>
+        <button class="filter-pill" data-filter-folder="blog">/blog</button>
+        <button class="filter-pill" data-filter-folder="images">/images</button>
+      </div>
+    </div>
+
+    <!-- Grid de Mídia -->
+    <div id="media-grid" class="media-grid">
+      {mediaItems.map((item) => {
+        const sizeKb = (item.size / 1024).toFixed(1);
+        const dimensionText = item.width && item.height ? `${item.width}×${item.height}` : 'SVG / Vetor';
+        return (
+          <div 
+            class="media-card" 
+            data-name={item.name.toLowerCase()} 
+            data-path={item.publicPath.toLowerCase()} 
+            data-format={item.format.toLowerCase()}
+            data-folder={item.folder}
+          >
+            <div 
+              class="media-thumb-wrap" 
+              onclick={`openLightboxModal(${JSON.stringify(item).replace(/"/g, '&quot;')})`}
+              title="Clique para ampliar"
+            >
+              <img 
+                src={item.publicPath} 
+                alt={item.name} 
+                class="media-thumb" 
+                loading="lazy" 
+                onerror={`if(!this.dataset.draftRetry){ this.dataset.draftRetry='1'; this.src='/api/admin/media/preview?path=${encodeURIComponent(item.publicPath)}'; }`}
+              />
+              <span class="badge-format">{item.format}</span>
+              <span class="badge-folder">/{item.folder}</span>
+              {item.inUse && <span class="badge-inuse">Em uso</span>}
+              {item.isDraft && <span class="badge-draft">Rascunho</span>}
+            </div>
+            <div class="media-details">
+              <div class="media-name" title={item.name}>{item.name}</div>
+              <div class="media-meta">
+                <span>{dimensionText}</span>
+                <span>{sizeKb} KB</span>
+              </div>
+              <div class="media-actions">
+                <button 
+                  class="action-btn-sm" 
+                  onclick={`copyToClipboard('${item.publicPath}', this)`}
+                  title="Copiar caminho relativo para usar em artigos"
+                >
+                  🔗 Copiar Link
+                </button>
+                <button 
+                  class="action-btn-sm" 
+                  onclick={`openLightboxModal(${JSON.stringify(item).replace(/"/g, '&quot;')})`}
+                  title="Visualizar detalhes"
+                >
+                  👁️ Detalhes
+                </button>
+                <button 
+                  class="action-btn-sm action-btn-danger" 
+                  onclick={`requestDeleteImage('${item.publicPath}', ${Boolean(item.inUse)})`}
+                  title={item.inUse ? 'Esta imagem está em uso e não pode ser excluída' : 'Excluir imagem'}
+                >
+                  🗑️
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    <div id="empty-state" style="display: none; text-align: center; padding: 4rem; color: var(--text-muted);">
+      Nenhuma imagem encontrada com os filtros selecionados.
+    </div>
+  </main>
+
+  <!-- Modal Lightbox Detalhes -->
+  <div id="lightbox-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-title">Detalhes da Imagem</h3>
+        <button class="modal-close" onclick="closeLightboxModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-image-wrap">
+          <img 
+            id="modal-img" 
+            src="" 
+            alt="" 
+            onerror="if(!this.dataset.draftRetry && this.dataset.path){ this.dataset.draftRetry='1'; this.src='/api/admin/media/preview?path=' + encodeURIComponent(this.dataset.path); }"
+          />
+        </div>
+        <div class="modal-info-grid">
+          <div class="modal-info-item">
+            <span>Caminho Público</span>
+            <strong id="modal-path"></strong>
+          </div>
+          <div class="modal-info-item">
+            <span>Dimensões</span>
+            <strong id="modal-dims"></strong>
+          </div>
+          <div class="modal-info-item">
+            <span>Formato & Peso</span>
+            <strong id="modal-weight"></strong>
+          </div>
+          <div class="modal-info-item">
+            <span>Status no Git</span>
+            <strong id="modal-status"></strong>
+          </div>
+        </div>
+
+        <div id="modal-usage-section" class="modal-usage-box" style="display: none;">
+          <h4>Referências encontradas no site:</h4>
+          <ul id="modal-usage-list" class="modal-usage-list"></ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <button id="modal-btn-copy-path" class="btn btn-secondary">
+            📋 Copiar Caminho
+          </button>
+          <button id="modal-btn-copy-md" class="btn btn-secondary">
+            📝 Copiar Tag Markdown
+          </button>
+        </div>
+        <button class="btn btn-primary" onclick="closeLightboxModal()">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast de Notificação -->
+  <div id="toast" class="copy-toast">✓ Caminho copiado para a área de transferência!</div>
+
+  <script>
+    // 1. Filtros e Busca em Tempo Real
+    const searchInput = document.getElementById('search-media') as HTMLInputElement;
+    const cards = document.querySelectorAll<HTMLElement>('.media-card');
+    const emptyState = document.getElementById('empty-state');
+    const formatButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter-format]');
+    const folderButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter-folder]');
+
+    let currentFormat = 'all';
+    let currentFolder = 'all';
+
+    function applyFilters() {
+      const q = (searchInput?.value || '').toLowerCase().trim();
+      let visible = 0;
+
+      cards.forEach((card) => {
+        const name = card.getAttribute('data-name') || '';
+        const path = card.getAttribute('data-path') || '';
+        const format = card.getAttribute('data-format') || '';
+        const folder = card.getAttribute('data-folder') || '';
+
+        const matchSearch = !q || name.includes(q) || path.includes(q);
+        const matchFormat = currentFormat === 'all' || format === currentFormat;
+        const matchFolder = currentFolder === 'all' || folder === currentFolder;
+
+        if (matchSearch && matchFormat && matchFolder) {
+          card.style.display = '';
+          visible++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (emptyState) {
+        emptyState.style.display = visible === 0 ? 'block' : 'none';
+      }
+    }
+
+    searchInput?.addEventListener('input', applyFilters);
+
+    formatButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        formatButtons.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFormat = btn.getAttribute('data-filter-format') || 'all';
+        applyFilters();
+      });
+    });
+
+    folderButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        folderButtons.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFolder = btn.getAttribute('data-filter-folder') || 'all';
+        applyFilters();
+      });
+    });
+
+    // 2. Upload de Arquivos (Drag & Drop e Seletor)
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input') as HTMLInputElement;
+    const btnSelectFile = document.getElementById('btn-select-file');
+    const folderSelect = document.getElementById('upload-folder') as HTMLSelectElement;
+    const progressBox = document.getElementById('upload-progress-box');
+    const progressText = document.getElementById('upload-status-text');
+
+    btnSelectFile?.addEventListener('click', () => fileInput?.click());
+
+    fileInput?.addEventListener('change', () => {
+      if (fileInput.files && fileInput.files.length > 0) {
+        handleUpload(fileInput.files);
+      }
+    });
+
+    dropZone?.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    dropZone?.addEventListener('dragleave', () => {
+      dropZone.classList.remove('dragover');
+    });
+
+    dropZone?.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      if (e.dataTransfer?.files && e.dataTransfer.files.length > 0) {
+        handleUpload(e.dataTransfer.files);
+      }
+    });
+
+    async function handleUpload(files: FileList) {
+      if (!files || files.length === 0) return;
+      if (files.length > 5) {
+        alert('Por favor, selecione no máximo 5 arquivos por envio.');
+        return;
+      }
+
+      const folder = folderSelect?.value || 'blog';
+      const formData = new FormData();
+      formData.append('folder', folder);
+
+      for (let i = 0; i < files.length; i++) {
+        formData.append('files', files[i]);
+      }
+
+      if (progressBox) progressBox.style.display = 'block';
+      if (progressText) {
+        progressText.textContent = `Validando e enviando ${files.length} arquivo(s) para public/${folder}...`;
+        progressText.style.color = '#60a5fa';
+      }
+
+      try {
+        const res = await fetch('/api/admin/media/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.ok) {
+          if (progressText) {
+            progressText.textContent = `✓ ${data.message} Atualizando biblioteca...`;
+            progressText.style.color = '#10b981';
+          }
+          setTimeout(() => {
+            window.location.reload();
+          }, 1200);
+        } else {
+          if (progressText) {
+            progressText.textContent = `Erro: ${data.error || 'Falha no upload.'} ${data.details ? data.details.join(' ') : ''}`;
+            progressText.style.color = '#ef4444';
+          }
+        }
+      } catch (err: any) {
+        if (progressText) {
+          progressText.textContent = `Erro de conexão: ${err.message}`;
+          progressText.style.color = '#ef4444';
+        }
+      }
+    }
+
+    // 3. Área de Transferência
+    (window as any).copyToClipboard = function(text: string, buttonElement?: HTMLElement) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(`✓ Copiado: ${text}`);
+        if (buttonElement) {
+          const original = buttonElement.innerHTML;
+          buttonElement.innerHTML = '✓ Copiado!';
+          setTimeout(() => {
+            buttonElement.innerHTML = original;
+          }, 1500);
+        }
+      });
+    };
+
+    function showToast(msg: string) {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2500);
+    }
+
+    // 4. Lightbox Modal
+    const modal = document.getElementById('lightbox-modal');
+    let activeModalItem: any = null;
+
+    (window as any).openLightboxModal = function(item: any) {
+      activeModalItem = item;
+      if (!modal) return;
+
+      const title = document.getElementById('modal-title');
+      const img = document.getElementById('modal-img') as HTMLImageElement;
+      const pathEl = document.getElementById('modal-path');
+      const dims = document.getElementById('modal-dims');
+      const weight = document.getElementById('modal-weight');
+      const status = document.getElementById('modal-status');
+      const usageSection = document.getElementById('modal-usage-section');
+      const usageList = document.getElementById('modal-usage-list');
+
+      if (title) title.textContent = item.name;
+      if (img) {
+        img.dataset.path = item.publicPath;
+        delete img.dataset.draftRetry;
+        img.src = item.publicPath;
+      }
+      if (pathEl) pathEl.textContent = item.publicPath;
+      if (dims) dims.textContent = item.width && item.height ? `${item.width} × ${item.height} pixels` : 'Vetor / N/A';
+      if (weight) weight.textContent = `${item.format.toUpperCase()} (${(item.size / 1024).toFixed(1)} KB)`;
+      if (status) status.textContent = item.isDraft ? 'Rascunho (Branch cms-drafts)' : 'Repositório Oficial';
+
+      if (usageSection && usageList) {
+        if (item.inUse && item.usedIn && item.usedIn.length > 0) {
+          usageSection.style.display = 'block';
+          usageList.innerHTML = item.usedIn.map((r: any) => `
+            <li>
+              <span>📄</span>
+              <strong>${r.title}</strong>
+              <small style="color: #6b7280;">(${r.location})</small>
+            </li>
+          `).join('');
+        } else {
+          usageSection.style.display = 'none';
+        }
+      }
+
+      modal.style.display = 'flex';
+    };
+
+    (window as any).closeLightboxModal = function() {
+      if (modal) modal.style.display = 'none';
+      activeModalItem = null;
+    };
+
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        (window as any).closeLightboxModal();
+      }
+    });
+
+    document.getElementById('modal-btn-copy-path')?.addEventListener('click', () => {
+      if (activeModalItem) {
+        (window as any).copyToClipboard(activeModalItem.publicPath);
+      }
+    });
+
+    document.getElementById('modal-btn-copy-md')?.addEventListener('click', () => {
+      if (activeModalItem) {
+        const md = `![${activeModalItem.name}](${activeModalItem.publicPath})`;
+        (window as any).copyToClipboard(md);
+      }
+    });
+
+    // 5. Exclusão Protegida
+    (window as any).requestDeleteImage = async function(publicPath: string, inUse: boolean) {
+      if (inUse) {
+        alert('Esta imagem não pode ser excluída porque está sendo utilizada por artigos ou páginas do site. Para excluí-la, remova primeiro as referências nos artigos.');
+        return;
+      }
+
+      const confirmDel = confirm(`Tem certeza que deseja excluir permanentemente a imagem:\n${publicPath}?\n\nEsta alteração será gravada na branch cms-drafts.`);
+      if (!confirmDel) return;
+
+      try {
+        const res = await fetch('/api/admin/media', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ publicPath }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.ok) {
+          showToast(`✓ ${data.message}`);
+          setTimeout(() => window.location.reload(), 1000);
+        } else {
+          alert(`Não foi possível excluir: ${data.error || 'Erro desconhecido.'}`);
+        }
+      } catch (err: any) {
+        alert(`Erro de conexão ao excluir: ${err.message}`);
+      }
+    };
+  </script>
+</body>
+</html>

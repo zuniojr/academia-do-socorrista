@@ -1,0 +1,249 @@
+---
+export const prerender = false;
+
+import { 
+  isRequestAuthenticated, 
+  verifyAdminPassword, 
+  createSessionToken, 
+  buildAuthCookie,
+  checkLoginRateLimit,
+  recordFailedLoginAttempt,
+  resetLoginAttempts
+} from '../../lib/admin/auth.ts';
+
+// Se já estiver logado, redireciona diretamente para o painel
+if (isRequestAuthenticated(Astro.request)) {
+  return Astro.redirect('/admin');
+}
+
+let errorMessage = '';
+
+// Identificação segura do IP do cliente
+const forwardedFor = Astro.request.headers.get('x-forwarded-for');
+const clientIp = forwardedFor ? forwardedFor.split(',')[0].trim() : (Astro.clientAddress || '127.0.0.1');
+
+if (Astro.request.method === 'POST') {
+  // Verifica proteção contra força bruta
+  const rateLimit = checkLoginRateLimit(clientIp);
+  if (!rateLimit.allowed) {
+    const mins = Math.ceil((rateLimit.remainingSeconds || 60) / 60);
+    errorMessage = `Muitas tentativas incorretas. Acesso bloqueado temporariamente. Tente novamente em ${mins} minuto(s).`;
+  } else {
+    try {
+      const formData = await Astro.request.formData();
+      const password = formData.get('password')?.toString() || '';
+
+      if (verifyAdminPassword(password)) {
+        const token = createSessionToken();
+        if (!token) {
+          errorMessage = 'Não foi possível autenticar: credenciais de produção não configuradas com segurança.';
+        } else {
+          resetLoginAttempts(clientIp);
+          const isSecure = Astro.url.protocol === 'https:' || Astro.request.headers.get('x-forwarded-proto') === 'https' || process.env.NODE_ENV === 'production';
+          const cookieHeader = buildAuthCookie(token, isSecure);
+
+          const headers = new Headers();
+          headers.append('Set-Cookie', cookieHeader);
+          headers.append('Location', '/admin');
+
+          return new Response(null, {
+            status: 302,
+            headers,
+          });
+        }
+      } else {
+        const attempt = recordFailedLoginAttempt(clientIp);
+        if (attempt.isLocked) {
+          errorMessage = 'Limite de tentativas excedido. O acesso foi bloqueado por 15 minutos para sua proteção.';
+        } else {
+          errorMessage = `Senha administrativa incorreta. Tentativas restantes: ${attempt.remainingAttempts}`;
+        }
+      }
+    } catch {
+      errorMessage = 'Ocorreu um erro no processamento do login.';
+    }
+  }
+}
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Administrativo | Academia do Socorrista</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/svg+xml" href="/images/logo-academia.svg" />
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --border-color: #334155;
+      --primary-red: #ef4444;
+      --primary-hover: #dc2626;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .login-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+    }
+
+    .brand-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .brand-logo {
+      width: 56px;
+      height: 56px;
+      margin-bottom: 1rem;
+    }
+
+    .brand-header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-header p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+
+    .error-alert {
+      background-color: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: #0b1120;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: var(--primary-red);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 0.85rem;
+      background-color: var(--primary-red);
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-submit:active {
+      transform: scale(0.99);
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.5rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: var(--text-main);
+    }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <div class="brand-header">
+      <img src="/images/logo-academia.svg" alt="Logo" class="brand-logo" onerror="this.style.display='none'" />
+      <h1>Academia do Socorrista</h1>
+      <p>Acesso ao Painel Administrativo</p>
+    </div>
+
+    {errorMessage && (
+      <div class="error-alert" role="alert">
+        {errorMessage}
+      </div>
+    )}
+
+    <form method="POST" action="/admin/login">
+      <div class="form-group">
+        <label for="password">Senha de Administrador</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          class="form-input" 
+          placeholder="Digite a senha administrativa" 
+          required 
+          autofocus 
+          autocomplete="current-password"
+        />
+      </div>
+
+      <button type="submit" class="btn-submit">
+        Entrar no Painel
+      </button>
+    </form>
+
+    <a href="/" class="back-link">← Voltar ao site público</a>
+  </div>
+</body>
+</html>

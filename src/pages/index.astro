@@ -2,24 +2,53 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import VisualEditor from '../components/admin/VisualEditor.astro';
+import homeData from '../data/pages/home.json';
 
-const title = "Academia do Socorrista | Treinamento Avançado";
-const description = "Domine o Controle de Hemorragias e esteja preparado para salvar vidas em situações de alto risco com as melhores técnicas de resgate.";
+const title = homeData.meta?.title || "Academia do Socorrista | Treinamento Avançado";
+const description = homeData.meta?.description || "Domine o Controle de Hemorragias e esteja preparado para salvar vidas em situações de alto risco com as melhores técnicas de resgate.";
 ---
 
 <Layout title={title} description={description}>
+	<VisualEditor pageId="home" pageName="Página Inicial" />
 	<Header />
 	<main>
 		<!-- ============ HERO PRINCIPAL ============ -->
 		<section class="hero-main">
-			<div class="hero-main__inner animate-fade">
+			<div class="hero-main__inner animate-fade" style={`background-image: url('${homeData.hero?.bgImage || '/images/hero-paramedics.avif'}');`}>
 				<div class="container">
 					<div class="hero-main__content">
-						<h1>Aprenda Atendimento <span class="text-red-hero">Pré-Hospitalar</span> com quem vive o resgate todos os dias.</h1>
-						<p>Cursos online desenvolvidos por profissionais experientes para formar socorristas preparados para agir nas situações mais críticas.</p>
+						<h1>
+							<span data-editable-id="hero.titlePrefix" data-editable-label="Hero - Início do Título" data-editable-type="text">{homeData.hero?.titlePrefix || 'Aprenda Atendimento '}</span><span class="text-red-hero" data-editable-id="hero.titleHighlight" data-editable-label="Hero - Título em Destaque" data-editable-type="text">{homeData.hero?.titleHighlight || 'Pré-Hospitalar'}</span><span data-editable-id="hero.titleSuffix" data-editable-label="Hero - Final do Título" data-editable-type="text">{homeData.hero?.titleSuffix || ' com quem vive o resgate todos os dias.'}</span>
+						</h1>
+						<p data-editable-id="hero.paragraph" data-editable-label="Hero - Parágrafo Principal" data-editable-type="textarea">
+							{homeData.hero?.paragraph || 'Cursos online desenvolvidos por profissionais experientes para formar socorristas preparados para agir nas situações mais críticas.'}
+						</p>
 						<div class="hero-main__actions">
-							<a href="https://www.academiadosocorrista.com.br/nossos-cursos" target="_blank" rel="noopener noreferrer" class="btn btn-primary-hero">Conheça os Cursos <span class="arrow">&gt;</span></a>
-							<a href="https://www.academiadosocorrista.com.br/nossos-cursos" target="_blank" rel="noopener noreferrer" class="btn btn-outline-hero">Começar Agora <span class="arrow">&gt;</span></a>
+							<a 
+								href={homeData.hero?.cta1Url || "https://www.academiadosocorrista.com.br/nossos-cursos"} 
+								target="_blank" 
+								rel="noopener noreferrer" 
+								class="btn btn-primary-hero"
+								data-editable-id="hero.cta1Text"
+								data-editable-href-id="hero.cta1Url"
+								data-editable-label="Botão Hero Primário"
+								data-editable-type="button"
+							>
+								{homeData.hero?.cta1Text || 'Conheça os Cursos'} <span class="arrow">&gt;</span>
+							</a>
+							<a 
+								href={homeData.hero?.cta2Url || "https://www.academiadosocorrista.com.br/nossos-cursos"} 
+								target="_blank" 
+								rel="noopener noreferrer" 
+								class="btn btn-outline-hero"
+								data-editable-id="hero.cta2Text"
+								data-editable-href-id="hero.cta2Url"
+								data-editable-label="Botão Hero Secundário"
+								data-editable-type="button"
+							>
+								{homeData.hero?.cta2Text || 'Começar Agora'} <span class="arrow">&gt;</span>
+							</a>
 						</div>
 					</div>
 				</div>
@@ -55,15 +84,41 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 			<div class="afogados-hero__bg animate-fade">
 				<div class="container">
 					<div class="afogados-hero__content">
-						<div class="badge-premium">
+						<div class="badge-premium" data-editable-id="afogados.badge" data-editable-label="Afogados - Distintivo" data-editable-type="text">
 							<span class="dot"></span>
-							Novo Curso
+							{homeData.afogados?.badge || 'Novo Curso'}
 						</div>
-						<h2>Recuperação de <span class="text-gradient">Afogados na Prática</span></h2>
-						<p>Aprenda as técnicas essenciais de resgate aquático e recuperação de afogados com um treinamento prático e baseado em protocolos internacionais.</p>
+						<h2>
+							<span data-editable-id="afogados.titlePrefix" data-editable-label="Afogados - Início do Título" data-editable-type="text">{homeData.afogados?.titlePrefix || 'Recuperação de '}</span><span class="text-gradient" data-editable-id="afogados.titleHighlight" data-editable-label="Afogados - Destaque" data-editable-type="text">{homeData.afogados?.titleHighlight || 'Afogados na Prática'}</span>
+						</h2>
+						<p data-editable-id="afogados.paragraph" data-editable-label="Afogados - Descrição" data-editable-type="textarea">
+							{homeData.afogados?.paragraph || 'Aprenda as técnicas essenciais de resgate aquático e recuperação de afogados com um treinamento prático e baseado em protocolos internacionais.'}
+						</p>
 						<div class="afogados-hero__actions">
-							<a href="https://www.academiadosocorrista.com.br/recuperacao-de-afogados-na-pratica" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Quero me Inscrever</a>
-							<a href="https://www.academiadosocorrista.com.br/recuperacao-de-afogados-na-pratica" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Conheça o Curso</a>
+							<a 
+								href={homeData.afogados?.cta1Url || "https://www.academiadosocorrista.com.br/recuperacao-de-afogados-na-pratica"} 
+								target="_blank" 
+								rel="noopener noreferrer" 
+								class="btn btn-primary"
+								data-editable-id="afogados.cta1Text"
+								data-editable-href-id="afogados.cta1Url"
+								data-editable-label="Afogados - Botão Inscrição"
+								data-editable-type="button"
+							>
+								{homeData.afogados?.cta1Text || 'Quero me Inscrever'}
+							</a>
+							<a 
+								href={homeData.afogados?.cta2Url || "https://www.academiadosocorrista.com.br/recuperacao-de-afogados-na-pratica"} 
+								target="_blank" 
+								rel="noopener noreferrer" 
+								class="btn btn-outline"
+								data-editable-id="afogados.cta2Text"
+								data-editable-href-id="afogados.cta2Url"
+								data-editable-label="Afogados - Botão Conhecer"
+								data-editable-type="button"
+							>
+								{homeData.afogados?.cta2Text || 'Conheça o Curso'}
+							</a>
 						</div>
 					</div>
 				</div>
@@ -74,17 +129,23 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 		<section class="learn-anywhere">
 			<div class="container learn-anywhere__inner">
 				<div class="learn-anywhere__content animate-fade">
-					<h2>Aprenda de onde estiver.<br/>Quando quiser.</h2>
-					<p>Nossa plataforma é moderna, intuitiva e 100% online. Acesse pelo computador, tablet ou celular e tenha uma experiência completa de ensino.</p>
+					<h2 data-editable-id="plataforma.title" data-editable-label="Plataforma - Título" data-editable-type="text">{homeData.plataforma?.title || 'Aprenda de onde estiver. Quando quiser.'}</h2>
+					<p data-editable-id="plataforma.paragraph" data-editable-label="Plataforma - Descrição" data-editable-type="textarea">{homeData.plataforma?.paragraph || 'Nossa plataforma é moderna, intuitiva e 100% online. Acesse pelo computador, tablet ou celular e tenha uma experiência completa de ensino.'}</p>
 					<ul class="learn-anywhere__list">
-						<li><span class="check-icon">✓</span> Vídeos em alta qualidade</li>
-						<li><span class="check-icon">✓</span> Materiais de apoio para download</li>
-						<li><span class="check-icon">✓</span> Acompanhamento do seu progresso</li>
-						<li><span class="check-icon">✓</span> Certificado digital com QR Code</li>
+						<li><span class="check-icon">✓</span> <span data-editable-id="plataforma.item1" data-editable-label="Plataforma - Item 1" data-editable-type="text">{homeData.plataforma?.item1 || 'Vídeos em alta qualidade'}</span></li>
+						<li><span class="check-icon">✓</span> <span data-editable-id="plataforma.item2" data-editable-label="Plataforma - Item 2" data-editable-type="text">{homeData.plataforma?.item2 || 'Materiais de apoio para download'}</span></li>
+						<li><span class="check-icon">✓</span> <span data-editable-id="plataforma.item3" data-editable-label="Plataforma - Item 3" data-editable-type="text">{homeData.plataforma?.item3 || 'Acompanhamento do seu progresso'}</span></li>
+						<li><span class="check-icon">✓</span> <span data-editable-id="plataforma.item4" data-editable-label="Plataforma - Item 4" data-editable-type="text">{homeData.plataforma?.item4 || 'Certificado digital com QR Code'}</span></li>
 					</ul>
 				</div>
 				<div class="learn-anywhere__image animate-fade" style="animation-delay: 0.2s;">
-					<img src="/images/devices-mockup.avif" alt="Plataforma de cursos acessível em computador, tablet e celular" />
+					<img 
+						src={homeData.plataforma?.image || "/images/devices-mockup.avif"} 
+						alt="Plataforma de cursos acessível em computador, tablet e celular"
+						data-editable-id="plataforma.image"
+						data-editable-label="Imagem dos Dispositivos / Mockup"
+						data-editable-type="image"
+					/>
 				</div>
 			</div>
 		</section>
@@ -93,40 +154,57 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 		<section id="sobre" class="about">
 			<div class="container about-inner">
 				<div class="about-image animate-fade">
-					<img src="/images/socorrista-heroico.avif" alt="Socorrista Heroico em Pose Confiante - Academia do Socorrista" />
-					<a href="https://www.academiadosocorrista.com.br/domine-o-controle-de-hemorragias" class="experience-badge" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">
+					<img 
+						src={homeData.metodologia?.image || "/images/socorrista-heroico.avif"} 
+						alt="Socorrista Heroico em Pose Confiante - Academia do Socorrista" 
+						data-editable-id="metodologia.image"
+						data-editable-label="Metodologia - Imagem do Socorrista"
+						data-editable-type="image"
+					/>
+					<a href={homeData.metodologia?.ctaUrl || "https://www.academiadosocorrista.com.br/domine-o-controle-de-hemorragias"} class="experience-badge" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">
 						<span class="exp-years" style="font-size: 1.8rem;">Inscreva-se</span>
 					</a>
 				</div>
 				<div class="about-text animate-fade" style="animation-delay: 0.2s;">
-					<h2>Metodologia Baseada em <span class="text-gradient">Protocolos Internacionais</span></h2>
-					<p>Nosso treinamento é construído sobre bases sólidas, utilizando as diretrizes mais recentes. Preparamos você para agir no momento em que cada segundo conta.</p>
+					<h2>
+						<span data-editable-id="metodologia.titlePrefix" data-editable-label="Metodologia - Início do Título" data-editable-type="text">{homeData.metodologia?.titlePrefix || 'Metodologia Baseada em '}</span><span class="text-gradient" data-editable-id="metodologia.titleHighlight" data-editable-label="Metodologia - Destaque" data-editable-type="text">{homeData.metodologia?.titleHighlight || 'Protocolos Internacionais'}</span>
+					</h2>
+					<p data-editable-id="metodologia.paragraph" data-editable-label="Metodologia - Descrição" data-editable-type="textarea">{homeData.metodologia?.paragraph || 'Nosso treinamento é construído sobre bases sólidas, utilizando as diretrizes mais recentes. Preparamos você para agir no momento em que cada segundo conta.'}</p>
 					
 					<div class="benefits-list">
 						<div class="benefit-item">
 							<span class="benefit-icon">⏱️</span>
 							<div class="benefit-content">
-								<h4>Ação Imediata</h4>
-								<p>Técnicas focadas na resposta rápida para preservar a vida em minutos críticos.</p>
+								<h4 data-editable-id="metodologia.benefit1Title" data-editable-label="Benefício 1 - Título" data-editable-type="text">{homeData.metodologia?.benefit1Title || 'Ação Imediata'}</h4>
+								<p data-editable-id="metodologia.benefit1Text" data-editable-label="Benefício 1 - Descrição" data-editable-type="textarea">{homeData.metodologia?.benefit1Text || 'Técnicas focadas na resposta rápida para preservar a vida em minutos críticos.'}</p>
 							</div>
 						</div>
 						<div class="benefit-item">
 							<span class="benefit-icon">🧠</span>
 							<div class="benefit-content">
-								<h4>Controle Emocional</h4>
-								<p>Treinamento para manter a calma e a precisão sob extrema pressão.</p>
+								<h4 data-editable-id="metodologia.benefit2Title" data-editable-label="Benefício 2 - Título" data-editable-type="text">{homeData.metodologia?.benefit2Title || 'Controle Emocional'}</h4>
+								<p data-editable-id="metodologia.benefit2Text" data-editable-label="Benefício 2 - Descrição" data-editable-type="textarea">{homeData.metodologia?.benefit2Text || 'Treinamento para manter a calma e a precisão sob extrema pressão.'}</p>
 							</div>
 						</div>
 						<div class="benefit-item">
 							<span class="benefit-icon">🛡️</span>
 							<div class="benefit-content">
-								<h4>Conhecimento Prático</h4>
-								<p>Exercícios simulados e cenários reais para garantir a máxima retenção do aprendizado.</p>
+								<h4 data-editable-id="metodologia.benefit3Title" data-editable-label="Benefício 3 - Título" data-editable-type="text">{homeData.metodologia?.benefit3Title || 'Conhecimento Prático'}</h4>
+								<p data-editable-id="metodologia.benefit3Text" data-editable-label="Benefício 3 - Descrição" data-editable-type="textarea">{homeData.metodologia?.benefit3Text || 'Exercícios simulados e cenários reais para garantir a máxima retenção do aprendizado.'}</p>
 							</div>
 						</div>
 					</div>
 
-					<a href="https://www.academiadosocorrista.com.br/domine-o-controle-de-hemorragias" class="btn btn-primary">Garantir Inscrição</a>
+					<a 
+						href={homeData.metodologia?.ctaUrl || "https://www.academiadosocorrista.com.br/domine-o-controle-de-hemorragias"} 
+						class="btn btn-primary"
+						data-editable-id="metodologia.ctaText"
+						data-editable-href-id="metodologia.ctaUrl"
+						data-editable-label="Metodologia - Botão Inscrição"
+						data-editable-type="button"
+					>
+						{homeData.metodologia?.ctaText || 'Garantir Inscrição'}
+					</a>
 				</div>
 			</div>
 		</section>
@@ -135,38 +213,40 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 		<section class="why-study">
 			<div class="container">
 				<div class="why-study__header">
-					<h2>Por que estudar <span class="text-gradient">com a gente?</span></h2>
+					<h2>
+						<span data-editable-id="whyStudy.titlePrefix" data-editable-label="Por Que Estudar - Início" data-editable-type="text">{homeData.whyStudy?.titlePrefix || 'Por que estudar '}</span><span class="text-gradient" data-editable-id="whyStudy.titleHighlight" data-editable-label="Por Que Estudar - Destaque" data-editable-type="text">{homeData.whyStudy?.titleHighlight || 'com a gente?'}</span>
+					</h2>
 				</div>
 				<div class="why-study__grid">
 					<div class="why-study__card animate-fade">
 						<span class="why-study__icon">👨‍🏫</span>
-						<h4>Instrutores atuantes</h4>
-						<p>Profissionais que atuam diariamente em ocorrências reais.</p>
+						<h4 data-editable-id="whyStudy.card1Title" data-editable-label="Card 1 - Título" data-editable-type="text">{homeData.whyStudy?.card1Title || 'Instrutores atuantes'}</h4>
+						<p data-editable-id="whyStudy.card1Text" data-editable-label="Card 1 - Descrição" data-editable-type="textarea">{homeData.whyStudy?.card1Text || 'Profissionais que atuam diariamente em ocorrências reais.'}</p>
 					</div>
 					<div class="why-study__card animate-fade" style="animation-delay: 0.1s;">
 						<span class="why-study__icon">🎯</span>
-						<h4>Metodologia prática</h4>
-						<p>Casos reais, simulações and protocolos aplicados em campo.</p>
+						<h4 data-editable-id="whyStudy.card2Title" data-editable-label="Card 2 - Título" data-editable-type="text">{homeData.whyStudy?.card2Title || 'Metodologia prática'}</h4>
+						<p data-editable-id="whyStudy.card2Text" data-editable-label="Card 2 - Descrição" data-editable-type="textarea">{homeData.whyStudy?.card2Text || 'Casos reais, simulações e protocolos aplicados em campo.'}</p>
 					</div>
 					<div class="why-study__card animate-fade" style="animation-delay: 0.2s;">
 						<span class="why-study__icon">🔄</span>
-						<h4>Conteúdo atualizado</h4>
-						<p>Material revisado conforme as últimas diretrizes internacionais.</p>
+						<h4 data-editable-id="whyStudy.card3Title" data-editable-label="Card 3 - Título" data-editable-type="text">{homeData.whyStudy?.card3Title || 'Conteúdo atualizado'}</h4>
+						<p data-editable-id="whyStudy.card3Text" data-editable-label="Card 3 - Descrição" data-editable-type="textarea">{homeData.whyStudy?.card3Text || 'Material revisado conforme as últimas diretrizes internacionais.'}</p>
 					</div>
 					<div class="why-study__card animate-fade" style="animation-delay: 0.3s;">
 						<span class="why-study__icon">🏅</span>
-						<h4>Certificado válido</h4>
-						<p>Documento oficial reconhecido para currículo e empresas.</p>
+						<h4 data-editable-id="whyStudy.card4Title" data-editable-label="Card 4 - Título" data-editable-type="text">{homeData.whyStudy?.card4Title || 'Certificado válido'}</h4>
+						<p data-editable-id="whyStudy.card4Text" data-editable-label="Card 4 - Descrição" data-editable-type="textarea">{homeData.whyStudy?.card4Text || 'Documento oficial reconhecido para currículo e empresas.'}</p>
 					</div>
 					<div class="why-study__card animate-fade" style="animation-delay: 0.4s;">
 						<span class="why-study__icon">🎧</span>
-						<h4>Suporte Dedicado</h4>
-						<p>Tire dúvidas com nossa equipe pedagógica durante todo o curso.</p>
+						<h4 data-editable-id="whyStudy.card5Title" data-editable-label="Card 5 - Título" data-editable-type="text">{homeData.whyStudy?.card5Title || 'Suporte Dedicado'}</h4>
+						<p data-editable-id="whyStudy.card5Text" data-editable-label="Card 5 - Descrição" data-editable-type="textarea">{homeData.whyStudy?.card5Text || 'Tire dúvidas com nossa equipe pedagógica durante todo o curso.'}</p>
 					</div>
 					<div class="why-study__card animate-fade" style="animation-delay: 0.5s;">
 						<span class="why-study__icon">📋</span>
-						<h4>Conteúdo objetivo</h4>
-						<p>Aulas diretas, sem enrolação, focadas no que realmente importa.</p>
+						<h4 data-editable-id="whyStudy.card6Title" data-editable-label="Card 6 - Título" data-editable-type="text">{homeData.whyStudy?.card6Title || 'Conteúdo objetivo'}</h4>
+						<p data-editable-id="whyStudy.card6Text" data-editable-label="Card 6 - Descrição" data-editable-type="textarea">{homeData.whyStudy?.card6Text || 'Aulas diretas, sem enrolação, focadas no que realmente importa.'}</p>
 					</div>
 				</div>
 			</div>
@@ -176,19 +256,52 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 		<section id="cursos" class="domine-hero">
 			<div class="domine-hero__bg">
 				<div class="domine-hero__overlay"></div>
-				<img src="/images/controle-de-hemorragia.avif" alt="Controle de Hemorragias" class="domine-hero__bg-image" />
+				<img 
+					src={homeData.hemorragias?.image || "/images/controle-de-hemorragia.avif"} 
+					alt="Controle de Hemorragias" 
+					class="domine-hero__bg-image" 
+					data-editable-id="hemorragias.image"
+					data-editable-label="Hemorragias - Imagem de Fundo"
+					data-editable-type="image"
+				/>
 			</div>
 			<div class="container domine-hero__inner">
 				<div class="domine-hero__content animate-fade">
-					<div class="badge-premium">
+					<div class="badge-premium" data-editable-id="hemorragias.badge" data-editable-label="Hemorragias - Distintivo" data-editable-type="text">
 						<span class="dot"></span>
-						Treinamento Exclusivo
+						{homeData.hemorragias?.badge || 'Treinamento Exclusivo'}
 					</div>
-					<h2>Domine o <span class="text-gradient">Controle de Hemorragias</span> e salve vidas.</h2>
-					<p>Um treinamento completo projetado para profissionais e socorristas que buscam atuar com precisão, segurança e rapidez em situações de emergência.</p>
+					<h2>
+						<span data-editable-id="hemorragias.titlePrefix" data-editable-label="Hemorragias - Início do Título" data-editable-type="text">{homeData.hemorragias?.titlePrefix || 'Domine o '}</span><span class="text-gradient" data-editable-id="hemorragias.titleHighlight" data-editable-label="Hemorragias - Destaque" data-editable-type="text">{homeData.hemorragias?.titleHighlight || 'Controle de Hemorragias'}</span><span data-editable-id="hemorragias.titleSuffix" data-editable-label="Hemorragias - Final do Título" data-editable-type="text">{homeData.hemorragias?.titleSuffix || ' e salve vidas.'}</span>
+					</h2>
+					<p data-editable-id="hemorragias.paragraph" data-editable-label="Hemorragias - Descrição" data-editable-type="textarea">
+						{homeData.hemorragias?.paragraph || 'Um treinamento completo projetado para profissionais e socorristas que buscam atuar com precisão, segurança e rapidez em situações de emergência.'}
+					</p>
 					<div class="domine-hero__actions">
-						<a href="https://www.academiadosocorrista.com.br/domine-o-controle-de-hemorragias" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Quero me Inscrever</a>
-						<a href="https://www.academiadosocorrista.com.br/domine-o-controle-de-hemorragias" target="_blank" rel="noopener noreferrer" class="btn btn-outline domine-btn-outline">Conheça o Curso</a>
+						<a 
+							href={homeData.hemorragias?.cta1Url || "https://www.academiadosocorrista.com.br/domine-o-controle-de-hemorragias"} 
+							target="_blank" 
+							rel="noopener noreferrer" 
+							class="btn btn-primary"
+							data-editable-id="hemorragias.cta1Text"
+							data-editable-href-id="hemorragias.cta1Url"
+							data-editable-label="Hemorragias - Botão Inscrição"
+							data-editable-type="button"
+						>
+							{homeData.hemorragias?.cta1Text || 'Quero me Inscrever'}
+						</a>
+						<a 
+							href={homeData.hemorragias?.cta2Url || "https://www.academiadosocorrista.com.br/domine-o-controle-de-hemorragias"} 
+							target="_blank" 
+							rel="noopener noreferrer" 
+							class="btn btn-outline domine-btn-outline"
+							data-editable-id="hemorragias.cta2Text"
+							data-editable-href-id="hemorragias.cta2Url"
+							data-editable-label="Hemorragias - Botão Conhecer"
+							data-editable-type="button"
+						>
+							{homeData.hemorragias?.cta2Text || 'Conheça o Curso'}
+						</a>
 					</div>
 				</div>
 				<div class="domine-hero__visual animate-fade" style="animation-delay: 0.2s;">
@@ -242,22 +355,29 @@ const description = "Domine o Controle de Hemorragias e esteja preparado para sa
 							<span>Suporte dedicado</span>
 						</li>
 					</ul>
+				</div>
 			</div>
 		</section>
-
 
 		<!-- ============ CTA FINAL ============ -->
 		<section id="consultoria" class="emergency-cta">
 			<div class="container">
 				<div class="glass-card emergency-box animate-fade">
 					<div class="emergency-content">
-						<h2>Pronto para salvar vidas em situações críticas?</h2>
-						<p>Não espere a emergência acontecer para descobrir que você não está preparado. Torne-se um Socorrista capacitado hoje mesmo.</p>
+						<h2 data-editable-id="ctaFinal.title" data-editable-label="CTA Final - Título" data-editable-type="text">{homeData.ctaFinal?.title || 'Pronto para salvar vidas em situações críticas?'}</h2>
+						<p data-editable-id="ctaFinal.paragraph" data-editable-label="CTA Final - Descrição" data-editable-type="textarea">{homeData.ctaFinal?.paragraph || 'Não espere a emergência acontecer para descobrir que você não está preparado. Torne-se um Socorrista capacitado hoje mesmo.'}</p>
 						<div class="emergency-actions">
-							<a href="https://www.academiadosocorrista.com.br/domine-o-controle-de-hemorragias" class="btn btn-primary btn-large">
-								🚑 Fazer Inscrição Agora
+							<a 
+								href={homeData.ctaFinal?.ctaUrl || "https://www.academiadosocorrista.com.br/domine-o-controle-de-hemorragias"} 
+								class="btn btn-primary btn-large"
+								data-editable-id="ctaFinal.ctaText"
+								data-editable-href-id="ctaFinal.ctaUrl"
+								data-editable-label="CTA Final - Botão de Ação"
+								data-editable-type="button"
+							>
+								{homeData.ctaFinal?.ctaText || '🚑 Fazer Inscrição Agora'}
 							</a>
-							<span class="emergency-note">Vagas limitadas para as turmas deste mês!</span>
+							<span class="emergency-note" data-editable-id="ctaFinal.note" data-editable-label="CTA Final - Nota de Vagas" data-editable-type="text">{homeData.ctaFinal?.note || 'Vagas limitadas para as turmas deste mês!'}</span>
 						</div>
 					</div>
 				</div>

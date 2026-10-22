@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "title": "Sobre Nós | Academia do Socorrista",
+    "description": "A Academia do Socorrista foi criada para mudar a forma como as pessoas aprendem a salvar vidas. Treinamento prático, situações reais, comunidade forte."
+  },
+  "hero": {
+    "badge": "Treinamento Especializado",
+    "titlePrefix": "O que é a Academia do ",
+    "titleHighlight": "Socorrista",
+    "titleSuffix": "?",
+    "paragraph1": "A maioria das pessoas acha que sabe agir em uma emergência…",
+    "paragraph2": "até o momento em que alguém precisa de ajuda de verdade.",
+    "paragraph3": "É aí que o nervosismo trava. A dúvida aparece. E segundos fazem diferença.",
+    "paragraph4": "A Academia do Socorrista foi criada para mudar isso.",
+    "paragraph5": "Aqui, você aprende na prática, treina situações reais e faz parte de uma comunidade que evolui junto todos os dias.",
+    "destaque": "Não é só teoria. Não é só certificado. É preparo real para quem quer ter confiança, agir rápido e fazer a diferença quando mais importa."
+  },
+  "mission": {
+    "title": "Nossa Missão",
+    "paragraph1": "Preparar pessoas comuns para terem atitudes extraordinárias nos momentos em que uma vida depende delas.",
+    "paragraph2": "Nossa missão vai além de ensinar técnicas. Nós formamos socorristas capazes de agir sob pressão, tomar decisões rápidas e levar esperança quando o caos toma conta.",
+    "paragraph3": "Porque, em uma emergência, conhecimento não é apenas poder. É a diferença entre assistir… e salvar uma vida.",
+    "value1": "⭐ Salvando Vidas",
+    "value2": "⭐ Protocolos Atuais",
+    "value3": "⭐ Controle e Resiliência"
+  }
+}

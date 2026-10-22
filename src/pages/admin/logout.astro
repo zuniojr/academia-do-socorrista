@@ -1,0 +1,14 @@
+---
+export const prerender = false;
+
+import { buildClearAuthCookie } from '../../lib/admin/auth';
+
+const headers = new Headers();
+headers.append('Set-Cookie', buildClearAuthCookie());
+headers.append('Location', '/admin/login');
+
+return new Response(null, {
+  status: 302,
+  headers,
+});
+---

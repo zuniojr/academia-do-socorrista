@@ -2,46 +2,32 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import VisualEditor from '../components/admin/VisualEditor.astro';
+import sobreData from '../data/pages/sobre.json';
 
-const title = "Sobre Nós | Academia do Socorrista";
-const description = "A Academia do Socorrista foi criada para mudar a forma como as pessoas aprendem a salvar vidas. Treinamento prático, situações reais, comunidade forte.";
-
-const team = [
-  {
-    name: 'Instrutor Silva',
-    role: 'Especialista em Trauma',
-    bio: 'Mais de 15 anos de experiência atuando na linha de frente do resgate e instruindo novos socorristas.',
-    image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=400&auto=format&fit=crop'
-  },
-  {
-    name: 'Dr. Roberto Santos',
-    role: 'Diretor Médico',
-    bio: 'Médico emergencista e cirurgião do trauma, responsável pela validação científica dos protocolos do treinamento.',
-    image: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=400&auto=format&fit=crop'
-  },
-  {
-    name: 'Cap. Oliveira',
-    role: 'Instrutor Master TCCC',
-    bio: 'Militar e especialista em APH Tático, desenvolvendo as práticas de sobrevivência sob situações extremas.',
-    image: 'https://images.unsplash.com/photo-1541881452934-8cddfc58bcdf?q=80&w=400&auto=format&fit=crop'
-  }
-];
+const title = sobreData.meta.title;
+const description = sobreData.meta.description;
 ---
 
 <Layout title={title} description={description}>
+	<VisualEditor pageName="Sobre Nós" />
 	<Header />
 	<main>
 		<section class="page-hero">
 			<div class="container animate-fade">
-				<span class="section-badge">Treinamento Especializado</span>
-				<h1>O que é a Academia do <span class="text-gradient">Socorrista</span>?</h1>
+				<span class="section-badge" data-editable-id="hero.badge" data-editable-label="Distintivo Hero" data-editable-type="text">
+					{sobreData.hero.badge}
+				</span>
+				<h1>
+					<span data-editable-id="hero.titlePrefix" data-editable-label="Título (Início)" data-editable-type="text">{sobreData.hero.titlePrefix}</span><span class="text-gradient" data-editable-id="hero.titleHighlight" data-editable-label="Título (Destaque)" data-editable-type="text">{sobreData.hero.titleHighlight}</span>{sobreData.hero.titleSuffix}
+				</h1>
 				<div class="hero-text">
-					<p>A maioria das pessoas acha que sabe agir em uma emergência…</p>
-					<p>até o momento em que alguém precisa de ajuda de verdade.</p>
-					<p>É aí que o nervosismo trava.<br/>A dúvida aparece.<br/>E segundos fazem diferença.</p>
-					<p>A Academia do Socorrista foi criada para mudar isso.</p>
-					<p>Aqui, você aprende na prática, treina situações reais e faz parte de uma comunidade que evolui junto todos os dias.</p>
-					<p class="destaque">Não é só teoria.<br/>Não é só certificado.<br/>É preparo real para quem quer ter confiança, agir rápido e fazer a diferença quando mais importa.</p>
+					<p data-editable-id="hero.paragraph1" data-editable-label="Parágrafo 1" data-editable-type="textarea">{sobreData.hero.paragraph1}</p>
+					<p data-editable-id="hero.paragraph2" data-editable-label="Parágrafo 2" data-editable-type="textarea">{sobreData.hero.paragraph2}</p>
+					<p data-editable-id="hero.paragraph3" data-editable-label="Parágrafo 3" data-editable-type="textarea">{sobreData.hero.paragraph3}</p>
+					<p data-editable-id="hero.paragraph4" data-editable-label="Parágrafo 4" data-editable-type="textarea">{sobreData.hero.paragraph4}</p>
+					<p data-editable-id="hero.paragraph5" data-editable-label="Parágrafo 5" data-editable-type="textarea">{sobreData.hero.paragraph5}</p>
+					<p class="destaque" data-editable-id="hero.destaque" data-editable-label="Parágrafo Destaque" data-editable-type="textarea">{sobreData.hero.destaque}</p>
 				</div>
 			</div>
 		</section>
@@ -50,15 +36,15 @@ const team = [
 			<div class="container">
 				<div class="timeline-box glass-card animate-fade">
 					<div class="timeline-content">
-						<h2 class="text-gradient">Nossa Missão</h2>
-						<p>Preparar pessoas comuns para terem atitudes extraordinárias nos momentos em que uma vida depende delas.</p>
-						<p>Nossa missão vai além de ensinar técnicas. Nós formamos socorristas capazes de agir sob pressão, tomar decisões rápidas e levar esperança quando o caos toma conta.</p>
-						<p>Porque, em uma emergência, conhecimento não é apenas poder.<br/>É a diferença entre assistir… e salvar uma vida.</p>
+						<h2 class="text-gradient" data-editable-id="mission.title" data-editable-label="Título da Missão" data-editable-type="text">{sobreData.mission.title}</h2>
+						<p data-editable-id="mission.paragraph1" data-editable-label="Missão - Parágrafo 1" data-editable-type="textarea">{sobreData.mission.paragraph1}</p>
+						<p data-editable-id="mission.paragraph2" data-editable-label="Missão - Parágrafo 2" data-editable-type="textarea">{sobreData.mission.paragraph2}</p>
+						<p data-editable-id="mission.paragraph3" data-editable-label="Missão - Parágrafo 3" data-editable-type="textarea">{sobreData.mission.paragraph3}</p>
 						
 						<div class="values-badges">
-							<div class="value-item">⭐ Salvando Vidas</div>
-							<div class="value-item">⭐ Protocolos Atuais</div>
-							<div class="value-item">⭐ Controle e Resiliência</div>
+							<div class="value-item" data-editable-id="mission.value1" data-editable-label="Valor 1" data-editable-type="text">{sobreData.mission.value1}</div>
+							<div class="value-item" data-editable-id="mission.value2" data-editable-label="Valor 2" data-editable-type="text">{sobreData.mission.value2}</div>
+							<div class="value-item" data-editable-id="mission.value3" data-editable-label="Valor 3" data-editable-type="text">{sobreData.mission.value3}</div>
 						</div>
 					</div>
 				</div>

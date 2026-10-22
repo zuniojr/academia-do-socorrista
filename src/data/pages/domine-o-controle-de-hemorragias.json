@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "title": "Domine o Controle de Hemorragias | Academia do Socorrista",
+    "description": "Conquiste o RACIOCÍNIO ideal para fazer o atendimento correto. ATENDA e faça o melhor para seu paciente com agilidade e SEGURANÇA NA PRÁTICA."
+  },
+  "hero": {
+    "badge": "A C A D E M I A    D O    S O C O R R I S T A",
+    "title": "DOMINE O\nCONTROLE DE\nHEMORRAGIAS",
+    "subtitle": "Conquiste o RACIOCÍNIO ideal para fazer o atendimentos correto.",
+    "description1": "ATENDA e faça o melhor para seu paciente com agilidade e SEGURANÇA NA PRÁTICA.",
+    "description2": "Conteúdo atualizado e aulas totalmente em vídeo.",
+    "alert": "Controle de Hemorragias: Conhecimento que salva.",
+    "ctaText": "GARANTA SUA VAGA AGORA",
+    "ctaUrl": "#"
+  },
+  "about": {
+    "title": "O que é o curso Controte de Hemorragia?",
+    "paragraph1": "É um treinamento essencial que ensina técnicas vitais para parar sangramentos em situações de emergência. Este curso é ideal para profissionais de saúde, socorristas, guarda vidas, professores, pais, e qualquer pessoa que queira estar preparada para agir em momentos críticos.",
+    "paragraph2": "Estar preparado para situações de emergência pode fazer a diferença entre a vida e a morte. Com este curso, você estará equipado com o conhecimento e as habilidades necessárias para intervir de maneira eficaz em situações críticas, proporcionando segurança e tranquilidade para você e para aqueles ao seu redor."
+  },
+  "modules": {
+    "title": "O CONTEÚDO do curso",
+    "ctaText": "QUERO ENTRAR PARA O CURSO",
+    "ctaUrl": "#"
+  },
+  "instructor": {
+    "badge": "Quem é seu guia",
+    "name": "Helber Braga",
+    "image": "/images/braga.avif",
+    "paragraph1": "Sou apaixonado por salvamento aquático e atendimento pré-hospitalar.",
+    "paragraph2": "No campo do atendimento pré-hospitalar, cada segundo conta. Durante uma emergência, a capacidade de controlar uma hemorragia pode significar a diferença entre a vida e a morte. Eu tenho visto em primeira mão o impacto que o conhecimento e a habilidade de parar um sangramento podem ter em salvar vidas. Quando estamos na linha de frente, somos os primeiros a chegar e a última esperança para muitos. Essa responsabilidade exige que estejamos sempre preparados e bem treinados.",
+    "paragraph3": "Acredito firmemente que muitas mortes podem ser evitadas com as técnicas e os conhecimentos certos. É por isso que dedico tanto tempo e esforço para me aperfeiçoar e ensinar o que sei a outros.",
+    "paragraph4": "Quero continuar fazendo a diferença e, ao mesmo tempo, inspirar outras pessoas a se juntarem a essa causa. Acredito que, com educação e treinamento adequados, podemos salvar muitas vidas."
+  },
+  "benefits": {
+    "title": "Não tem desculpa",
+    "subtitle": "Comece seu curso AGORA e termine quando quiser.",
+    "paragraph1": "Um curso nada tradicional. Você terá acesso a todo conhecimento e estratégias sem enrolação, direto ao ponto.",
+    "paragraph2": "Podendo assistir de onde quiser e quando quiser. Você tem acesso ao curso por 1 ano!",
+    "ctaText": "LIBERAR ACESSO",
+    "ctaUrl": "#"
+  },
+  "guarantee": {
+    "title": "100% de GARANTIA para você experimentar",
+    "image": "/images/Selo7dias-1-1024x740.avif",
+    "paragraph1": "Confiamos tanto na qualidade deste produto que ofereço esta garantia de satisfação incondicional ou todo o seu dinheiro de volta.",
+    "paragraph2": "Assumimos todo o risco desta aquisição para você.",
+    "paragraph3": "Já fui chamado até de maluco por colegas de profissão. Alguns me dizem que oferecer todo o programa e ainda dar a oportunidade de o cliente desistir da compra 7 dias depois é loucura, mas o seu aprendizado é nossa prioridade."
+  }
+}
