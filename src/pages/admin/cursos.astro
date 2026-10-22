@@ -1,0 +1,445 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../components/admin/AdminLayout.astro';
+import { isRequestAuthenticated } from '../../lib/admin/auth.ts';
+
+if (!isRequestAuthenticated(Astro.request)) {
+  return Astro.redirect('/admin/login');
+}
+
+// Cursos oficiais da página /nossos-cursos
+const courses = [
+  {
+    id: 'CRS-01',
+    title: 'Recuperação e Manobras em Afogados',
+    category: 'Emergência Aquática',
+    hours: '24 horas',
+    level: 'Avançado / Prático',
+    instructor: 'Socorristas de APH Marítimo',
+    status: 'Matrículas Abertas',
+    studentsCount: 290,
+    nextBatch: '05 de Dezembro de 2026',
+    path: '/recuperacao-de-afogados-na-pratica',
+    image: '/cursos/afogados.avif',
+    badgeClass: 'badge-success'
+  },
+  {
+    id: 'CRS-02',
+    title: 'Domine o Controle de Hemorragias',
+    category: 'APH / Trauma',
+    hours: '16 horas',
+    level: 'Prático e Imersivo (Stop The Bleed)',
+    instructor: 'Equipe Tática de Resgate',
+    status: 'Matrículas Abertas',
+    studentsCount: 482,
+    nextBatch: '15 de Novembro de 2026',
+    path: '/domine-o-controle-de-hemorragias',
+    image: '/cursos/hemorragias.avif',
+    badgeClass: 'badge-success'
+  },
+  {
+    id: 'CRS-03',
+    title: 'Salvamento em Altura e Espaço Confinado',
+    category: 'Resgate Técnico',
+    hours: '40 horas',
+    level: 'NR-35 / NR-33',
+    instructor: 'Instrutores de Alpinismo Industrial',
+    status: 'Matrículas Abertas',
+    studentsCount: 198,
+    nextBatch: '12 de Dezembro de 2026',
+    path: '/salvamento-em-altura',
+    image: '/cursos/banner-salvamento-em-altura.avif',
+    badgeClass: 'badge-success'
+  },
+  {
+    id: 'CRS-04',
+    title: 'Guarda-Vidas em Portugal (Start Portugal)',
+    category: 'Carreira Internacional',
+    hours: '80 horas',
+    level: 'Habilitação Profissional ISN',
+    instructor: 'Formadores Náuticos Internacionais',
+    status: 'Inscrições Abertas',
+    studentsCount: 315,
+    nextBatch: 'Turma Internacional',
+    path: '/startportugal',
+    image: '/cursos/guarda-vidas.avif',
+    badgeClass: 'badge-warning'
+  }
+];
+
+const totalCourses = courses.length;
+const totalEnrolled = courses.reduce((acc, c) => acc + c.studentsCount, 0);
+---
+
+<AdminLayout title="Cursos & Treinamentos | Academia do Socorrista" activeNav="cursos">
+  <div class="courses-view">
+    <!-- CABEÇALHO -->
+    <header class="page-header">
+      <div class="header-intro">
+        <div class="section-badge section-badge-gold">CATÁLOGO OPERACIONAL</div>
+        <h1>Cursos & Treinamentos</h1>
+        <p>Gerencie a grade curricular, turmas abertas, cargas horárias e páginas de conversão de cada formação.</p>
+      </div>
+      <div class="header-actions">
+        <a href="/cursos" target="_blank" class="btn-action-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          <span>Ver Catálogo Público ↗</span>
+        </a>
+        <button type="button" class="btn-action-primary" onclick="alert('Formulário para cadastrar nova formação ou abrir nova turma em breve disponível.')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          <span>+ Nova Turma / Curso</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- METRICS -->
+    <div class="summary-cards-grid">
+      <div class="summary-card">
+        <span class="summary-label">Formações Ativas</span>
+        <strong class="summary-val">{totalCourses}</strong>
+        <span class="summary-sub text-muted">Cursos presenciais e semipresenciais</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Total de Formados</span>
+        <strong class="summary-val text-green">{totalEnrolled}+</strong>
+        <span class="summary-sub text-green">Socorristas e cidadãos capacitados</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Turmas com Inscrições</span>
+        <strong class="summary-val text-gold">4</strong>
+        <span class="summary-sub text-gold">Com vagas disponíveis para este mês</span>
+      </div>
+    </div>
+
+    <!-- TABELA DE CURSOS -->
+    <div class="table-container">
+      <table class="courses-table">
+        <thead>
+          <tr>
+            <th>Curso / Formação</th>
+            <th>Categoria & Carga</th>
+            <th>Próxima Turma</th>
+            <th>Socorristas Formados</th>
+            <th>Status</th>
+            <th style="text-align: right;">Ações Rápidas</th>
+          </tr>
+        </thead>
+        <tbody>
+          {courses.map(course => (
+            <tr>
+              <td>
+                <div class="course-profile-cell">
+                  <img src={course.image} alt={course.title} class="course-thumb" onerror="this.style.display='none'" />
+                  <div>
+                    <strong class="course-title">{course.title}</strong>
+                    <div class="course-instructor">Instrutor: {course.instructor}</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="category-pill">{course.category}</span>
+                <div class="text-sub">{course.hours} • {course.level}</div>
+              </td>
+              <td>
+                <strong class="text-main" style="font-size: 0.85rem;">{course.nextBatch}</strong>
+              </td>
+              <td>
+                <span class="students-badge">👥 {course.studentsCount} alunos</span>
+              </td>
+              <td>
+                <span class={`badge ${course.badgeClass}`}>{course.status}</span>
+              </td>
+              <td style="text-align: right;">
+                <div class="row-actions">
+                  <a href={course.path} target="_blank" class="action-btn" title="Ver landing page oficial">
+                    Página ↗
+                  </a>
+                  <button type="button" class="action-btn action-btn-primary" onclick={`alert('Gerenciamento da turma ${course.title}')`}>
+                    Editar
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</AdminLayout>
+
+<style>
+  .courses-view {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+
+  .header-intro h1 {
+    font-size: 1.85rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+    letter-spacing: -0.02em;
+  }
+
+  .header-intro p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: 650px;
+  }
+
+  .section-badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    letter-spacing: 0.8px;
+    margin-bottom: 0.35rem;
+  }
+
+  .section-badge-gold {
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--accent-gold);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-action-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary-red);
+    color: #FFF;
+    padding: 0.65rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
+    transition: all 0.2s ease;
+  }
+
+  .btn-action-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+  }
+
+  .btn-action-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 0.65rem 1.15rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .btn-action-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* SUMMARY CARDS */
+  .summary-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .summary-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .summary-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .summary-val {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #FFF;
+  }
+
+  .summary-sub {
+    font-size: 0.78rem;
+  }
+
+  .text-green { color: #10B981; }
+  .text-gold { color: #F59E0B; }
+  .text-muted { color: var(--text-muted); }
+  .text-sub { color: var(--text-sub); }
+
+  /* TABELA */
+  .table-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .courses-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+  }
+
+  .courses-table th {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.9rem 1.25rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-sub);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .courses-table td {
+    padding: 1.1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .courses-table tr:hover td {
+    background: rgba(255, 255, 255, 0.015);
+  }
+
+  .course-profile-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .course-thumb {
+    width: 64px;
+    height: 42px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .course-icon-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--accent-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .course-title {
+    display: block;
+    color: #FFF;
+    font-size: 0.92rem;
+  }
+
+  .course-instructor {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .category-pill {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--primary-red);
+    background: rgba(239, 68, 68, 0.12);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.25rem;
+  }
+
+  .students-badge {
+    font-size: 0.8rem;
+    color: #A7F3D0;
+    font-weight: 500;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+
+  .badge-success { background: rgba(16, 185, 129, 0.15); color: #10B981; }
+  .badge-warning { background: rgba(245, 158, 11, 0.15); color: #F59E0B; }
+  .badge-neutral { background: rgba(255, 255, 255, 0.08); color: var(--text-muted); }
+
+  .row-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    justify-content: flex-end;
+  }
+
+  .action-btn {
+    padding: 0.45rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .action-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #FFF;
+  }
+
+  .action-btn-primary {
+    background: rgba(239, 68, 68, 0.15);
+    color: #F87171;
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+
+  .action-btn-primary:hover {
+    background: var(--primary-red);
+    color: #FFF;
+  }
+</style>

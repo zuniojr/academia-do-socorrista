@@ -1,6 +1,7 @@
 ---
 export const prerender = false;
 
+import AdminLayout from '../../../components/admin/AdminLayout.astro';
 import { isRequestAuthenticated } from '../../../lib/admin/auth.ts';
 import { listAllMedia } from '../../../lib/admin/media.ts';
 import { getGitHubConfig } from '../../../lib/admin/github.ts';
@@ -19,14 +20,7 @@ const totalMB = (totalBytes / (1024 * 1024)).toFixed(2);
 const inUseCount = mediaItems.filter((i) => i.inUse).length;
 ---
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Biblioteca de Mídia | Painel Administrativo</title>
-  <meta name="robots" content="noindex, nofollow" />
-  <link rel="icon" type="image/svg+xml" href="/images/logo-academia.svg" />
+<AdminLayout title="Biblioteca de Mídia | Academia do Socorrista" activeNav="midia">
   <style>
     :root {
       --bg-dark: #090d16;
@@ -637,24 +631,8 @@ const inUseCount = mediaItems.filter((i) => i.inUse).length;
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
-</head>
-<body>
-  <header class="admin-nav">
-    <a href="/admin" class="nav-brand">
-      <img src="/images/logo-academia.svg" alt="Logo" onerror="this.style.display='none'" />
-      <span>Academia do Socorrista</span>
-    </a>
-    <nav class="nav-links">
-      <a href="/admin" class="nav-link">Dashboard</a>
-      <a href="/admin/artigos" class="nav-link">Artigos</a>
-      <a href="/admin/midia" class="nav-link active">Biblioteca de Mídia</a>
-      <a href="/sobre" target="_blank" class="nav-link">Editor da Página Sobre</a>
-      <a href="/" target="_blank" class="nav-link">Site Público ↗</a>
-      <a href="/admin/logout" class="btn-logout">Sair</a>
-    </nav>
-  </header>
 
-  <main class="container">
+  <div class="media-container">
     <!-- Header -->
     <div class="page-header">
       <div>
@@ -779,10 +757,8 @@ const inUseCount = mediaItems.filter((i) => i.inUse).length;
       })}
     </div>
 
-    <div id="empty-state" style="display: none; text-align: center; padding: 4rem; color: var(--text-muted);">
-      Nenhuma imagem encontrada com os filtros selecionados.
     </div>
-  </main>
+  </div>
 
   <!-- Modal Lightbox Detalhes -->
   <div id="lightbox-modal" class="modal-overlay">
@@ -1109,5 +1085,4 @@ const inUseCount = mediaItems.filter((i) => i.inUse).length;
       }
     };
   </script>
-</body>
-</html>
+</AdminLayout>

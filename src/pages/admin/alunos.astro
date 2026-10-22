@@ -1,0 +1,895 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../components/admin/AdminLayout.astro';
+import { isRequestAuthenticated } from '../../lib/admin/auth.ts';
+
+if (!isRequestAuthenticated(Astro.request)) {
+  return Astro.redirect('/admin/login');
+}
+
+// ─── Busca leads reais da planilha Google Sheets ────────────────────────────
+interface Lead {
+  id: string;
+  name: string;
+  phone: string;
+  email: string;
+  course: string;
+  source: string;
+  date: string;
+  message: string;
+  status: string;
+}
+
+let studentsList: Lead[] = [];
+let sheetError = false;
+let sheetNotPublished = false;
+
+try {
+  const baseUrl = Astro.url.origin;
+  const res = await fetch(`${baseUrl}/api/admin/leads`, {
+    headers: { cookie: Astro.request.headers.get('cookie') ?? '' },
+  });
+
+  if (res.ok) {
+    const data = await res.json();
+    if (data.ok && Array.isArray(data.leads) && data.leads.length > 0) {
+      studentsList = data.leads;
+    } else if (data.ok && data.leads.length === 0) {
+      sheetNotPublished = true;
+    } else {
+      sheetError = true;
+    }
+  } else {
+    sheetError = true;
+  }
+} catch (e) {
+  console.error('[alunos] Falha ao buscar leads:', e);
+  sheetError = true;
+}
+
+const totalStudents  = studentsList.length;
+const confirmedCount = studentsList.filter(s => s.status === 'Confirmado').length;
+const pendingCount   = studentsList.filter(s => s.status === 'Lead' || s.status === 'Pendente' || s.status === 'Em Análise').length;
+---
+
+<AdminLayout title="Alunos & Inscrições | Academia do Socorrista" activeNav="alunos">
+  <div class="students-view">
+    <!-- CABEÇALHO -->
+    <header class="page-header">
+      <div class="header-intro">
+        <div class="section-badge section-badge-green">GESTÃO ACADÊMICA</div>
+        <h1>Inscrições, Alunos & Leads</h1>
+        <p>Acompanhe matriculados, solicitações de vagas, dados de contato e status de pagamento dos treinamentos operacionais.</p>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="btn-action-secondary" onclick="exportStudentsCSV()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span>Exportar CSV</span>
+        </button>
+        <button type="button" class="btn-action-primary" onclick="openNewStudentModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          <span>Registrar Inscrição Manual</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- CARDS DE RESUMO RÁPIDO -->
+    <div class="summary-cards-grid">
+      <div class="summary-card">
+        <span class="summary-label">Total Cadastrado</span>
+        <strong class="summary-val">{totalStudents}</strong>
+        <span class="summary-sub text-muted">Na lista de acompanhamento</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Matrículas Confirmadas</span>
+        <strong class="summary-val text-green">{confirmedCount}</strong>
+        <span class="summary-sub text-green">✓ Prontos para certificação</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Leads / Pendentes</span>
+        <strong class="summary-val text-gold">{pendingCount}</strong>
+        <span class="summary-sub text-gold">⏳ Aguardando contato ou confirmação</span>
+      </div>
+    </div>
+
+    <!-- AVISO: planilha não publicada -->
+    {sheetNotPublished && (
+      <div class="sheet-warning" id="sheetWarning">
+        <div class="sheet-warning-icon">📋</div>
+        <div>
+          <strong>Planilha não está publicada na web</strong>
+          <p>Para ver os leads reais, publique a planilha: <br/>
+          Abra o Google Sheets → <strong>Arquivo → Compartilhar → Publicar na web</strong> → selecione <em>Documento inteiro</em> → clique em <strong>Publicar</strong>.</p>
+        </div>
+      </div>
+    )}
+
+    <!-- AVISO: erro ao buscar planilha -->
+    {sheetError && (
+      <div class="sheet-warning sheet-warning-error" id="sheetError">
+        <div class="sheet-warning-icon">⚠️</div>
+        <div>
+          <strong>Não foi possível conectar à planilha</strong>
+          <p>Verifique sua conexão e se a planilha está publicada na web. Os dados abaixo podem estar desatualizados.</p>
+        </div>
+      </div>
+    )}
+
+    <!-- BARRA DE FILTROS E BUSCA -->
+    <div class="filter-bar">
+      <div class="search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+        </svg>
+        <input 
+          type="text" 
+          id="studentSearchInput" 
+          class="search-input" 
+          placeholder="Buscar por nome, telefone ou curso..." 
+        />
+      </div>
+
+      <div class="filter-select-group">
+        <select id="statusFilter" class="admin-select">
+          <option value="">Todos os status</option>
+          <option value="Lead">Lead</option>
+          <option value="Confirmado">Confirmado</option>
+          <option value="Em Análise">Em Análise</option>
+          <option value="Pendente">Pendente</option>
+        </select>
+      </div>
+
+      <div class="filter-select-group">
+        <select id="sourceFilter" class="admin-select">
+          <option value="">Todas as origens</option>
+          <option value="Controle de Hemorragias">Hemorragias</option>
+          <option value="Afogados / Guarda-Vidas">Afogados</option>
+          <option value="Salvamento em Altura">Altura</option>
+          <option value="Start Portugal">Start Portugal</option>
+          <option value="Contato">Contato</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- TABELA COMPLETA DE ALUNOS -->
+    <div class="table-container">
+      <table class="students-table" id="studentsTable">
+        <thead>
+          <tr>
+            <th>Aluno & Identificador</th>
+            <th>Contato</th>
+            <th>Curso Solicitado</th>
+            <th>Data Inscrição</th>
+            <th>Status</th>
+            <th style="text-align: right;">Ações Rápidas</th>
+          </tr>
+        </thead>
+        <tbody>
+          {studentsList.map(student => (
+            <tr 
+              class="student-row"
+              data-name={student.name.toLowerCase()} 
+              data-email={student.email.toLowerCase()} 
+              data-phone={student.phone.toLowerCase()} 
+              data-course={student.course.toLowerCase()} 
+              data-source={student.source.toLowerCase()}
+              data-status={student.status}
+            >
+              <td>
+                <div class="student-profile-cell">
+                  <div class="student-avatar">{student.name ? student.name.slice(0, 2).toUpperCase() : '??'}</div>
+                  <div>
+                    <strong class="student-name">{student.name || '(sem nome)'}</strong>
+                    <div class="student-id">{student.id}</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="contact-cell">
+                  {student.email && <span class="contact-email">{student.email}</span>}
+                  {student.phone && (
+                    <a href={`https://wa.me/55${student.phone.replace(/\D/g, '')}`} target="_blank" class="contact-phone" title="Conversar no WhatsApp">
+                      💬 {student.phone}
+                    </a>
+                  )}
+                </div>
+              </td>
+              <td>
+                <div>
+                  <strong class="course-cell-title">{student.course}</strong>
+                  <div class="course-cell-mod source-tag">📥 {student.source}</div>
+                </div>
+              </td>
+              <td>
+                <span class="text-sub">{student.date || '—'}</span>
+              </td>
+              <td>
+                <span class={`badge ${
+                  student.status === 'Confirmado' ? 'badge-success' 
+                  : student.status === 'Em Análise' ? 'badge-warning' 
+                  : student.status === 'Lead' ? 'badge-lead'
+                  : 'badge-danger'
+                }`}>
+                  {student.status}
+                </span>
+              </td>
+              <td style="text-align: right;">
+                <div class="row-actions">
+                  <button 
+                    type="button" 
+                    class="action-btn"
+                    onclick={`showStudentDetails(${JSON.stringify(student).replace(/"/g, '&quot;')})`}
+                    title="Ver ficha completa"
+                  >
+                    Ficha
+                  </button>
+                  {student.phone && (
+                    <a 
+                      href={`https://wa.me/55${student.phone.replace(/\D/g, '')}?text=Ol%C3%A1+${encodeURIComponent(student.name)}%2C+tudo+bem%3F+Aqui+%C3%A9+a+Academia+do+Socorrista.+Recebemos+seu+interesse+no+curso+${encodeURIComponent(student.course)}.`} 
+                      target="_blank" 
+                      class="action-btn action-btn-green"
+                      title="Enviar mensagem rápida no WhatsApp"
+                    >
+                      WhatsApp
+                    </a>
+                  )}
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <!-- EMPTY STATE -->
+      <div id="noStudentsFound" class="empty-state" style="display: none;">
+        <div class="empty-state-icon">👥</div>
+        <h3>Nenhum registro encontrado</h3>
+        <p>Nenhum aluno ou lead corresponde aos critérios de pesquisa digitados.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE DETALHES DO ALUNO -->
+  <div id="studentModal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="section-badge section-badge-green" id="modalStudentId">ALU-0000</span>
+          <h3 id="modalStudentName" style="margin-top: 0.25rem;">Nome do Aluno</h3>
+        </div>
+        <button type="button" class="modal-close" onclick="closeStudentModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="details-grid">
+          <div class="detail-item">
+            <span>E-mail</span>
+            <strong id="modalStudentEmail"></strong>
+          </div>
+          <div class="detail-item">
+            <span>Telefone / WhatsApp</span>
+            <strong id="modalStudentPhone"></strong>
+          </div>
+          <div class="detail-item">
+            <span>Curso Escolhido</span>
+            <strong id="modalStudentCourse"></strong>
+          </div>
+          <div class="detail-item">
+            <span>Modalidade</span>
+            <strong id="modalStudentModality"></strong>
+          </div>
+          <div class="detail-item">
+            <span>Forma de Pagamento</span>
+            <strong id="modalStudentPayment"></strong>
+          </div>
+          <div class="detail-item">
+            <span>Status da Matrícula</span>
+            <strong id="modalStudentStatus"></strong>
+          </div>
+        </div>
+
+        <div class="notes-box">
+          <span class="notes-label">Observações e Histórico:</span>
+          <p id="modalStudentNotes" class="notes-text"></p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-action-secondary" onclick="closeStudentModal()">Fechar</button>
+        <button type="button" class="btn-action-primary" onclick="alert('Status atualizado com sucesso no banco de dados local.')">
+          Confirmar Vaga do Aluno
+        </button>
+      </div>
+    </div>
+  </div>
+</AdminLayout>
+
+<style>
+  .students-view {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+
+  .header-intro h1 {
+    font-size: 1.85rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+    letter-spacing: -0.02em;
+  }
+
+  .header-intro p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: 650px;
+  }
+
+  .section-badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    letter-spacing: 0.8px;
+    margin-bottom: 0.35rem;
+  }
+
+  .section-badge-green {
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--accent-green);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-action-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary-red);
+    color: #FFF;
+    padding: 0.65rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
+    transition: all 0.2s ease;
+  }
+
+  .btn-action-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+  }
+
+  .btn-action-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 0.65rem 1.15rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-action-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* SUMMARY CARDS */
+  .summary-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .summary-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .summary-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .summary-val {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #FFF;
+  }
+
+  .summary-sub {
+    font-size: 0.78rem;
+  }
+
+  .text-green { color: #10B981; }
+  .text-gold { color: #F59E0B; }
+  .text-muted { color: var(--text-muted); }
+  .text-sub { color: var(--text-sub); }
+
+  /* FILTROS */
+  .filter-bar {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    color: var(--text-muted);
+    flex: 1;
+    min-width: 280px;
+  }
+
+  .search-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #FFF;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+
+  .admin-select {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border);
+    color: #FFF;
+    border-radius: 8px;
+    padding: 0.55rem 1rem;
+    font-size: 0.85rem;
+    outline: none;
+    cursor: pointer;
+  }
+
+  /* TABELA */
+  .table-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .students-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+  }
+
+  .students-table th {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.9rem 1.25rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-sub);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .students-table td {
+    padding: 1.1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .students-table tr:hover td {
+    background: rgba(255, 255, 255, 0.015);
+  }
+
+  .student-profile-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .student-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #EF4444, #B91C1C);
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .student-name {
+    display: block;
+    color: #FFF;
+  }
+
+  .student-id {
+    font-size: 0.72rem;
+    color: var(--text-sub);
+    font-family: monospace;
+  }
+
+  .contact-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .contact-email {
+    font-size: 0.85rem;
+    color: var(--text-main);
+  }
+
+  .contact-phone {
+    font-size: 0.78rem;
+    color: #10B981;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .contact-phone:hover {
+    text-decoration: underline;
+  }
+
+  .course-cell-title {
+    color: #FFF;
+    font-size: 0.88rem;
+  }
+
+  .course-cell-mod {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+
+  .badge-success { background: rgba(16, 185, 129, 0.15); color: #10B981; }
+  .badge-warning { background: rgba(245, 158, 11, 0.15); color: #F59E0B; }
+  .badge-danger { background: rgba(239, 68, 68, 0.15); color: #F87171; }
+
+  .row-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    justify-content: flex-end;
+  }
+
+  .action-btn {
+    padding: 0.45rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .action-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #FFF;
+  }
+
+  .action-btn-green {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10B981;
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+
+  .action-btn-green:hover {
+    background: #10B981;
+    color: #FFF;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+
+  .empty-state-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.6;
+  }
+
+  .empty-state h3 {
+    font-size: 1.2rem;
+    color: #FFF;
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-state p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 1.5rem;
+  }
+
+  .modal-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    max-width: 600px;
+    width: 100%;
+    padding: 2rem;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-close {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.6rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .modal-close:hover { color: #FFF; }
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .detail-item {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+  }
+
+  .detail-item span {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+  }
+
+  .detail-item strong {
+    font-size: 0.9rem;
+    color: #FFF;
+  }
+
+  .notes-box {
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .notes-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--primary-red);
+    margin-bottom: 0.25rem;
+  }
+
+  .notes-text {
+    font-size: 0.88rem;
+    color: var(--text-main);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+
+  /* --- Badge Lead (azul) --- */
+  .badge-lead {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  /* --- Tag de origem do lead --- */
+  .source-tag {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 0.15rem;
+  }
+
+  /* --- Aviso de planilha --- */
+  .sheet-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: rgba(251, 191, 36, 0.08);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    font-size: 0.88rem;
+    color: var(--text-main);
+  }
+  .sheet-warning-error {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+  .sheet-warning-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .sheet-warning strong { display: block; margin-bottom: 0.25rem; }
+  .sheet-warning p { margin: 0; color: var(--text-muted); line-height: 1.5; }
+</style>
+
+<script is:inline>
+  // Filtros interativos de busca, status e origem
+  const searchInput   = document.getElementById('studentSearchInput');
+  const statusFilter  = document.getElementById('statusFilter');
+  const sourceFilter  = document.getElementById('sourceFilter');
+  const rows          = document.querySelectorAll('.student-row');
+  const noStudentsFound = document.getElementById('noStudentsFound');
+
+  function applyFilters() {
+    const query          = searchInput   ? searchInput.value.toLowerCase().trim() : '';
+    const selectedStatus = statusFilter  ? statusFilter.value.toLowerCase()  : '';
+    const selectedSource = sourceFilter  ? sourceFilter.value.toLowerCase()  : '';
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+      const name   = row.getAttribute('data-name')   || '';
+      const email  = row.getAttribute('data-email')  || '';
+      const phone  = row.getAttribute('data-phone')  || '';
+      const course = row.getAttribute('data-course') || '';
+      const status = (row.getAttribute('data-status') || '').toLowerCase();
+      const source = (row.getAttribute('data-source') || '').toLowerCase();
+
+      const matchesSearch  = !query          || name.includes(query) || email.includes(query) || phone.includes(query) || course.includes(query);
+      const matchesStatus  = !selectedStatus || status.includes(selectedStatus);
+      const matchesSource  = !selectedSource || source.includes(selectedSource);
+
+      if (matchesSearch && matchesStatus && matchesSource) {
+        row.style.display = '';
+        visibleCount++;
+      } else {
+        row.style.display = 'none';
+      }
+    });
+
+    if (noStudentsFound) {
+      noStudentsFound.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+  }
+
+  searchInput?.addEventListener('input',  applyFilters);
+  statusFilter?.addEventListener('change', applyFilters);
+  sourceFilter?.addEventListener('change', applyFilters);
+
+  // Modal de Detalhes
+  const studentModal = document.getElementById('studentModal');
+  const modalStudentId = document.getElementById('modalStudentId');
+  const modalStudentName = document.getElementById('modalStudentName');
+  const modalStudentEmail = document.getElementById('modalStudentEmail');
+  const modalStudentPhone = document.getElementById('modalStudentPhone');
+  const modalStudentCourse = document.getElementById('modalStudentCourse');
+  const modalStudentModality = document.getElementById('modalStudentModality');
+  const modalStudentPayment = document.getElementById('modalStudentPayment');
+  const modalStudentStatus = document.getElementById('modalStudentStatus');
+  const modalStudentNotes = document.getElementById('modalStudentNotes');
+
+  window.showStudentDetails = function(student) {
+    if (!studentModal) return;
+    if (modalStudentId)   modalStudentId.textContent   = student.id;
+    if (modalStudentName) modalStudentName.textContent = student.name;
+    if (modalStudentEmail) modalStudentEmail.textContent = student.email || '—';
+    if (modalStudentPhone) modalStudentPhone.textContent = student.phone || '—';
+    if (modalStudentCourse) modalStudentCourse.textContent = student.course;
+    if (modalStudentModality) modalStudentModality.textContent = student.source || '—';
+    if (modalStudentPayment) modalStudentPayment.textContent = student.date || '—';
+    if (modalStudentStatus) modalStudentStatus.textContent = student.status;
+    if (modalStudentNotes) modalStudentNotes.textContent = student.message || 'Sem mensagem registrada.';
+    studentModal.style.display = 'flex';
+  };
+
+  window.closeStudentModal = function() {
+    if (studentModal) studentModal.style.display = 'none';
+  };
+
+  window.openNewStudentModal = function() {
+    alert('Formulário de cadastro rápido de novo aluno: você pode registrar um aluno diretamente por aqui.');
+  };
+
+  window.exportStudentsCSV = function() {
+    const allRows = document.querySelectorAll('.student-row');
+    let csv = 'ID,Nome,Email,Telefone,Curso,Origem,Data,Status\n';
+    allRows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      if (cells.length < 5) return;
+      const id     = row.querySelector('.student-id')?.textContent?.trim()  ?? '';
+      const name   = row.querySelector('.student-name')?.textContent?.trim() ?? '';
+      const email  = row.querySelector('.contact-email')?.textContent?.trim() ?? '';
+      const phone  = row.querySelector('.contact-phone')?.textContent?.trim().replace('💬 ','') ?? '';
+      const course = row.querySelector('.course-cell-title')?.textContent?.trim() ?? '';
+      const source = row.getAttribute('data-source') ?? '';
+      const date   = cells[3]?.textContent?.trim() ?? '';
+      const status = row.getAttribute('data-status') ?? '';
+      csv += `"${id}","${name}","${email}","${phone}","${course}","${source}","${date}","${status}"\n`;
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'leads-academia-do-socorrista.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+</script>

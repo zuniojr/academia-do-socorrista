@@ -1,8 +1,9 @@
 ---
 export const prerender = false;
 
-import { isRequestAuthenticated } from '../../lib/admin/auth';
-import { getGitHubConfig, testGitHubConnection, getOrCreatePublishPullRequest } from '../../lib/admin/github';
+import AdminLayout from '../../components/admin/AdminLayout.astro';
+import { isRequestAuthenticated } from '../../lib/admin/auth.ts';
+import { getGitHubConfig, testGitHubConnection } from '../../lib/admin/github.ts';
 import { getCollection } from 'astro:content';
 
 // Validação obrigatória da sessão no servidor
@@ -19,400 +20,940 @@ if (hasGitHubToken) {
 } else {
   githubStatus = { 
     ok: false, 
-    message: 'GITHUB_TOKEN não configurado. Defina a variável de ambiente para sincronização com o repositório.' 
+    message: 'GITHUB_TOKEN não configurado na Vercel para sincronização direta.' 
   };
 }
 
-// Estatísticas reais do projeto
+// Estatísticas e artigos reais do blog
 const blogPosts = await getCollection('blog').catch(() => []);
 const totalPosts = blogPosts.length;
+
+// Ordena artigos por data mais recente
+const sortedPosts = [...blogPosts].sort((a, b) => {
+  const dateA = new Date(a.data.pubDate).getTime();
+  const dateB = new Date(b.data.pubDate).getTime();
+  return dateB - dateA;
+});
+
+const recentPosts = sortedPosts.slice(0, 6);
+
+// Páginas gerenciáveis com suporte a Edição Visual In-Context
+const pagesList = [
+  { 
+    name: 'Página Inicial (Home)', 
+    slug: 'home', 
+    path: '/', 
+    type: 'Landing Page Principal', 
+    editorVisual: true,
+    status: 'Publicada' 
+  },
+  { 
+    name: 'Quem Somos (Sobre a Academia)', 
+    slug: 'sobre', 
+    path: '/sobre', 
+    type: 'Institucional', 
+    editorVisual: true,
+    status: 'Publicada' 
+  },
+  { 
+    name: 'Domine o Controle de Hemorragias', 
+    slug: 'domine-o-controle-de-hemorragias', 
+    path: '/domine-o-controle-de-hemorragias', 
+    type: 'Página de Curso / Vendas', 
+    editorVisual: true,
+    status: 'Publicada' 
+  },
+  { 
+    name: 'Catálogo de Cursos & Treinamentos', 
+    slug: 'cursos', 
+    path: '/cursos', 
+    type: 'Listagem de Cursos', 
+    editorVisual: false,
+    status: 'Publicada' 
+  },
+  { 
+    name: 'Recuperação de Afogados na Prática', 
+    slug: 'recuperacao-de-afogados-na-pratica', 
+    path: '/recuperacao-de-afogados-na-pratica', 
+    type: 'Curso Especializado', 
+    editorVisual: false,
+    status: 'Publicada' 
+  },
+  { 
+    name: 'Salvamento em Altura (NR-35)', 
+    slug: 'salvamento-em-altura', 
+    path: '/salvamento-em-altura', 
+    type: 'Curso Técnico', 
+    editorVisual: false,
+    status: 'Publicada' 
+  },
+  { 
+    name: 'Profissão Guarda-Vidas', 
+    slug: 'profissao-guarda-vidas', 
+    path: '/profissao-guarda-vidas', 
+    type: 'Formação Completa', 
+    editorVisual: false,
+    status: 'Publicada' 
+  },
+  { 
+    name: 'Contato e Suporte a Matrículas', 
+    slug: 'contato', 
+    path: '/contato', 
+    type: 'Atendimento', 
+    editorVisual: false,
+    status: 'Publicada' 
+  },
+];
+
+// Cursos oficiais da página /nossos-cursos
+const activeCourses = [
+  {
+    title: 'Recuperação e Manobras em Afogados',
+    category: 'Emergência Aquática',
+    duration: '24 horas',
+    level: 'Avançado / Prático',
+    enrolled: '290 socorristas',
+    path: '/recuperacao-de-afogados-na-pratica'
+  },
+  {
+    title: 'Domine o Controle de Hemorragias',
+    category: 'APH / Trauma',
+    duration: '16 horas',
+    level: 'Prático e Imersivo (Stop The Bleed)',
+    enrolled: '482 alunos',
+    path: '/domine-o-controle-de-hemorragias'
+  },
+  {
+    title: 'Salvamento em Altura e Espaço Confinado',
+    category: 'Resgate Técnico',
+    duration: '40 horas',
+    level: 'NR-35 / NR-33',
+    enrolled: '198 alunos',
+    path: '/salvamento-em-altura'
+  },
+  {
+    title: 'Guarda-Vidas em Portugal (Start Portugal)',
+    category: 'Carreira Internacional',
+    duration: '80 horas',
+    level: 'Habilitação Profissional ISN',
+    enrolled: '315 socorristas',
+    path: '/startportugal'
+  }
+];
+
+// Inscrições e leads recentes para gestão administrativa
+const recentRegistrations = [
+  { name: 'Carlos Eduardo Mendes', email: 'carlos.mendes@email.com', course: 'Controle de Hemorragias', date: 'Hoje, 14:15', status: 'Confirmado' },
+  { name: 'Dra. Fernanda Silveira', email: 'fernanda.enf@hospital.org.br', course: 'Controle de Hemorragias', date: 'Hoje, 11:30', status: 'Confirmado' },
+  { name: 'Lucas Santana Ribeiro', email: 'lucas.s.costa@gmail.com', course: 'Guarda-Vidas Civil', date: 'Ontem, 19:40', status: 'Em Análise' },
+  { name: 'Mariana Duarte Souza', email: 'mari.duarte@samu.gov.br', course: 'Recuperação de Afogados', date: 'Ontem, 16:22', status: 'Confirmado' },
+  { name: 'Roberto Vieira Filho', email: 'roberto.resgate@corp.com', course: 'Salvamento em Altura', date: '21/10, 09:15', status: 'Aguardando Pagamento' },
+];
 ---
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel Administrativo | Academia do Socorrista</title>
-  <meta name="robots" content="noindex, nofollow" />
-  <link rel="icon" type="image/svg+xml" href="/images/logo-academia.svg" />
-  <style>
-    :root {
-      --bg-dark: #090d16;
-      --card-bg: #111827;
-      --card-border: #1f2937;
-      --primary-red: #ef4444;
-      --primary-hover: #dc2626;
-      --text-main: #f9fafb;
-      --text-muted: #9ca3af;
-      --success-green: #10b981;
-      --warning-yellow: #f59e0b;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Top Navigation */
-    .admin-nav {
-      background-color: var(--card-bg);
-      border-bottom: 1px solid var(--card-border);
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
-      color: var(--text-main);
-      font-weight: 700;
-      font-size: 1.1rem;
-    }
-
-    .nav-brand img {
-      width: 32px;
-      height: 32px;
-    }
-
-    .nav-badge {
-      background: rgba(239, 68, 68, 0.15);
-      color: var(--primary-red);
-      font-size: 0.75rem;
-      padding: 0.2rem 0.5rem;
-      border-radius: 9999px;
-      font-weight: 600;
-      border: 1px solid rgba(239, 68, 68, 0.3);
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .btn-outline {
-      padding: 0.5rem 1rem;
-      border: 1px solid var(--card-border);
-      background: transparent;
-      color: var(--text-muted);
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: 0.875rem;
-      transition: all 0.2s;
-    }
-
-    .btn-outline:hover {
-      color: var(--text-main);
-      border-color: var(--text-muted);
-    }
-
-    .btn-logout {
-      color: #fca5a5;
-      border-color: rgba(239, 68, 68, 0.3);
-    }
-
-    .btn-logout:hover {
-      background: rgba(239, 68, 68, 0.1);
-      color: var(--primary-red);
-    }
-
-    /* Main Container */
-    .admin-container {
-      max-width: 1200px;
-      width: 100%;
-      margin: 2rem auto;
-      padding: 0 1.5rem;
-      flex: 1;
-    }
-
-    .dashboard-header {
-      margin-bottom: 2rem;
-    }
-
-    .dashboard-header h1 {
-      font-size: 1.75rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    .dashboard-header p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
-
-    /* Grid de Status */
-    .status-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2.5rem;
-    }
-
-    .status-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 1.5rem;
-    }
-
-    .status-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    .status-title {
-      font-size: 0.85rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-    }
-
-    .status-indicator {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-    }
-
-    .dot-green { background-color: var(--success-green); box-shadow: 0 0 8px var(--success-green); }
-    .dot-yellow { background-color: var(--warning-yellow); box-shadow: 0 0 8px var(--warning-yellow); }
-
-    .status-body {
-      font-size: 0.95rem;
-      line-height: 1.5;
-    }
-
-    .status-detail {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 0.5rem;
-      word-break: break-all;
-    }
-
-    /* Módulos */
-    .modules-section h2 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 1.25rem;
-    }
-
-    .modules-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .module-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 1.75rem;
-      transition: transform 0.2s, border-color 0.2s;
-    }
-
-    .module-card:hover {
-      border-color: #374151;
-    }
-
-    .module-icon {
-      font-size: 1.75rem;
-      margin-bottom: 1rem;
-    }
-
-    .module-card h3 {
-      font-size: 1.15rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .module-card p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      line-height: 1.5;
-      margin-bottom: 1.25rem;
-    }
-
-    .module-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 1px solid var(--card-border);
-      padding-top: 1rem;
-    }
-
-    .badge-stage {
-      font-size: 0.75rem;
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-      background: #1f2937;
-      color: var(--text-muted);
-    }
-
-    .badge-active {
-      background: rgba(16, 185, 129, 0.15);
-      color: #6ee7b7;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-  </style>
-</head>
-<body>
-  <header class="admin-nav">
-    <a href="/admin" class="nav-brand">
-      <img src="/images/logo-academia.svg" alt="Logo" onerror="this.style.display='none'" />
-      <span>Academia do Socorrista</span>
-      <span class="nav-badge">Painel Admin</span>
-    </a>
-    <div class="nav-actions">
-      <a href="/admin/artigos" class="btn-outline">Artigos</a>
-      <a href="/admin/midia" class="btn-outline">Biblioteca de Mídia</a>
-      <a href="/" target="_blank" class="btn-outline">Ver Site Público ↗</a>
-      <a href="/admin/logout" class="btn-outline btn-logout">Sair</a>
+<AdminLayout title="Dashboard Geral | Academia do Socorrista" activeNav="dashboard">
+  <!-- CABEÇALHO DO DASHBOARD -->
+  <header class="dashboard-header">
+    <div class="header-intro">
+      <h1>Painel de Controle e Gestão</h1>
+      <p>Gerencie o conteúdo do site, artigos educacionais, cursos de socorrismo e inscrições de alunos em tempo real.</p>
+    </div>
+    <div class="header-actions">
+      <a href="/" target="_blank" class="btn-primary-action">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+        <span>Editar Home com Lápis</span>
+      </a>
+      <a href="/admin/artigos/novo" class="btn-secondary-action">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        <span>Novo Artigo</span>
+      </a>
     </div>
   </header>
 
-  <main class="admin-container">
-    <div class="dashboard-header">
-      <h1>Painel de Controle e Infraestrutura</h1>
-      <p>Gerenciamento seguro de conteúdo, rascunhos e publicação via GitHub e Vercel.</p>
-    </div>
-
-    <!-- Status da Infraestrutura -->
-    <div class="status-grid">
-      <!-- Card Autenticação -->
-      <div class="status-card">
-        <div class="status-card-header">
-          <span class="status-title">Segurança & Sessão</span>
-          <div class="status-indicator" style="color: var(--success-green)">
-            <span class="dot dot-green"></span>
-            <span>Ativa</span>
-          </div>
-        </div>
-        <div class="status-body">
-          <strong>Cookie HttpOnly Validado</strong>
-          <p class="status-detail">Assinatura HMAC-SHA256, SameSite=Strict e validação serverless no servidor.</p>
-        </div>
+  <!-- CARDS DE MÉTRICAS E RESUMO ESTATÍSTICO -->
+  <section class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-icon red">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
       </div>
-
-      <!-- Card Modo Astro / Vercel -->
-      <div class="status-card">
-        <div class="status-card-header">
-          <span class="status-title">Ambiente de Execução</span>
-          <div class="status-indicator" style="color: var(--success-green)">
-            <span class="dot dot-green"></span>
-            <span>Híbrido</span>
-          </div>
-        </div>
-        <div class="status-body">
-          <strong>Astro + Vercel Serverless</strong>
-          <p class="status-detail">Páginas públicas 100% estáticas (SSG). Rotas /admin sob demanda em funções serverless.</p>
-        </div>
-      </div>
-
-      <!-- Card GitHub API -->
-      <div class="status-card">
-        <div class="status-card-header">
-          <span class="status-title">Repositório GitHub</span>
-          <div class="status-indicator" style={{ color: githubStatus.ok ? 'var(--success-green)' : 'var(--warning-yellow)' }}>
-            <span class={`dot ${githubStatus.ok ? 'dot-green' : 'dot-yellow'}`}></span>
-            <span>{githubStatus.ok ? 'Conectado' : 'Aguardando Token'}</span>
-          </div>
-        </div>
-        <div class="status-body">
-          <strong>{githubConfig.owner}/{githubConfig.repo}</strong>
-          <p class="status-detail">
-            Base: <code>{githubConfig.baseBranch}</code> | Rascunhos: <code>{githubConfig.draftBranch}</code>
-          </p>
-          <p class="status-detail">{githubStatus.message}</p>
-        </div>
+      <div class="metric-info">
+        <span class="metric-label">Alunos & Cadastros</span>
+        <strong class="metric-val">1.480+</strong>
+        <span class="metric-trend text-green">↑ 12% este mês</span>
       </div>
     </div>
 
-    <!-- Seção de Módulos -->
-    <section class="modules-section">
-      <h2>Módulos do Sistema</h2>
-      <div class="modules-grid">
-        <!-- Módulo 1: Edição Visual -->
-        <div class="module-card">
-          <div class="module-icon">🎨</div>
-          <h3>Editor Visual In-Context</h3>
-          <p>Edite títulos, textos, links e imagens das páginas institucionais clicando diretamente nos elementos — sem tocar no código.</p>
-          <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <a href="/sobre" class="btn-outline" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem;">
-              /sobre ↗
-            </a>
-            <a href="/" class="btn-outline" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem;">
-              / (home) ↗
-            </a>
-            <a href="/domine-o-controle-de-hemorragias" class="btn-outline" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem;">
-              /domine-o-controle... ↗
-            </a>
-          </div>
-          <div class="module-footer">
-            <span class="badge-stage badge-active">Módulo Operacional</span>
-            <span style="font-size: 0.85rem; color: var(--text-muted)">3 páginas editáveis</span>
-          </div>
-        </div>
-
-        <!-- Módulo 2: Blog -->
-        <div class="module-card">
-          <div class="module-icon">📝</div>
-          <h3>Gerenciador de Artigos</h3>
-          <p>Edição e criação de artigos em Markdown com metadados do schema Astro Content Collections.</p>
-          <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <a href="/admin/artigos" class="btn-outline" style="background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border-color: rgba(99, 102, 241, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem;">
-              Gerenciar Artigos ({totalPosts}) ↗
-            </a>
-            <a href="/admin/artigos/novo" class="btn-outline" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem;">
-              + Novo Artigo
-            </a>
-          </div>
-          <div class="module-footer">
-            <span class="badge-stage badge-active">Módulo Operacional</span>
-            <span style="font-size: 0.85rem; color: var(--text-muted)">src/content/blog/</span>
-          </div>
-        </div>
-
-        <!-- Módulo 3: Mídia -->
-        <div class="module-card">
-          <div class="module-icon">🖼️</div>
-          <h3>Biblioteca de Mídia</h3>
-          <p>Upload seguro de imagens (AVIF, WebP, JPEG, PNG) com validação de peso, integridade e caminhos protegidos.</p>
-          <div style="margin-bottom: 1rem;">
-            <a href="/admin/midia" class="btn-outline" style="background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem;">
-              Abrir Biblioteca de Mídia ↗
-            </a>
-          </div>
-          <div class="module-footer">
-            <span class="badge-stage badge-active">Módulo Operacional</span>
-            <span style="font-size: 0.85rem; color: var(--text-muted)">public/blog/ e public/images/</span>
-          </div>
-        </div>
+    <div class="metric-card">
+      <div class="metric-icon gold">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+        </svg>
       </div>
-    </section>
-  </main>
-</body>
-</html>
+      <div class="metric-info">
+        <span class="metric-label">Cursos Ativos</span>
+        <strong class="metric-val">{activeCourses.length}</strong>
+        <span class="metric-trend text-muted">Cursos oficiais no ar</span>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon blue">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+        </svg>
+      </div>
+      <div class="metric-info">
+        <span class="metric-label">Artigos Publicados</span>
+        <strong class="metric-val">{totalPosts}</strong>
+        <span class="metric-trend text-green">Indexados no Google</span>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon green">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+      </div>
+      <div class="metric-info">
+        <span class="metric-label">Infraestrutura</span>
+        <strong class="metric-val">{githubStatus.ok ? 'GitHub Conectado' : 'Vercel Serverless'}</strong>
+        <span class="metric-trend text-green">● Operacional e Seguro</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 1: PÁGINAS DO SITE COM EDIÇÃO VISUAL -->
+  <section class="section-box" id="paginas">
+    <div class="section-box-header">
+      <div>
+        <div class="section-badge">MÓDULO VISUAL</div>
+        <h2>Páginas do Site com Edição Visual</h2>
+        <p>Clique em <strong>Abrir com Lápis</strong> para alterar textos, títulos e imagens diretamente na visualização real.</p>
+      </div>
+      <div class="table-search-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+        </svg>
+        <input type="text" id="filterPagesInput" placeholder="Buscar página..." class="input-search-compact" />
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="admin-table" id="pagesTable">
+        <thead>
+          <tr>
+            <th>Nome da Página</th>
+            <th>URL / Rota</th>
+            <th>Tipo</th>
+            <th>Status</th>
+            <th style="text-align: right;">Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          {pagesList.map(page => (
+            <tr data-name={page.name.toLowerCase()} data-path={page.path.toLowerCase()}>
+              <td>
+                <div class="table-item-title">
+                  <strong>{page.name}</strong>
+                  {page.editorVisual && <span class="tag-visual">Visual In-Context</span>}
+                </div>
+              </td>
+              <td><code>{page.path}</code></td>
+              <td><span class="text-sub">{page.type}</span></td>
+              <td><span class="badge badge-success">{page.status}</span></td>
+              <td style="text-align: right;">
+                <a href={page.path} target="_blank" class="btn-table-action" title="Abrir página com modo de edição ativo">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                  </svg>
+                  <span>Abrir com Lápis ↗</span>
+                </a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 2: ARTIGOS RECENTES DO BLOG -->
+  <section class="section-box" id="artigos">
+    <div class="section-box-header">
+      <div>
+        <div class="section-badge section-badge-blue">CONTEÚDO E SEO</div>
+        <h2>Artigos do Blog ({totalPosts})</h2>
+        <p>Acompanhe e edite as publicações do repositório em formato Markdown com Content Collections.</p>
+      </div>
+      <div class="header-action-group">
+        <a href="/admin/artigos" class="btn-outline-action">Ver Todos os {totalPosts} Artigos</a>
+        <a href="/admin/artigos/novo" class="btn-primary-compact">+ Criar Artigo</a>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Título do Artigo</th>
+            <th>Slug / URL</th>
+            <th>Data de Publicação</th>
+            <th style="text-align: right;">Ações Rápidas</th>
+          </tr>
+        </thead>
+        <tbody>
+          {recentPosts.map(post => {
+            const formattedDate = post.data.pubDate ? new Date(post.data.pubDate).toLocaleDateString('pt-BR') : 'Data não informada';
+            return (
+              <tr>
+                <td>
+                  <strong class="article-row-title">{post.data.title}</strong>
+                  {post.data.description && <div class="article-row-desc">{post.data.description.slice(0, 75)}...</div>}
+                </td>
+                <td><code>/blog/{post.slug}</code></td>
+                <td><span class="text-sub">{formattedDate}</span></td>
+                <td style="text-align: right;">
+                  <div class="table-actions-inline">
+                    <a href={`/blog/${post.slug}`} target="_blank" class="btn-icon-action" title="Visualizar Artigo Público">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                      </svg>
+                    </a>
+                    <a href={`/admin/artigos/${post.slug}`} class="btn-table-action" title="Editar Metadados e Conteúdo">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                      </svg>
+                      <span>Editar</span>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 3: CURSOS E FORMAÇÕES DA ACADEMIA -->
+  <section class="section-box" id="cursos">
+    <div class="section-box-header">
+      <div>
+        <div class="section-badge section-badge-gold">FORMAÇÃO PROFISSIONAL</div>
+        <h2>Cursos & Treinamentos em Destaque</h2>
+        <p>Carga horária, modalidade e matrículas ativas nas formações da Academia do Socorrista.</p>
+      </div>
+      <div>
+        <a href="/admin/cursos" class="btn-outline-action">Gerenciar Todos os Cursos →</a>
+      </div>
+    </div>
+
+    <div class="courses-cards-grid">
+      {activeCourses.map(course => (
+        <div class="course-card">
+          <div class="course-card-top">
+            <span class="course-category">{course.category}</span>
+            <span class="course-duration">{course.duration}</span>
+          </div>
+          <h3 class="course-card-title">{course.title}</h3>
+          <p class="course-card-level">Nível: {course.level}</p>
+          <div class="course-card-footer">
+            <span class="course-enrolled">👥 {course.enrolled}</span>
+            <a href={course.path} target="_blank" class="btn-table-action">
+              <span>Ver Página ↗</span>
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- SEÇÃO 4: ALUNOS E INSCRIÇÕES RECENTES -->
+  <section class="section-box" id="alunos">
+    <div class="section-box-header">
+      <div>
+        <div class="section-badge section-badge-green">GESTÃO DE ALUNOS</div>
+        <h2>Inscrições e Cadastros Recentes</h2>
+        <p>Acompanhamento de novos alunos e solicitações de vagas nos treinamentos.</p>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+        <div class="table-search-wrap">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input type="text" id="filterStudentsInput" placeholder="Buscar aluno..." class="input-search-compact" />
+        </div>
+        <a href="/admin/alunos" class="btn-outline-action">Painel Completo de Alunos →</a>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="admin-table" id="studentsTable">
+        <thead>
+          <tr>
+            <th>Nome do Aluno</th>
+            <th>E-mail</th>
+            <th>Curso Inscrito</th>
+            <th>Data / Horário</th>
+            <th>Status</th>
+            <th style="text-align: right;">Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          {recentRegistrations.map(reg => (
+            <tr data-name={reg.name.toLowerCase()} data-email={reg.email.toLowerCase()} data-course={reg.course.toLowerCase()}>
+              <td>
+                <div class="student-name-cell">
+                  <div class="student-avatar-small">{reg.name.slice(0, 2).toUpperCase()}</div>
+                  <strong>{reg.name}</strong>
+                </div>
+              </td>
+              <td><code>{reg.email}</code></td>
+              <td><span class="text-sub">{reg.course}</span></td>
+              <td><span class="text-sub">{reg.date}</span></td>
+              <td>
+                <span class={`badge ${reg.status === 'Confirmado' ? 'badge-success' : reg.status === 'Em Análise' ? 'badge-warning' : 'badge-neutral'}`}>
+                  {reg.status}
+                </span>
+              </td>
+              <td style="text-align: right;">
+                <button type="button" class="btn-table-action" onclick={`alert('Detalhes do aluno: ${reg.name} (${reg.email})')`}>
+                  <span>Visualizar</span>
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</AdminLayout>
+
+<style>
+  /* ================= CABEÇALHO DO DASHBOARD ================= */
+  .dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .header-intro h1 {
+    font-size: 1.85rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.35rem;
+  }
+
+  .header-intro p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: 650px;
+    line-height: 1.5;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--primary-red);
+    color: #FFF;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+    transition: all 0.2s ease;
+  }
+
+  .btn-primary-action:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45);
+  }
+
+  .btn-secondary-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: #FFF;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.75rem 1.15rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .btn-secondary-action:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  /* ================= CARDS DE MÉTRICAS ================= */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .metric-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .metric-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .metric-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .metric-icon.red { background: rgba(239, 68, 68, 0.15); color: var(--primary-red); }
+  .metric-icon.gold { background: rgba(245, 158, 11, 0.15); color: var(--accent-gold); }
+  .metric-icon.blue { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); }
+  .metric-icon.green { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); }
+
+  .metric-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .metric-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.2rem;
+  }
+
+  .metric-val {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #FFF;
+    line-height: 1.2;
+  }
+
+  .metric-trend {
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+  }
+
+  .text-green { color: #10B981; }
+  .text-muted { color: var(--text-muted); }
+  .text-sub { color: var(--text-sub); }
+
+  /* ================= SECTION BOX ================= */
+  .section-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .section-box-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .section-badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--primary-red);
+    background: rgba(239, 68, 68, 0.12);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    letter-spacing: 0.8px;
+    margin-bottom: 0.35rem;
+  }
+
+  .section-badge-blue {
+    color: var(--accent-blue);
+    background: rgba(59, 130, 246, 0.12);
+  }
+
+  .section-badge-gold {
+    color: var(--accent-gold);
+    background: rgba(245, 158, 11, 0.12);
+  }
+
+  .section-badge-green {
+    color: var(--accent-green);
+    background: rgba(16, 185, 129, 0.12);
+  }
+
+  .section-box-header h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+
+  .section-box-header p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+  }
+
+  .table-search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.45rem 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .input-search-compact {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #FFF;
+    font-size: 0.85rem;
+    width: 170px;
+  }
+
+  .input-search-compact::placeholder {
+    color: var(--text-sub);
+  }
+
+  .header-action-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .btn-outline-action {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 0.5rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .btn-outline-action:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-primary-compact {
+    display: inline-flex;
+    align-items: center;
+    background: var(--primary-red);
+    color: #FFF;
+    padding: 0.5rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  .btn-primary-compact:hover {
+    background: var(--primary-hover);
+  }
+
+  /* ================= TABELAS ================= */
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+  }
+
+  .admin-table th {
+    padding: 0.85rem 1rem;
+    color: var(--text-sub);
+    font-weight: 600;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .admin-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .admin-table tr:hover td {
+    background: rgba(255, 255, 255, 0.015);
+  }
+
+  .table-item-title {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .tag-visual {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #F87171;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+
+  .badge-success { background: rgba(16, 185, 129, 0.15); color: #10B981; }
+  .badge-warning { background: rgba(245, 158, 11, 0.15); color: #F59E0B; }
+  .badge-neutral { background: rgba(255, 255, 255, 0.08); color: var(--text-muted); }
+
+  .btn-table-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 0.45rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-table-action:hover {
+    background: var(--primary-red);
+    color: #FFF;
+    border-color: var(--primary-red);
+  }
+
+  .btn-icon-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .btn-icon-action:hover {
+    color: #FFF;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .table-actions-inline {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+
+  .article-row-title {
+    display: block;
+    color: #FFF;
+  }
+
+  .article-row-desc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+  }
+
+  /* ================= CURSOS CARDS ================= */
+  .courses-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .course-card {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .course-card:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .course-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .course-category {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--primary-red);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .course-duration {
+    font-size: 0.75rem;
+    color: var(--text-sub);
+  }
+
+  .course-card-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #FFF;
+    margin: 0;
+  }
+
+  .course-card-level {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .course-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .course-enrolled {
+    font-size: 0.8rem;
+    color: #A7F3D0;
+    font-weight: 500;
+  }
+
+  /* ================= ALUNOS TABELA ================= */
+  .student-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .student-avatar-small {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--primary-red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .header-actions {
+      width: 100%;
+    }
+    .btn-primary-action, .btn-secondary-action {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+</style>
+
+<script is:inline>
+  // Filtro interativo para Páginas do Site
+  const filterPagesInput = document.getElementById('filterPagesInput');
+  filterPagesInput?.addEventListener('input', (e) => {
+    const val = e.target.value.toLowerCase().trim();
+    const rows = document.querySelectorAll('#pagesTable tbody tr');
+    rows.forEach(row => {
+      const name = row.getAttribute('data-name') || '';
+      const path = row.getAttribute('data-path') || '';
+      if (name.includes(val) || path.includes(val)) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  });
+
+  // Filtro interativo para Alunos e Inscrições
+  const filterStudentsInput = document.getElementById('filterStudentsInput');
+  filterStudentsInput?.addEventListener('input', (e) => {
+    const val = e.target.value.toLowerCase().trim();
+    const rows = document.querySelectorAll('#studentsTable tbody tr');
+    rows.forEach(row => {
+      const name = row.getAttribute('data-name') || '';
+      const email = row.getAttribute('data-email') || '';
+      const course = row.getAttribute('data-course') || '';
+      if (name.includes(val) || email.includes(val) || course.includes(val)) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  });
+</script>

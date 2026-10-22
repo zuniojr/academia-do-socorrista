@@ -1,6 +1,7 @@
 ---
 export const prerender = false;
 
+import AdminLayout from '../../../components/admin/AdminLayout.astro';
 import { isRequestAuthenticated } from '../../../lib/admin/auth.ts';
 import { getLocalArticle } from '../../../lib/admin/articles.ts';
 
@@ -60,14 +61,7 @@ const availableImages = [
 ];
 ---
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{isNew ? 'Novo Artigo' : `Editar: ${initialArticle.meta.title}`} | Painel Admin</title>
-  <meta name="robots" content="noindex, nofollow" />
-  <link rel="icon" type="image/svg+xml" href="/images/logo-academia.svg" />
+<AdminLayout title={isNew ? 'Novo Artigo | Painel Admin' : `Editar: ${initialArticle.meta.title} | Painel Admin`} activeNav="artigos">
   <style>
     :root {
       --bg-dark: #090d16;
@@ -302,28 +296,32 @@ const availableImages = [
       color: #6ee7b7;
     }
   </style>
-</head>
-<body>
-  <header class="admin-nav">
-    <a href="/admin/artigos" class="nav-brand">
-      <img src="/images/logo-academia.svg" alt="Logo" onerror="this.style.display='none'" />
-      <span>Academia do Socorrista</span>
-    </a>
-    <div class="nav-actions">
-      <a href="/admin/artigos" class="btn btn-secondary">← Voltar para Artigos</a>
-      <a href="/admin/midia" target="_blank" class="btn btn-secondary">🖼️ Mídia</a>
-      {initialArticle.slug && (
-        <a href={`/admin/artigos/preview?slug=${initialArticle.slug}`} target="_blank" class="btn btn-secondary">
-          👁️ Pré-visualizar Rascunho
-        </a>
-      )}
-      <button id="btn-save-article" class="btn btn-primary">
-        💾 Salvar Rascunho
-      </button>
-    </div>
-  </header>
 
-  <main class="container">
+  <div class="editor-container">
+    <!-- Header de Ações do Artigo -->
+    <div class="editor-top-actions">
+      <div>
+        <div class="section-badge">{isNew ? 'NOVO ARTIGO' : 'EDIÇÃO DE CONTEÚDO'}</div>
+        <h1 class="editor-page-title">{isNew ? 'Criar Novo Artigo' : initialArticle.meta.title}</h1>
+        <p class="editor-page-sub">Edite metadados, capa e o texto em Markdown com pré-visualização instantânea.</p>
+      </div>
+      <div class="editor-buttons-group">
+        <a href="/admin/artigos" class="btn btn-secondary">
+          ← Voltar para Artigos
+        </a>
+        <a href="/admin/midia" target="_blank" class="btn btn-secondary">
+          🖼️ Mídia
+        </a>
+        {initialArticle.slug && (
+          <a href={`/admin/artigos/preview?slug=${initialArticle.slug}`} target="_blank" class="btn btn-secondary">
+            👁️ Prévia
+          </a>
+        )}
+        <button id="btn-save-article" class="btn btn-primary">
+          💾 Salvar Rascunho
+        </button>
+      </div>
+    </div>
     <div id="alert-box" class="alert"></div>
 
     <form id="article-form" class="editor-grid">
@@ -863,5 +861,5 @@ const availableImages = [
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   </script>
-</body>
-</html>
+  </div>
+</AdminLayout>

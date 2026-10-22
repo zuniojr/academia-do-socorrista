@@ -1,0 +1,608 @@
+---
+export const prerender = false;
+
+interface Props {
+  title?: string;
+  activeNav?: 'dashboard' | 'paginas' | 'artigos' | 'cursos' | 'alunos' | 'midia';
+}
+
+const { title = 'Painel Administrativo | Academia do Socorrista', activeNav = 'dashboard' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/svg+xml" href="/images/logo-academia.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="admin-wrapper" id="adminWrapper">
+    <!-- BARRA LATERAL (SIDEBAR RETRÁTIL) -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-header">
+        <a href="/admin" class="sidebar-brand">
+          <div class="brand-icon">
+            <svg width="26" height="26" viewBox="0 0 36 36" fill="none">
+              <rect width="36" height="36" rx="9" fill="#EF4444" />
+              <!-- Cruz da Vida / Emblema de Resgate -->
+              <path d="M18 7V29M7 18H29" stroke="white" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">Academia Admin</span>
+            <span class="brand-sub">Painel de Controle</span>
+          </div>
+        </a>
+        <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Recolher / Expandir Menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">PRINCIPAL</div>
+        <a href="/admin" class={`nav-item ${activeNav === 'dashboard' ? 'active' : ''}`}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          <span class="nav-text">Visão Geral</span>
+        </a>
+
+        <a href="/admin#paginas" class={`nav-item ${activeNav === 'paginas' ? 'active' : ''}`}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/>
+          </svg>
+          <span class="nav-text">Páginas do Site</span>
+        </a>
+
+        <div class="nav-section-label">GESTÃO DE CONTEÚDO</div>
+        <a href="/admin/artigos" class={`nav-item ${activeNav === 'artigos' ? 'active' : ''}`}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+          <span class="nav-text">Artigos do Blog</span>
+          <span class="nav-badge">17</span>
+        </a>
+
+        <a href="/admin/midia" class={`nav-item ${activeNav === 'midia' ? 'active' : ''}`}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+          </svg>
+          <span class="nav-text">Biblioteca de Mídia</span>
+        </a>
+
+        <div class="nav-section-label">ACADÊMICO & LEADS</div>
+        <a href="/admin/cursos" class={`nav-item ${activeNav === 'cursos' ? 'active' : ''}`}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+          </svg>
+          <span class="nav-text">Cursos & Treinamentos</span>
+        </a>
+
+        <a href="/admin/alunos" class={`nav-item ${activeNav === 'alunos' ? 'active' : ''}`}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span class="nav-text">Inscrições & Alunos</span>
+          <span class="nav-badge nav-badge-green">Novo</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="/" target="_blank" class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          <span class="nav-text">Ver Site Público</span>
+        </a>
+        <a href="/admin/logout" class="nav-item nav-item-danger">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          <span class="nav-text">Sair do Painel</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL -->
+    <div class="admin-main-container">
+      <!-- TOPBAR / HEADER FLUIDO -->
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+          <div class="breadcrumb-trail">
+            <span class="breadcrumb-root">Admin</span>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">
+              {activeNav === 'dashboard' && 'Visão Geral'}
+              {activeNav === 'paginas' && 'Páginas'}
+              {activeNav === 'artigos' && 'Artigos'}
+              {activeNav === 'midia' && 'Mídia'}
+              {activeNav === 'cursos' && 'Cursos'}
+              {activeNav === 'alunos' && 'Alunos'}
+            </span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Status de Sincronização GitHub/Vercel -->
+          <div class="status-pill">
+            <span class="status-indicator-dot"></span>
+            <span class="status-pill-text">Vercel & GitHub Ativos</span>
+          </div>
+
+          <!-- Perfil do Administrador -->
+          <div class="admin-user-profile">
+            <div class="user-avatar">
+              <span>AS</span>
+            </div>
+            <div class="user-info">
+              <span class="user-name">Administrador</span>
+              <span class="user-role">Sessão Segura</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTEÚDO DA PÁGINA (SLOT) -->
+      <main class="admin-content-area">
+        <slot />
+      </main>
+    </div>
+  </div>
+
+  <!-- OVERLAY MOBILE -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <style is:global>
+    :root {
+      --bg-dark: #090E17;
+      --bg-card: #111A28;
+      --bg-sidebar: #0D1624;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(239, 68, 68, 0.5);
+      --primary-red: #EF4444;
+      --primary-hover: #DC2626;
+      --accent-gold: #F59E0B;
+      --accent-blue: #3B82F6;
+      --accent-green: #10B981;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --text-sub: #64748B;
+      --sidebar-width: 260px;
+      --sidebar-collapsed-width: 76px;
+      --topbar-height: 70px;
+      --transition-speed: 0.25s;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .admin-wrapper {
+      display: flex;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* ================= SIDEBAR ================= */
+    .admin-sidebar {
+      width: var(--sidebar-width);
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 50;
+      transition: width var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar-header {
+      height: var(--topbar-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+    }
+
+    .brand-icon {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      white-space: nowrap;
+      transition: opacity var(--transition-speed);
+    }
+
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: #FFF;
+    }
+
+    .brand-sub {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--primary-red);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-toggle-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 6px;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFF;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 1.25rem 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      overflow-y: auto;
+    }
+
+    .nav-section-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      padding: 0.75rem 0.75rem 0.35rem;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.75rem 0.85rem;
+      border-radius: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .nav-item svg {
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-item:hover {
+      background: rgba(239, 68, 68, 0.1);
+      color: #FFF;
+    }
+
+    .nav-item:hover svg {
+      transform: scale(1.08);
+      color: var(--primary-red);
+    }
+
+    .nav-item.active {
+      background: rgba(239, 68, 68, 0.15);
+      color: #FFF;
+      font-weight: 600;
+      border-left: 3px solid var(--primary-red);
+    }
+
+    .nav-item.active svg {
+      color: var(--primary-red);
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .nav-badge-green {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10B981;
+    }
+
+    .sidebar-footer {
+      padding: 1rem 0.85rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .nav-item-danger:hover {
+      background: rgba(239, 68, 68, 0.15);
+      color: #F87171;
+    }
+
+    /* SIDEBAR RECOLHIDA */
+    .admin-wrapper.sidebar-collapsed .admin-sidebar {
+      width: var(--sidebar-collapsed-width);
+    }
+
+    .admin-wrapper.sidebar-collapsed .brand-text,
+    .admin-wrapper.sidebar-collapsed .nav-text,
+    .admin-wrapper.sidebar-collapsed .nav-section-label,
+    .admin-wrapper.sidebar-collapsed .nav-badge {
+      display: none;
+    }
+
+    .admin-wrapper.sidebar-collapsed .sidebar-toggle-btn svg {
+      transform: rotate(180deg);
+    }
+
+    .admin-wrapper.sidebar-collapsed .nav-item {
+      justify-content: center;
+      padding: 0.75rem 0;
+    }
+
+    .admin-wrapper.sidebar-collapsed .admin-main-container {
+      margin-left: var(--sidebar-collapsed-width);
+    }
+
+    /* ================= MAIN CONTAINER ================= */
+    .admin-main-container {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      transition: margin-left var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ================= TOPBAR ================= */
+    .admin-topbar {
+      height: var(--topbar-height);
+      background: rgba(13, 22, 36, 0.75);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .breadcrumb-trail {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.88rem;
+    }
+
+    .breadcrumb-root {
+      color: var(--text-muted);
+    }
+
+    .breadcrumb-separator {
+      color: var(--text-sub);
+    }
+
+    .breadcrumb-current {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 0.35rem 0.8rem;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #6EE7B7;
+    }
+
+    .status-indicator-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 8px #10B981;
+    }
+
+    .admin-user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding-left: 1.25rem;
+      border-left: 1px solid var(--border);
+    }
+
+    .user-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #EF4444, #B91C1C);
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #FFF;
+    }
+
+    .user-role {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* ================= CONTENT AREA ================= */
+    .admin-content-area {
+      flex: 1;
+      padding: 2.5rem;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* ================= RESPONSIVIDADE ================= */
+    @media (max-width: 1024px) {
+      .admin-topbar {
+        padding: 0 1.5rem;
+      }
+      .admin-content-area {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+      .admin-sidebar {
+        transform: translateX(-100%);
+        transition: transform var(--transition-speed) ease;
+      }
+      .admin-wrapper.mobile-open .admin-sidebar {
+        transform: translateX(0);
+      }
+      .admin-main-container {
+        margin-left: 0 !important;
+      }
+      .sidebar-toggle-btn {
+        display: none;
+      }
+      .status-pill {
+        display: none;
+      }
+      .sidebar-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+        z-index: 45;
+      }
+      .admin-wrapper.mobile-open .sidebar-backdrop {
+        display: block;
+      }
+    }
+  </style>
+
+  <script is:inline>
+    // Gerenciamento da Sidebar Retrátil (Desktop e Mobile)
+    const adminWrapper = document.getElementById('adminWrapper');
+    const toggleBtn = document.getElementById('sidebarToggleBtn');
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const backdrop = document.getElementById('sidebarBackdrop');
+
+    // Recupera preferência do usuário do localStorage
+    if (localStorage.getItem('admin_sidebar_collapsed') === 'true' && window.innerWidth > 768) {
+      adminWrapper?.classList.add('sidebar-collapsed');
+    }
+
+    toggleBtn?.addEventListener('click', () => {
+      adminWrapper?.classList.toggle('sidebar-collapsed');
+      const isCollapsed = adminWrapper?.classList.contains('sidebar-collapsed');
+      localStorage.setItem('admin_sidebar_collapsed', isCollapsed ? 'true' : 'false');
+    });
+
+    mobileBtn?.addEventListener('click', () => {
+      adminWrapper?.classList.toggle('mobile-open');
+    });
+
+    backdrop?.addEventListener('click', () => {
+      adminWrapper?.classList.remove('mobile-open');
+    });
+  </script>
+</body>
+</html>

@@ -2,6 +2,7 @@
 title: "Protocolo XABCDE: A Sequência de Avaliação Inicial do Trauma"
 description: "Entenda o protocolo XABCDE segundo o PHTLS, a regra de ouro para a avaliação sistemática do paciente de trauma no atendimento pré-hospitalar (APH)."
 pubDate: "2024-08-18"
+updatedDate: "2026-10-22"
 heroImage: "/blog/Protocolo-XABCDE.avif"
 ---
 
@@ -31,7 +32,6 @@ Uso da Escala de Coma de Glasgow (ECG) ou AVDI (Alerta, Voz, Dor, Inconsciente) 
 
 Exposição completa da vítima para busca de lesões ocultas, seguida de prevenção imediata da hipotermia com mantas térmicas ou aquecimento ambiental. Um paciente hipotérmico tem seu processo de coagulação prejudicado, o que agrava hemorragias.
 
-## Conclusão: O Papel da Academia do Socorrista
+## O Papel da Academia do Socorrista
 
 Dominar o XABCDE não é apenas decorar letras, mas sim automatizar processos para que, sob pressão, suas mãos saibam exatamente o que fazer. Na Academia do Socorrista, nossas simulações realistas e instrutores experientes transformam esse conhecimento em competência tática. Cada segundo conta, e saber o que vem depois do "X" é o que salva vidas.
-
