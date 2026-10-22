@@ -1,0 +1,85 @@
+{
+  "meta": {
+    "title": "Academia do Socorrista | Treinamento Avançado",
+    "description": "Domine o Controle de Hemorragias e esteja preparado para salvar vidas em situações de alto risco com as melhores técnicas de resgate."
+  },
+  "hero": {
+    "titlePrefix": "Aprenda Atendimento ",
+    "titleHighlight": "Pré-Hospitalar",
+    "titleSuffix": " com quem vive o resgate todos os dias.",
+    "paragraph": "Cursos online desenvolvidos por profissionais experientes para formar socorristas preparados para agir nas situações mais críticas.",
+    "cta1Text": "Conheça os Cursos",
+    "cta1Url": "https://www.academiadosocorrista.com.br/nossos-cursos",
+    "cta2Text": "Começar Agora",
+    "cta2Url": "https://www.academiadosocorrista.com.br/nossos-cursos",
+    "bgImage": "/images/hero-paramedics.avif"
+  },
+  "afogados": {
+    "badge": "Novo Curso",
+    "titlePrefix": "Recuperação de ",
+    "titleHighlight": "Afogados na Prática",
+    "paragraph": "Aprenda as técnicas essenciais de resgate aquático e recuperação de afogados com um treinamento prático e baseado em protocolos internacionais.",
+    "cta1Text": "Quero me Inscrever",
+    "cta1Url": "https://www.academiadosocorrista.com.br/recuperacao-de-afogados-na-pratica",
+    "cta2Text": "Conheça o Curso",
+    "cta2Url": "https://www.academiadosocorrista.com.br/recuperacao-de-afogados-na-pratica"
+  },
+  "plataforma": {
+    "title": "Aprenda de onde estiver. Quando quiser.",
+    "paragraph": "Nossa plataforma é moderna, intuitiva e 100% online. Acesse pelo computador, tablet ou celular e tenha uma experiência completa de ensino.",
+    "image": "/images/devices-mockup.avif",
+    "item1": "Vídeos em alta qualidade",
+    "item2": "Materiais de apoio para download",
+    "item3": "Acompanhamento do seu progresso",
+    "item4": "Certificado digital com QR Code"
+  },
+  "metodologia": {
+    "titlePrefix": "Metodologia Baseada em ",
+    "titleHighlight": "Protocolos Internacionais",
+    "paragraph": "Nosso treinamento é construído sobre bases sólidas, utilizando as diretrizes mais recentes. Preparamos você para agir no momento em que cada segundo conta.",
+    "image": "/images/socorrista-heroico.avif",
+    "ctaText": "Garantir Inscrição",
+    "ctaUrl": "https://www.academiadosocorrista.com.br/domine-o-controle-de-hemorragias",
+    "benefit1Title": "Ação Imediata",
+    "benefit1Text": "Técnicas focadas na resposta rápida para preservar a vida em minutos críticos.",
+    "benefit2Title": "Controle Emocional",
+    "benefit2Text": "Treinamento para manter a calma e a precisão sob extrema pressão.",
+    "benefit3Title": "Conhecimento Prático",
+    "benefit3Text": "Exercícios simulados e cenários reais para garantir a máxima retenção do aprendizado."
+  },
+  "whyStudy": {
+    "titlePrefix": "Por que estudar ",
+    "titleHighlight": "com a gente?",
+    "card1Title": "Instrutores atuantes",
+    "card1Text": "Profissionais que atuam diariamente em ocorrências reais.",
+    "card2Title": "Metodologia prática",
+    "card2Text": "Casos reais, simulações e protocolos aplicados em campo.",
+    "card3Title": "Conteúdo atualizado",
+    "card3Text": "Material revisado conforme as últimas diretrizes internacionais.",
+    "card4Title": "Certificado válido",
+    "card4Text": "Documento oficial reconhecido para currículo e empresas.",
+    "card5Title": "Suporte Dedicado",
+    "card5Text": "Tire dúvidas com nossa equipe pedagógica durante todo o curso.",
+    "card6Title": "Conteúdo objetivo",
+    "card6Text": "Aulas diretas, sem enrolação, focadas no que realmente importa."
+  },
+  "hemorragias": {
+    "badge": "Treinamento Exclusivo",
+    "titlePrefix": "Domine o ",
+    "titleHighlight": "Controle de Hemorragias",
+    "titleSuffix": " e salve vidas.",
+    "paragraph": "Um treinamento completo projetado para profissionais e socorristas que buscam atuar com precisão, segurança e rapidez em situações de emergência.",
+    "image": "/images/controle-de-hemorragia.avif",
+    "cta1Text": "Quero me Inscrever",
+    "cta1Url": "https://www.academiadosocorrista.com.br/domine-o-controle-de-hemorragias",
+    "cta2Text": "Conheça o Curso",
+    "cta2Url": "https://www.academiadosocorrista.com.br/domine-o-controle-de-hemorragias"
+  },
+  "ctaFinal": {
+    "title": "Pronto para salvar vidas em situações críticas?",
+    "paragraph": "Não espere a emergência acontecer para descobrir que você não está preparado. Torne-se um Socorrista capacitado hoje mesmo.",
+    "ctaText": "🚑 Fazer Inscrição Agora",
+    "ctaUrl": "https://www.academiadosocorrista.com.br/domine-o-controle-de-hemorragias",
+    "note": "Vagas limitadas para as turmas deste mês!"
+  }
+}

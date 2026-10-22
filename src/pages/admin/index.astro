@@ -1,0 +1,418 @@
+---
+export const prerender = false;
+
+import { isRequestAuthenticated } from '../../lib/admin/auth';
+import { getGitHubConfig, testGitHubConnection, getOrCreatePublishPullRequest } from '../../lib/admin/github';
+import { getCollection } from 'astro:content';
+
+// Validação obrigatória da sessão no servidor
+if (!isRequestAuthenticated(Astro.request)) {
+  return Astro.redirect('/admin/login');
+}
+
+const githubConfig = getGitHubConfig();
+const hasGitHubToken = Boolean(githubConfig.token);
+let githubStatus = { ok: false, message: 'Não verificado' };
+
+if (hasGitHubToken) {
+  githubStatus = await testGitHubConnection();
+} else {
+  githubStatus = { 
+    ok: false, 
+    message: 'GITHUB_TOKEN não configurado. Defina a variável de ambiente para sincronização com o repositório.' 
+  };
+}
+
+// Estatísticas reais do projeto
+const blogPosts = await getCollection('blog').catch(() => []);
+const totalPosts = blogPosts.length;
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Administrativo | Academia do Socorrista</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/svg+xml" href="/images/logo-academia.svg" />
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --primary-red: #ef4444;
+      --primary-hover: #dc2626;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --success-green: #10b981;
+      --warning-yellow: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation */
+    .admin-nav {
+      background-color: var(--card-bg);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .nav-brand img {
+      width: 32px;
+      height: 32px;
+    }
+
+    .nav-badge {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--primary-red);
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn-outline {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--card-border);
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+    }
+
+    .btn-outline:hover {
+      color: var(--text-main);
+      border-color: var(--text-muted);
+    }
+
+    .btn-logout {
+      color: #fca5a5;
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-logout:hover {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--primary-red);
+    }
+
+    /* Main Container */
+    .admin-container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+    }
+
+    .dashboard-header {
+      margin-bottom: 2rem;
+    }
+
+    .dashboard-header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .dashboard-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Grid de Status */
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .status-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .status-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .status-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .dot-green { background-color: var(--success-green); box-shadow: 0 0 8px var(--success-green); }
+    .dot-yellow { background-color: var(--warning-yellow); box-shadow: 0 0 8px var(--warning-yellow); }
+
+    .status-body {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .status-detail {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      word-break: break-all;
+    }
+
+    /* Módulos */
+    .modules-section h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+    }
+
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .module-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .module-card:hover {
+      border-color: #374151;
+    }
+
+    .module-icon {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .module-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .module-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+    }
+
+    .module-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1rem;
+    }
+
+    .badge-stage {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      background: #1f2937;
+      color: var(--text-muted);
+    }
+
+    .badge-active {
+      background: rgba(16, 185, 129, 0.15);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <header class="admin-nav">
+    <a href="/admin" class="nav-brand">
+      <img src="/images/logo-academia.svg" alt="Logo" onerror="this.style.display='none'" />
+      <span>Academia do Socorrista</span>
+      <span class="nav-badge">Painel Admin</span>
+    </a>
+    <div class="nav-actions">
+      <a href="/admin/artigos" class="btn-outline">Artigos</a>
+      <a href="/admin/midia" class="btn-outline">Biblioteca de Mídia</a>
+      <a href="/" target="_blank" class="btn-outline">Ver Site Público ↗</a>
+      <a href="/admin/logout" class="btn-outline btn-logout">Sair</a>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <div class="dashboard-header">
+      <h1>Painel de Controle e Infraestrutura</h1>
+      <p>Gerenciamento seguro de conteúdo, rascunhos e publicação via GitHub e Vercel.</p>
+    </div>
+
+    <!-- Status da Infraestrutura -->
+    <div class="status-grid">
+      <!-- Card Autenticação -->
+      <div class="status-card">
+        <div class="status-card-header">
+          <span class="status-title">Segurança & Sessão</span>
+          <div class="status-indicator" style="color: var(--success-green)">
+            <span class="dot dot-green"></span>
+            <span>Ativa</span>
+          </div>
+        </div>
+        <div class="status-body">
+          <strong>Cookie HttpOnly Validado</strong>
+          <p class="status-detail">Assinatura HMAC-SHA256, SameSite=Strict e validação serverless no servidor.</p>
+        </div>
+      </div>
+
+      <!-- Card Modo Astro / Vercel -->
+      <div class="status-card">
+        <div class="status-card-header">
+          <span class="status-title">Ambiente de Execução</span>
+          <div class="status-indicator" style="color: var(--success-green)">
+            <span class="dot dot-green"></span>
+            <span>Híbrido</span>
+          </div>
+        </div>
+        <div class="status-body">
+          <strong>Astro + Vercel Serverless</strong>
+          <p class="status-detail">Páginas públicas 100% estáticas (SSG). Rotas /admin sob demanda em funções serverless.</p>
+        </div>
+      </div>
+
+      <!-- Card GitHub API -->
+      <div class="status-card">
+        <div class="status-card-header">
+          <span class="status-title">Repositório GitHub</span>
+          <div class="status-indicator" style={{ color: githubStatus.ok ? 'var(--success-green)' : 'var(--warning-yellow)' }}>
+            <span class={`dot ${githubStatus.ok ? 'dot-green' : 'dot-yellow'}`}></span>
+            <span>{githubStatus.ok ? 'Conectado' : 'Aguardando Token'}</span>
+          </div>
+        </div>
+        <div class="status-body">
+          <strong>{githubConfig.owner}/{githubConfig.repo}</strong>
+          <p class="status-detail">
+            Base: <code>{githubConfig.baseBranch}</code> | Rascunhos: <code>{githubConfig.draftBranch}</code>
+          </p>
+          <p class="status-detail">{githubStatus.message}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção de Módulos -->
+    <section class="modules-section">
+      <h2>Módulos do Sistema</h2>
+      <div class="modules-grid">
+        <!-- Módulo 1: Edição Visual -->
+        <div class="module-card">
+          <div class="module-icon">🎨</div>
+          <h3>Editor Visual In-Context</h3>
+          <p>Edite títulos, textos, links e imagens das páginas institucionais clicando diretamente nos elementos — sem tocar no código.</p>
+          <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <a href="/sobre" class="btn-outline" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem;">
+              /sobre ↗
+            </a>
+            <a href="/" class="btn-outline" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem;">
+              / (home) ↗
+            </a>
+            <a href="/domine-o-controle-de-hemorragias" class="btn-outline" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem;">
+              /domine-o-controle... ↗
+            </a>
+          </div>
+          <div class="module-footer">
+            <span class="badge-stage badge-active">Módulo Operacional</span>
+            <span style="font-size: 0.85rem; color: var(--text-muted)">3 páginas editáveis</span>
+          </div>
+        </div>
+
+        <!-- Módulo 2: Blog -->
+        <div class="module-card">
+          <div class="module-icon">📝</div>
+          <h3>Gerenciador de Artigos</h3>
+          <p>Edição e criação de artigos em Markdown com metadados do schema Astro Content Collections.</p>
+          <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <a href="/admin/artigos" class="btn-outline" style="background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border-color: rgba(99, 102, 241, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem;">
+              Gerenciar Artigos ({totalPosts}) ↗
+            </a>
+            <a href="/admin/artigos/novo" class="btn-outline" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem;">
+              + Novo Artigo
+            </a>
+          </div>
+          <div class="module-footer">
+            <span class="badge-stage badge-active">Módulo Operacional</span>
+            <span style="font-size: 0.85rem; color: var(--text-muted)">src/content/blog/</span>
+          </div>
+        </div>
+
+        <!-- Módulo 3: Mídia -->
+        <div class="module-card">
+          <div class="module-icon">🖼️</div>
+          <h3>Biblioteca de Mídia</h3>
+          <p>Upload seguro de imagens (AVIF, WebP, JPEG, PNG) com validação de peso, integridade e caminhos protegidos.</p>
+          <div style="margin-bottom: 1rem;">
+            <a href="/admin/midia" class="btn-outline" style="background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem;">
+              Abrir Biblioteca de Mídia ↗
+            </a>
+          </div>
+          <div class="module-footer">
+            <span class="badge-stage badge-active">Módulo Operacional</span>
+            <span style="font-size: 0.85rem; color: var(--text-muted)">public/blog/ e public/images/</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

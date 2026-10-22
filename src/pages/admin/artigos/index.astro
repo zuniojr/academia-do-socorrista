@@ -1,0 +1,589 @@
+---
+export const prerender = false;
+
+import { isRequestAuthenticated } from '../../../lib/admin/auth.ts';
+import { listLocalArticles } from '../../../lib/admin/articles.ts';
+import { getGitHubConfig } from '../../../lib/admin/github.ts';
+
+if (!isRequestAuthenticated(Astro.request)) {
+  return Astro.redirect('/admin/login');
+}
+
+const articles = await listLocalArticles();
+const githubConfig = getGitHubConfig();
+const hasGitHub = Boolean(githubConfig.token);
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artigos do Blog | Painel Administrativo</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/svg+xml" href="/images/logo-academia.svg" />
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --primary-red: #ef4444;
+      --primary-hover: #dc2626;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --success-green: #10b981;
+      --indigo-accent: #6366f1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation */
+    .admin-nav {
+      background-color: var(--card-bg);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .nav-brand img {
+      width: 32px;
+      height: 32px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--text-main);
+    }
+
+    .btn-logout {
+      padding: 0.4rem 0.8rem;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+
+    .btn-logout:hover {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--primary-red);
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .page-header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .page-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-red);
+      color: white;
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background-color 0.2s;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: #1f2937;
+      color: #e5e7eb;
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: 1px solid var(--card-border);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: #374151;
+      border-color: #4b5563;
+    }
+
+    /* Search & Filter Bar */
+    .filter-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: #0b1120;
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 0.6rem 1rem;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary-red);
+    }
+
+    .stats-count {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    /* Articles Table */
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
+
+    .articles-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .articles-table th {
+      background: #0d131f;
+      padding: 1rem 1.25rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .articles-table td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--card-border);
+      font-size: 0.9rem;
+      vertical-align: middle;
+    }
+
+    .articles-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .articles-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .article-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .article-thumb {
+      width: 52px;
+      height: 52px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: #1f2937;
+      flex-shrink: 0;
+    }
+
+    .article-title {
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 0.25rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .article-slug {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+
+    .badge-status {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(16, 185, 129, 0.15);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .row-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .action-btn {
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: 1px solid var(--card-border);
+      background: #1f2937;
+      color: var(--text-main);
+    }
+
+    .action-btn:hover {
+      background: #374151;
+      border-color: #4b5563;
+    }
+
+    .action-btn-primary {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+
+    .action-btn-primary:hover {
+      background: var(--primary-red);
+      color: white;
+    }
+
+    .empty-state {
+      padding: 3rem;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    /* Modal Pull Request */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: 1.5rem;
+    }
+
+    .modal-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      max-width: 500px;
+      width: 100%;
+      padding: 2rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-card h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="admin-nav">
+    <a href="/admin" class="nav-brand">
+      <img src="/images/logo-academia.svg" alt="Logo" onerror="this.style.display='none'" />
+      <span>Academia do Socorrista</span>
+    </a>
+    <nav class="nav-links">
+      <a href="/admin" class="nav-link">Dashboard</a>
+      <a href="/admin/artigos" class="nav-link active">Artigos</a>
+      <a href="/admin/midia" class="nav-link">Biblioteca de Mídia</a>
+      <a href="/sobre" target="_blank" class="nav-link">Editor da Página Sobre</a>
+      <a href="/" target="_blank" class="nav-link">Site Público ↗</a>
+      <a href="/admin/logout" class="btn-logout">Sair</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="page-header">
+      <div>
+        <h1>Gerenciamento de Artigos</h1>
+        <p>Crie, edite e revise os artigos de blog versionados no repositório.</p>
+      </div>
+      <div class="header-actions">
+        <button id="btn-open-pr-modal" class="btn-secondary">
+          🚀 Solicitar Publicação (Pull Request)
+        </button>
+        <a href="/admin/artigos/novo" class="btn-primary">
+          + Novo Artigo
+        </a>
+      </div>
+    </div>
+
+    <!-- Barra de Busca -->
+    <div class="filter-bar">
+      <div class="search-box">
+        <input 
+          type="text" 
+          id="search-input" 
+          class="search-input" 
+          placeholder="Pesquisar por título ou slug..." 
+        />
+      </div>
+      <div class="stats-count">
+        Total de <strong id="visible-count">{articles.length}</strong> artigos encontrados
+      </div>
+    </div>
+
+    <!-- Tabela de Artigos -->
+    <div class="table-container">
+      <table class="articles-table">
+        <thead>
+          <tr>
+            <th>Artigo</th>
+            <th>Data de Publicação</th>
+            <th>Status</th>
+            <th style="text-align: right;">Ações</th>
+          </tr>
+        </thead>
+        <tbody id="articles-tbody">
+          {articles.map((art) => (
+            <tr class="article-row" data-title={art.meta.title.toLowerCase()} data-slug={art.slug.toLowerCase()}>
+              <td>
+                <div class="article-info">
+                  {art.meta.heroImage ? (
+                    <img src={art.meta.heroImage} alt="" class="article-thumb" onerror="this.style.display='none'" />
+                  ) : (
+                    <div class="article-thumb" style="display: flex; align-items: center; justify-content: center; color: #6b7280; font-size: 1.2rem;">📄</div>
+                  )}
+                  <div>
+                    <div class="article-title">{art.meta.title}</div>
+                    <div class="article-slug">/blog/{art.slug}</div>
+                  </div>
+                </div>
+              </td>
+              <td style="color: var(--text-muted); white-space: nowrap;">
+                {new Date(art.meta.pubDate).toLocaleDateString('pt-BR')}
+              </td>
+              <td>
+                <span class="badge-status">Repositório</span>
+              </td>
+              <td style="text-align: right;">
+                <div class="row-actions" style="justify-content: flex-end;">
+                  <a href={`/admin/artigos/preview?slug=${art.slug}`} class="action-btn">
+                    👁️ Prévia
+                  </a>
+                  <a href={`/admin/artigos/editar?slug=${art.slug}`} class="action-btn action-btn-primary">
+                    ✏️ Editar
+                  </a>
+                  <a href={`/blog/${art.slug}`} target="_blank" class="action-btn" title="Ver versão pública">
+                    ↗
+                  </a>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div id="no-results" class="empty-state" style="display: none;">
+        Nenhum artigo encontrado para o termo pesquisado.
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal para Solicitação de Publicação (Pull Request) -->
+  <div id="pr-modal" class="modal-overlay">
+    <div class="modal-card">
+      <h3>Publicar Alterações (Abrir Pull Request)</h3>
+      <p>
+        Este procedimento cria ou atualiza um <strong>Pull Request</strong> da branch de rascunhos (<code>cms-drafts</code>) para a branch oficial (<code>main</code>), permitindo que você revise todas as alterações antes de colocá-las no ar.
+      </p>
+      <div id="pr-status-msg" style="margin-bottom: 1rem; font-size: 0.9rem;"></div>
+      <div class="modal-actions">
+        <button id="btn-cancel-pr" class="btn-secondary">Cancelar</button>
+        <button id="btn-confirm-pr" class="btn-primary">Criar Pull Request</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Filtro de Busca em Tempo Real
+    const searchInput = document.getElementById('search-input') as HTMLInputElement;
+    const rows = document.querySelectorAll<HTMLTableRowElement>('.article-row');
+    const noResults = document.getElementById('no-results');
+    const visibleCount = document.getElementById('visible-count');
+
+    searchInput?.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase().trim();
+      let count = 0;
+
+      rows.forEach((row) => {
+        const title = row.getAttribute('data-title') || '';
+        const slug = row.getAttribute('data-slug') || '';
+        if (title.includes(query) || slug.includes(query)) {
+          row.style.display = '';
+          count++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      if (visibleCount) visibleCount.textContent = count.toString();
+      if (noResults) noResults.style.display = count === 0 ? 'block' : 'none';
+    });
+
+    // Modal de Pull Request
+    const prModal = document.getElementById('pr-modal');
+    const btnOpenPrModal = document.getElementById('btn-open-pr-modal');
+    const btnCancelPr = document.getElementById('btn-cancel-pr');
+    const btnConfirmPr = document.getElementById('btn-confirm-pr') as HTMLButtonElement;
+    const prStatusMsg = document.getElementById('pr-status-msg');
+
+    btnOpenPrModal?.addEventListener('click', () => {
+      if (prModal) prModal.style.display = 'flex';
+      if (prStatusMsg) prStatusMsg.innerHTML = '';
+    });
+
+    btnCancelPr?.addEventListener('click', () => {
+      if (prModal) prModal.style.display = 'none';
+    });
+
+    btnConfirmPr?.addEventListener('click', async () => {
+      if (!btnConfirmPr || !prStatusMsg) return;
+      btnConfirmPr.disabled = true;
+      btnConfirmPr.textContent = 'Processando...';
+      prStatusMsg.innerHTML = '<span style="color: #60a5fa;">Conectando à API do GitHub...</span>';
+
+      try {
+        const res = await fetch('/api/admin/publish-pr', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.ok) {
+          prStatusMsg.innerHTML = `
+            <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #6ee7b7; padding: 0.75rem; border-radius: 6px;">
+              ${data.message}
+              ${data.prUrl ? `<br/><a href="${data.prUrl}" target="_blank" style="color: white; font-weight: bold; text-decoration: underline; margin-top: 0.5rem; display: inline-block;">Visualizar Pull Request no GitHub ↗</a>` : ''}
+            </div>
+          `;
+          btnConfirmPr.textContent = 'Concluído';
+        } else {
+          prStatusMsg.innerHTML = `
+            <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5; padding: 0.75rem; border-radius: 6px;">
+              ${data.message || data.error || 'Falha ao solicitar publicação.'}
+            </div>
+          `;
+          btnConfirmPr.disabled = false;
+          btnConfirmPr.textContent = 'Tentar Novamente';
+        }
+      } catch (err: any) {
+        prStatusMsg.innerHTML = `<span style="color: #f87171;">Erro: ${err.message}</span>`;
+        btnConfirmPr.disabled = false;
+        btnConfirmPr.textContent = 'Tentar Novamente';
+      }
+    });
+  </script>
+</body>
+</html>

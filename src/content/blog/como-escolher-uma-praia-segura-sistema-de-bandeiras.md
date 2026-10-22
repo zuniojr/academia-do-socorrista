@@ -1,8 +1,8 @@
 ---
 title: "Como Escolher uma Praia Segura: O Sistema de Bandeiras e sua Eficácia"
 description: "Guia completo sobre o sistema de bandeiras de segurança em praias, interpretando cores, símbolos e significados. Aprenda a escolher e avaliar praias com base em indicadores visuais de segurança, recomendações oficiais e protocolos de emergência."
-pubDate: "2026-07-31"
-heroImage: "/images/hero-paramedics.avif"
+pubDate: "2026-10-20"
+heroImage: "/images/hero-afogados.avif"
 ---
 
 Nadar em águas abertas traz alegria e liberdade, mas também riscos significativos que muitos não conseguem avaliar corretamente. A chave para desfrutar de praias e águas naturais com segurança está na capacidade de interpretar rapidamente os sistemas de sinalização, especialmente o universal sistema de bandeiras de segurança. Dominar este conhecimento pode literalmente salvar vidas.

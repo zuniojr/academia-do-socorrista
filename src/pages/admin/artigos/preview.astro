@@ -1,0 +1,158 @@
+---
+export const prerender = false;
+
+import { isRequestAuthenticated } from '../../../lib/admin/auth.ts';
+import { getLocalArticle, renderMarkdownToHtml } from '../../../lib/admin/articles.ts';
+import BlogPost from '../../../layouts/BlogPost.astro';
+
+// Proteção da rota no servidor
+if (!isRequestAuthenticated(Astro.request)) {
+  return Astro.redirect('/admin/login');
+}
+
+const url = new URL(Astro.request.url);
+const slug = url.searchParams.get('slug') || '';
+
+if (!slug) {
+  return Astro.redirect('/admin/artigos');
+}
+
+let article = await getLocalArticle(slug);
+
+// Se não encontrou no disco local, tenta carregar da branch cms-drafts do GitHub
+if (!article) {
+  try {
+    const { getGitHubConfig, getFileFromGitHub } = await import('../../../lib/admin/github.ts');
+    const { parseArticleMarkdown } = await import('../../../lib/admin/articles.ts');
+    const config = getGitHubConfig();
+    if (config.token) {
+      const ghFile = await getFileFromGitHub(`src/content/blog/${slug}.md`, config.draftBranch);
+      if (ghFile) {
+        const { meta, body } = parseArticleMarkdown(ghFile.content);
+        article = {
+          slug,
+          meta,
+          body,
+          sha: ghFile.sha,
+          isDraft: true,
+        };
+      }
+    }
+  } catch {
+    // Ignora erro
+  }
+}
+
+if (!article) {
+  return new Response('Artigo não encontrado para pré-visualização.', { status: 404 });
+}
+
+const renderedHtml = renderMarkdownToHtml(article.body);
+const pubDateObj = new Date(article.meta.pubDate);
+const updatedDateObj = article.meta.updatedDate ? new Date(article.meta.updatedDate) : undefined;
+---
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>[Pré-visualização] {article.meta.title}</title>
+  <style>
+    /* Faixa de Notificação de Preview */
+    .as-preview-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background: #1e1b4b;
+      border-bottom: 2px solid #6366f1;
+      color: #e0e7ff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1.5rem;
+      z-index: 9999999;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .as-preview-tag {
+      background: #4f46e5;
+      color: #ffffff;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.75rem;
+      margin-right: 0.5rem;
+    }
+
+    .as-preview-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .as-preview-btn {
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .as-btn-edit {
+      background: #4338ca;
+      color: white;
+    }
+
+    .as-btn-edit:hover {
+      background: #3730a3;
+    }
+
+    .as-btn-list {
+      background: transparent;
+      color: #c7d2fe;
+      border: 1px solid #4f46e5;
+    }
+
+    .as-btn-list:hover {
+      background: rgba(79, 70, 229, 0.15);
+      color: white;
+    }
+
+    /* Compensação da barra de preview */
+    body {
+      padding-top: 48px !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="as-preview-banner">
+    <div>
+      <span class="as-preview-tag">PRÉ-VISUALIZAÇÃO DE RASCUNHO</span>
+      <span>Este artigo está em modo de pré-visualização privada e não foi publicado no site oficial.</span>
+    </div>
+    <div class="as-preview-actions">
+      <a href={`/admin/artigos/editar?slug=${article.slug}`} class="as-preview-btn as-btn-edit">
+        ← Voltar ao Editor
+      </a>
+      <a href="/admin/artigos" class="as-preview-btn as-btn-list">
+        Lista de Artigos
+      </a>
+    </div>
+  </div>
+
+  <BlogPost 
+    title={article.meta.title}
+    description={article.meta.description}
+    pubDate={pubDateObj}
+    updatedDate={updatedDateObj}
+    heroImage={article.meta.heroImage}
+  >
+    <Fragment set:html={renderedHtml} />
+  </BlogPost>
+</body>
+</html>
