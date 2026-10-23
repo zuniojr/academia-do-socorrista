@@ -4,17 +4,48 @@ import Layout from './Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
+interface Props extends CollectionEntry<'blog'>['data'] {
+	slug?: string;
+}
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, slug } = Astro.props;
 ---
 
 <Layout title={title} description={description}>
 	<Header />
+	
+	<!-- BARRA FLUTUANTE DE ADMIN (visível quando logado ou modo de edição ativo) -->
+	<div id="blog-admin-bar" class="blog-admin-bar" style="display: none;">
+		<div class="admin-bar-container container">
+			<div class="admin-bar-left">
+				<span class="admin-pulse-dot"></span>
+				<span class="admin-label">Modo Administrador</span>
+			</div>
+			<div class="admin-bar-right">
+				{slug && (
+					<a href={`/admin/artigos/editar?slug=${slug}`} class="admin-bar-btn highlight">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+						<span>Editar Este Artigo</span>
+					</a>
+				)}
+				<a href="/admin/artigos" class="admin-bar-btn">Gerenciar Artigos</a>
+				<a href="/blog" class="admin-bar-btn">Ver Todos os Posts</a>
+			</div>
+		</div>
+	</div>
+
 	<main class="page-container">
 		<article class="blog-post container animate-fade">
 			<div class="post-header text-center">
-				<span class="section-badge">Blog & Segurança</span>
+				<div class="header-badges">
+					<span class="section-badge">Blog & Segurança</span>
+					{slug && (
+						<a href={`/admin/artigos/editar?slug=${slug}`} class="article-edit-quick-btn" title="Editar artigo no Painel Admin">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+							<span>Editar Artigo</span>
+						</a>
+					)}
+				</div>
 				<div class="date">
 					Publicado em {pubDate.toLocaleDateString('pt-BR')}
 					{
@@ -27,7 +58,15 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				</div>
 				<h1 class="text-gradient">{title}</h1>
 				<div class="hero-image">
-					{heroImage && <img width={1200} height={600} src={heroImage} alt={title} />}
+					{heroImage && (
+						<img 
+							width={1200} 
+							height={600} 
+							src={heroImage} 
+							alt={title}
+							onerror="this.onerror=null; this.src='/blog/aph-ambulance-rescue.avif'" 
+						/>
+					)}
 				</div>
 			</div>
 
@@ -156,10 +195,152 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 		justify-content: center;
 	}
 
+	.header-badges {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 12px;
+		margin-bottom: 20px;
+		flex-wrap: wrap;
+	}
+
+	.article-edit-quick-btn {
+		display: none;
+		align-items: center;
+		gap: 6px;
+		background: rgba(255, 85, 0, 0.15);
+		border: 1px solid rgba(255, 85, 0, 0.4);
+		color: #ff7733;
+		padding: 5px 14px;
+		border-radius: 999px;
+		font-size: 0.8rem;
+		font-weight: 700;
+		text-decoration: none;
+		transition: all 0.2s ease;
+	}
+
+	.article-edit-quick-btn:hover {
+		background: #ff5500;
+		color: #ffffff;
+		border-color: #ff5500;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(255, 85, 0, 0.35);
+	}
+
+	:global(body.is-admin) .article-edit-quick-btn {
+		display: inline-flex;
+	}
+
+	.blog-admin-bar {
+		position: sticky;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 1000;
+		background: rgba(18, 22, 28, 0.95);
+		backdrop-filter: blur(12px);
+		border-bottom: 1px solid rgba(255, 85, 0, 0.3);
+		padding: 10px 0;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+	}
+
+	.admin-bar-container {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 15px;
+		flex-wrap: wrap;
+	}
+
+	.admin-bar-left {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.admin-pulse-dot {
+		width: 8px;
+		height: 8px;
+		background: #10b981;
+		border-radius: 50%;
+		box-shadow: 0 0 10px #10b981;
+		animation: pulse-green 2s infinite;
+	}
+
+	@keyframes pulse-green {
+		0%, 100% { opacity: 1; transform: scale(1); }
+		50% { opacity: 0.5; transform: scale(1.3); }
+	}
+
+	.admin-label {
+		font-size: 0.82rem;
+		font-weight: 700;
+		color: #e5e7eb;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.admin-bar-right {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.admin-bar-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		background: rgba(255, 255, 255, 0.06);
+		border: 1px solid rgba(255, 255, 255, 0.12);
+		color: #d1d5db;
+		padding: 6px 14px;
+		border-radius: 6px;
+		font-size: 0.8rem;
+		font-weight: 600;
+		text-decoration: none;
+		transition: all 0.2s ease;
+	}
+
+	.admin-bar-btn:hover {
+		background: rgba(255, 255, 255, 0.15);
+		color: #ffffff;
+		border-color: rgba(255, 255, 255, 0.25);
+	}
+
+	.admin-bar-btn.highlight {
+		background: #ff5500;
+		color: #ffffff;
+		border-color: #ff5500;
+	}
+
+	.admin-bar-btn.highlight:hover {
+		background: #ff6a1a;
+		box-shadow: 0 4px 14px rgba(255, 85, 0, 0.4);
+	}
+
 	@media (max-width: 768px) {
 		.post-header h1 { font-size: 2.5rem; }
 		.post-footer { padding: 40px 20px; }
 		.footer-actions { flex-direction: column; }
 	}
 </style>
+
+<script>
+	async function checkBlogAdmin() {
+		try {
+			const res = await fetch('/api/admin/auth-status', { credentials: 'include' });
+			if (res.ok) {
+				const data = await res.json();
+				if (data.authenticated) {
+					document.body.classList.add('is-admin');
+					const bar = document.getElementById('blog-admin-bar');
+					if (bar) bar.style.display = 'block';
+				}
+			}
+		} catch (e) {
+			// Não autenticado
+		}
+	}
+	checkBlogAdmin();
+</script>
 

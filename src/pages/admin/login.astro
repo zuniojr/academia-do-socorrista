@@ -11,9 +11,14 @@ import {
   resetLoginAttempts
 } from '../../lib/admin/auth.ts';
 
-// Se já estiver logado, redireciona diretamente para o painel
+const requestedRedirect = Astro.url.searchParams.get('redirect');
+const safeRedirect = (requestedRedirect && requestedRedirect.startsWith('/') && !requestedRedirect.startsWith('//')) 
+  ? requestedRedirect 
+  : '/admin';
+
+// Se já estiver logado, redireciona diretamente
 if (isRequestAuthenticated(Astro.request)) {
-  return Astro.redirect('/admin');
+  return Astro.redirect(safeRedirect);
 }
 
 let errorMessage = '';
@@ -44,7 +49,7 @@ if (Astro.request.method === 'POST') {
 
           const headers = new Headers();
           headers.append('Set-Cookie', cookieHeader);
-          headers.append('Location', '/admin');
+          headers.append('Location', safeRedirect);
 
           return new Response(null, {
             status: 302,
