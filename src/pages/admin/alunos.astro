@@ -3,48 +3,25 @@ export const prerender = false;
 
 import AdminLayout from '../../components/admin/AdminLayout.astro';
 import { isRequestAuthenticated } from '../../lib/admin/auth.ts';
+import { fetchAllLeads, type Lead } from '../../lib/admin/leads.ts';
 
 if (!isRequestAuthenticated(Astro.request)) {
   return Astro.redirect('/admin/login');
 }
 
 // ─── Busca leads reais da planilha Google Sheets ────────────────────────────
-interface Lead {
-  id: string;
-  name: string;
-  phone: string;
-  email: string;
-  course: string;
-  source: string;
-  date: string;
-  message: string;
-  status: string;
-}
-
 let studentsList: Lead[] = [];
 let sheetError = false;
 let sheetNotPublished = false;
+let sheetEmpty = false;
 
 try {
-  const baseUrl = Astro.url.origin;
-  const res = await fetch(`${baseUrl}/api/admin/leads`, {
-    headers: { cookie: Astro.request.headers.get('cookie') ?? '' },
-  });
-
-  if (res.ok) {
-    const data = await res.json();
-    if (data.ok && Array.isArray(data.leads) && data.leads.length > 0) {
-      studentsList = data.leads;
-    } else if (data.ok && data.leads.length === 0) {
-      sheetNotPublished = true;
-    } else {
-      sheetError = true;
-    }
-  } else {
-    sheetError = true;
+  studentsList = await fetchAllLeads();
+  if (studentsList.length === 0) {
+    sheetEmpty = true;
   }
 } catch (e) {
-  console.error('[alunos] Falha ao buscar leads:', e);
+  console.error('[alunos] Falha ao buscar leads da planilha:', e);
   sheetError = true;
 }
 
@@ -63,17 +40,32 @@ const pendingCount   = studentsList.filter(s => s.status === 'Lead' || s.status 
         <p>Acompanhe matriculados, solicitações de vagas, dados de contato e status de pagamento dos treinamentos operacionais.</p>
       </div>
       <div class="header-actions">
+        <a 
+          href="https://docs.google.com/spreadsheets/d/1VIO65l2rGB8eUCxiCuuH0zHybFmHGaSltoAZSJLuvIo/edit" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="btn-action-secondary"
+          title="Abrir a planilha original do Google Sheets"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+          <span>Abrir Planilha</span>
+        </a>
+        <button type="button" class="btn-action-secondary" onclick="window.location.reload()" title="Recarregar dados mais recentes da planilha">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 4v6h-6"></path>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+          </svg>
+          <span>Atualizar</span>
+        </button>
         <button type="button" class="btn-action-secondary" onclick="exportStudentsCSV()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
           </svg>
           <span>Exportar CSV</span>
-        </button>
-        <button type="button" class="btn-action-primary" onclick="openNewStudentModal()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-          </svg>
-          <span>Registrar Inscrição Manual</span>
         </button>
       </div>
     </header>
