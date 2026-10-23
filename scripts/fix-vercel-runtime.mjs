@@ -14,9 +14,9 @@ if (fs.existsSync(functionsDir)) {
           const content = fs.readFileSync(fullPath, 'utf8');
           const json = JSON.parse(content);
           if (json.runtime && json.runtime.startsWith('nodejs')) {
-            json.runtime = 'nodejs24.x';
+            json.runtime = 'nodejs22.x';
             fs.writeFileSync(fullPath, JSON.stringify(json, null, 2), 'utf8');
-            console.log(`[fix-vercel-runtime] Updated runtime to nodejs24.x in: ${fullPath}`);
+            console.log(`[fix-vercel-runtime] Updated runtime to nodejs22.x in: ${fullPath}`);
           }
         } catch (e) {
           console.error(`[fix-vercel-runtime] Error updating ${fullPath}:`, e);
