@@ -184,8 +184,11 @@ const recentRegistrations = [
       </div>
       <div class="metric-info">
         <span class="metric-label">Alunos & Cadastros</span>
-        <strong class="metric-val">1.480+</strong>
-        <span class="metric-trend text-green">↑ 12% este mês</span>
+        <div class="metric-val-row">
+          <strong class="metric-val">1.480+</strong>
+          <span class="trend-badge trend-up">↑ +12%</span>
+        </div>
+        <span class="metric-trend text-muted">vs. mês anterior</span>
       </div>
     </div>
 
@@ -197,7 +200,10 @@ const recentRegistrations = [
       </div>
       <div class="metric-info">
         <span class="metric-label">Cursos Ativos</span>
-        <strong class="metric-val">{activeCourses.length}</strong>
+        <div class="metric-val-row">
+          <strong class="metric-val">{activeCourses.length}</strong>
+          <span class="trend-badge trend-neutral">— Estável</span>
+        </div>
         <span class="metric-trend text-muted">Cursos oficiais no ar</span>
       </div>
     </div>
@@ -210,8 +216,11 @@ const recentRegistrations = [
       </div>
       <div class="metric-info">
         <span class="metric-label">Artigos Publicados</span>
-        <strong class="metric-val">{totalPosts}</strong>
-        <span class="metric-trend text-green">Indexados no Google</span>
+        <div class="metric-val-row">
+          <strong class="metric-val">{totalPosts}</strong>
+          <span class="trend-badge trend-up">↑ SEO</span>
+        </div>
+        <span class="metric-trend text-muted">Indexados no Google</span>
       </div>
     </div>
 
@@ -223,8 +232,11 @@ const recentRegistrations = [
       </div>
       <div class="metric-info">
         <span class="metric-label">Infraestrutura</span>
-        <strong class="metric-val">{githubStatus.ok ? 'GitHub Conectado' : 'Vercel Serverless'}</strong>
-        <span class="metric-trend text-green">● Operacional e Seguro</span>
+        <div class="metric-val-row">
+          <strong class="metric-val">{githubStatus.ok ? 'GitHub OK' : 'Vercel'}</strong>
+          <span class="trend-badge trend-up">● Online</span>
+        </div>
+        <span class="metric-trend text-muted">Operacional e Seguro</span>
       </div>
     </div>
   </section>
@@ -402,7 +414,7 @@ const recentRegistrations = [
             <th>Curso Inscrito</th>
             <th>Data / Horário</th>
             <th>Status</th>
-            <th style="text-align: right;">Ação</th>
+            <th style="text-align: right; width: 60px;">Ação</th>
           </tr>
         </thead>
         <tbody>
@@ -418,19 +430,50 @@ const recentRegistrations = [
               <td><span class="text-sub">{reg.course}</span></td>
               <td><span class="text-sub">{reg.date}</span></td>
               <td>
-                <span class={`badge ${reg.status === 'Confirmado' ? 'badge-success' : reg.status === 'Em Análise' ? 'badge-warning' : 'badge-neutral'}`}>
+                <span class={`status-badge ${
+                  reg.status === 'Confirmado' ? 'status-confirmed' 
+                  : reg.status === 'Em Análise' ? 'status-analysis' 
+                  : reg.status === 'Aguardando Pagamento' ? 'status-pending'
+                  : 'status-lead'}`}>
+                  <span class="status-dot"></span>
                   {reg.status}
                 </span>
               </td>
               <td style="text-align: right;">
-                <button type="button" class="btn-table-action" onclick={`alert('Detalhes do aluno: ${reg.name} (${reg.email})')`}>
-                  <span>Visualizar</span>
-                </button>
+                <div class="actions-dropdown">
+                  <button type="button" class="actions-dropdown-trigger" data-tooltip="Ações">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>
+                    </svg>
+                  </button>
+                  <div class="actions-dropdown-menu">
+                    <button type="button" class="dropdown-item" onclick={`alert('Detalhes do aluno: ${reg.name} (${reg.email})')`}>
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      Ver ficha completa
+                    </button>
+                    <a href={`mailto:${reg.email}`} class="dropdown-item">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                      Enviar e-mail
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <button type="button" class="dropdown-item dropdown-item-green" onclick={`alert('Status de ${reg.name} atualizado.')`}>
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                      Confirmar matrícula
+                    </button>
+                  </div>
+                </div>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+    </div>
+
+    <!-- Skeleton Loader (exibido via JS quando carregando) -->
+    <div id="studentsSkeletonLoader" style="display: none;">
+      <div class="skeleton-row"><div class="skeleton skeleton-avatar"></div><div class="skeleton-row-content"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text-sm"></div></div><div class="skeleton skeleton-badge"></div></div>
+      <div class="skeleton-row"><div class="skeleton skeleton-avatar"></div><div class="skeleton-row-content"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text-sm"></div></div><div class="skeleton skeleton-badge"></div></div>
+      <div class="skeleton-row"><div class="skeleton skeleton-avatar"></div><div class="skeleton-row-content"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text-sm"></div></div><div class="skeleton skeleton-badge"></div></div>
     </div>
   </section>
 </AdminLayout>
@@ -511,25 +554,38 @@ const recentRegistrations = [
   /* ================= CARDS DE MÉTRICAS ================= */
   .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
     margin-bottom: 2.5rem;
+  }
+
+  @media (max-width: 1200px) {
+    .metrics-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .metrics-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   .metric-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.5rem;
+    border-radius: 14px;
+    padding: 1.35rem 1.5rem;
     display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    align-items: flex-start;
+    gap: 1.15rem;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   .metric-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
   }
 
   .metric-icon {
@@ -569,9 +625,45 @@ const recentRegistrations = [
     line-height: 1.2;
   }
 
+  .metric-val-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .trend-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.18rem 0.5rem;
+    border-radius: 6px;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+  }
+
+  .trend-up {
+    background: rgba(52, 211, 153, 0.15);
+    color: #34D399;
+    border: 1px solid rgba(52, 211, 153, 0.25);
+  }
+
+  .trend-down {
+    background: rgba(251, 113, 133, 0.15);
+    color: #FB7185;
+    border: 1px solid rgba(251, 113, 133, 0.25);
+  }
+
+  .trend-neutral {
+    background: rgba(148, 163, 184, 0.10);
+    color: var(--text-muted);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+  }
+
   .metric-trend {
-    font-size: 0.75rem;
-    margin-top: 0.25rem;
+    font-size: 0.73rem;
+    margin-top: 0.2rem;
   }
 
   .text-green { color: #10B981; }
@@ -759,6 +851,61 @@ const recentRegistrations = [
   .badge-success { background: rgba(16, 185, 129, 0.15); color: #10B981; }
   .badge-warning { background: rgba(245, 158, 11, 0.15); color: #F59E0B; }
   .badge-neutral { background: rgba(255, 255, 255, 0.08); color: var(--text-muted); }
+
+  /* ================= STATUS BADGES (Semantic v2) ================= */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 9999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    border: 1px solid transparent;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .status-confirmed {
+    background: var(--status-confirmed-bg);
+    color: var(--status-confirmed-text);
+    border-color: var(--status-confirmed-border);
+  }
+  .status-confirmed .status-dot { background: var(--status-confirmed-text); }
+
+  .status-lead {
+    background: var(--status-lead-bg);
+    color: var(--status-lead-text);
+    border-color: var(--status-lead-border);
+  }
+  .status-lead .status-dot { background: var(--status-lead-text); }
+
+  .status-pending {
+    background: var(--status-pending-bg);
+    color: var(--status-pending-text);
+    border-color: var(--status-pending-border);
+  }
+  .status-pending .status-dot { background: var(--status-pending-text); }
+
+  .status-cancelled {
+    background: var(--status-cancelled-bg);
+    color: var(--status-cancelled-text);
+    border-color: var(--status-cancelled-border);
+  }
+  .status-cancelled .status-dot { background: var(--status-cancelled-text); }
+
+  .status-analysis {
+    background: var(--status-analysis-bg);
+    color: var(--status-analysis-text);
+    border-color: var(--status-analysis-border);
+  }
+  .status-analysis .status-dot { background: var(--status-analysis-text); }
 
   .btn-table-action {
     display: inline-flex;

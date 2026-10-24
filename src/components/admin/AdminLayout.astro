@@ -184,6 +184,23 @@ const { title = 'Painel Administrativo | Academia do Socorrista', activeNav = 'd
       --sidebar-collapsed-width: 76px;
       --topbar-height: 70px;
       --transition-speed: 0.25s;
+
+      /* Semantic Status Colors — High contrast dark mode */
+      --status-lead-bg: rgba(251, 191, 36, 0.14);
+      --status-lead-text: #FBBF24;
+      --status-lead-border: rgba(251, 191, 36, 0.30);
+      --status-pending-bg: rgba(245, 158, 11, 0.14);
+      --status-pending-text: #F59E0B;
+      --status-pending-border: rgba(245, 158, 11, 0.30);
+      --status-confirmed-bg: rgba(52, 211, 153, 0.14);
+      --status-confirmed-text: #34D399;
+      --status-confirmed-border: rgba(52, 211, 153, 0.30);
+      --status-cancelled-bg: rgba(251, 113, 133, 0.14);
+      --status-cancelled-text: #FB7185;
+      --status-cancelled-border: rgba(251, 113, 133, 0.30);
+      --status-analysis-bg: rgba(96, 165, 250, 0.14);
+      --status-analysis-text: #60A5FA;
+      --status-analysis-border: rgba(96, 165, 250, 0.30);
     }
 
     * {
@@ -198,6 +215,197 @@ const { title = 'Painel Administrativo | Academia do Socorrista', activeNav = 'd
       color: var(--text-main);
       min-height: 100vh;
       overflow-x: hidden;
+    }
+
+    /* ============ SKELETON LOADER ============ */
+    @keyframes skeletonPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+
+    .skeleton {
+      background: linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.10) 50%, rgba(255,255,255,0.04) 100%);
+      background-size: 200% 100%;
+      animation: skeletonPulse 1.8s ease-in-out infinite;
+      border-radius: 6px;
+    }
+
+    .skeleton-text {
+      height: 14px;
+      width: 80%;
+      margin-bottom: 0.5rem;
+    }
+
+    .skeleton-text-sm {
+      height: 11px;
+      width: 55%;
+    }
+
+    .skeleton-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+    }
+
+    .skeleton-badge {
+      height: 22px;
+      width: 72px;
+      border-radius: 9999px;
+    }
+
+    .skeleton-card {
+      height: 100px;
+      border-radius: 12px;
+    }
+
+    .skeleton-row {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 1.1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skeleton-row-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    /* ============ TOOLTIP ============ */
+    [data-tooltip] {
+      position: relative;
+    }
+
+    [data-tooltip]::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: #1E293B;
+      color: #F8FAFC;
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      z-index: 999;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    [data-tooltip]:hover::after {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ============ DROPDOWN ACTIONS MENU ============ */
+    .actions-dropdown {
+      position: relative;
+    }
+
+    .actions-dropdown-trigger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 1rem;
+      line-height: 1;
+      letter-spacing: 1px;
+    }
+
+    .actions-dropdown-trigger:hover {
+      background: rgba(255, 255, 255, 0.10);
+      color: #FFF;
+      border-color: rgba(255,255,255,0.18);
+    }
+
+    .actions-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      min-width: 180px;
+      background: #1A2332;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 10px;
+      padding: 0.35rem;
+      z-index: 500;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.45);
+      backdrop-filter: blur(12px);
+    }
+
+    .actions-dropdown.open .actions-dropdown-menu {
+      display: block;
+      animation: dropdownIn 0.15s ease;
+    }
+
+    @keyframes dropdownIn {
+      from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.55rem 0.75rem;
+      border-radius: 7px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-main);
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      transition: background 0.15s ease;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(255,255,255,0.07);
+    }
+
+    .dropdown-item svg {
+      flex-shrink: 0;
+      color: var(--text-muted);
+    }
+
+    .dropdown-item:hover svg {
+      color: var(--text-main);
+    }
+
+    .dropdown-item-green:hover {
+      background: rgba(16, 185, 129, 0.12);
+    }
+    .dropdown-item-green:hover svg {
+      color: #34D399;
+    }
+
+    .dropdown-item-red:hover {
+      background: rgba(239, 68, 68, 0.12);
+    }
+    .dropdown-item-red:hover svg {
+      color: #FB7185;
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0.3rem 0;
     }
 
     .admin-wrapper {
@@ -602,6 +810,24 @@ const { title = 'Painel Administrativo | Academia do Socorrista', activeNav = 'd
 
     backdrop?.addEventListener('click', () => {
       adminWrapper?.classList.remove('mobile-open');
+    });
+
+    // ─── Dropdown Actions Toggle ───────────────────────
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('.actions-dropdown-trigger');
+      if (trigger) {
+        e.stopPropagation();
+        const dropdown = trigger.closest('.actions-dropdown');
+        const isOpen = dropdown.classList.contains('open');
+        // Close all others first
+        document.querySelectorAll('.actions-dropdown.open').forEach(d => d.classList.remove('open'));
+        if (!isOpen) dropdown.classList.add('open');
+        return;
+      }
+      // Click outside closes all dropdowns
+      if (!e.target.closest('.actions-dropdown-menu')) {
+        document.querySelectorAll('.actions-dropdown.open').forEach(d => d.classList.remove('open'));
+      }
     });
   </script>
 </body>

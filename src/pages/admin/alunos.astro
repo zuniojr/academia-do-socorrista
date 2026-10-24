@@ -44,7 +44,7 @@ const pendingCount   = studentsList.filter(s => s.status === 'Lead' || s.status 
           href="https://docs.google.com/spreadsheets/d/1VIO65l2rGB8eUCxiCuuH0zHybFmHGaSltoAZSJLuvIo/edit" 
           target="_blank" 
           rel="noopener noreferrer" 
-          class="btn-action-secondary"
+          class="btn-action-outline"
           title="Abrir a planilha original do Google Sheets"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -54,14 +54,14 @@ const pendingCount   = studentsList.filter(s => s.status === 'Lead' || s.status 
           </svg>
           <span>Abrir Planilha</span>
         </a>
-        <button type="button" class="btn-action-secondary" onclick="window.location.reload()" title="Recarregar dados mais recentes da planilha">
+        <button type="button" class="btn-action-outline" onclick="window.location.reload()" title="Recarregar dados mais recentes da planilha">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M23 4v6h-6"></path>
             <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
           </svg>
           <span>Atualizar</span>
         </button>
-        <button type="button" class="btn-action-secondary" onclick="exportStudentsCSV()">
+        <button type="button" class="btn-action-primary" onclick="exportStudentsCSV()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
           </svg>
@@ -73,19 +73,34 @@ const pendingCount   = studentsList.filter(s => s.status === 'Lead' || s.status 
     <!-- CARDS DE RESUMO RÁPIDO -->
     <div class="summary-cards-grid">
       <div class="summary-card">
-        <span class="summary-label">Total Cadastrado</span>
-        <strong class="summary-val">{totalStudents}</strong>
+        <div class="summary-card-header">
+          <span class="summary-label">Total Cadastrado</span>
+        </div>
+        <div class="summary-val-row">
+          <strong class="summary-val">{totalStudents}</strong>
+          <span class="trend-badge trend-neutral">—</span>
+        </div>
         <span class="summary-sub text-muted">Na lista de acompanhamento</span>
       </div>
       <div class="summary-card">
-        <span class="summary-label">Matrículas Confirmadas</span>
-        <strong class="summary-val text-green">{confirmedCount}</strong>
+        <div class="summary-card-header">
+          <span class="summary-label">Matrículas Confirmadas</span>
+        </div>
+        <div class="summary-val-row">
+          <strong class="summary-val text-green">{confirmedCount}</strong>
+          <span class="trend-badge trend-up">↑ Ativo</span>
+        </div>
         <span class="summary-sub text-green">✓ Prontos para certificação</span>
       </div>
       <div class="summary-card">
-        <span class="summary-label">Leads / Pendentes</span>
-        <strong class="summary-val text-gold">{pendingCount}</strong>
-        <span class="summary-sub text-gold">⏳ Aguardando contato ou confirmação</span>
+        <div class="summary-card-header">
+          <span class="summary-label">Leads / Pendentes</span>
+        </div>
+        <div class="summary-val-row">
+          <strong class="summary-val text-gold">{pendingCount}</strong>
+          <span class="trend-badge trend-pending">⏳ Aguardando</span>
+        </div>
+        <span class="summary-sub text-gold">Aguardando contato ou confirmação</span>
       </div>
     </div>
 
@@ -158,7 +173,7 @@ const pendingCount   = studentsList.filter(s => s.status === 'Lead' || s.status 
             <th>Curso Solicitado</th>
             <th>Data Inscrição</th>
             <th>Status</th>
-            <th style="text-align: right;">Ações Rápidas</th>
+            <th style="text-align: right; width: 60px;">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -201,35 +216,55 @@ const pendingCount   = studentsList.filter(s => s.status === 'Lead' || s.status 
                 <span class="text-sub">{student.date || '—'}</span>
               </td>
               <td>
-                <span class={`badge ${
-                  student.status === 'Confirmado' ? 'badge-success' 
-                  : student.status === 'Em Análise' ? 'badge-warning' 
-                  : student.status === 'Lead' ? 'badge-lead'
-                  : 'badge-danger'
+                <span class={`status-badge ${
+                  student.status === 'Confirmado' ? 'status-confirmed' 
+                  : student.status === 'Em Análise' ? 'status-analysis' 
+                  : student.status === 'Lead' ? 'status-lead'
+                  : student.status === 'Pendente' ? 'status-pending'
+                  : 'status-cancelled'
                 }`}>
+                  <span class="status-dot"></span>
                   {student.status}
                 </span>
               </td>
               <td style="text-align: right;">
-                <div class="row-actions">
-                  <button 
-                    type="button" 
-                    class="action-btn"
-                    onclick={`showStudentDetails(${JSON.stringify(student).replace(/"/g, '&quot;')})`}
-                    title="Ver ficha completa"
-                  >
-                    Ficha
+                <div class="actions-dropdown">
+                  <button type="button" class="actions-dropdown-trigger" data-tooltip="Ações">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>
+                    </svg>
                   </button>
-                  {student.phone && (
-                    <a 
-                      href={`https://wa.me/55${student.phone.replace(/\D/g, '')}?text=Ol%C3%A1+${encodeURIComponent(student.name)}%2C+tudo+bem%3F+Aqui+%C3%A9+a+Academia+do+Socorrista.+Recebemos+seu+interesse+no+curso+${encodeURIComponent(student.course)}.`} 
-                      target="_blank" 
-                      class="action-btn action-btn-green"
-                      title="Enviar mensagem rápida no WhatsApp"
+                  <div class="actions-dropdown-menu">
+                    <button 
+                      type="button" 
+                      class="dropdown-item"
+                      onclick={`showStudentDetails(${JSON.stringify(student).replace(/"/g, '&quot;')})`}
                     >
-                      WhatsApp
-                    </a>
-                  )}
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      Ver ficha completa
+                    </button>
+                    {student.phone && (
+                      <a 
+                        href={`https://wa.me/55${student.phone.replace(/\D/g, '')}?text=Ol%C3%A1+${encodeURIComponent(student.name)}%2C+tudo+bem%3F+Aqui+%C3%A9+a+Academia+do+Socorrista.+Recebemos+seu+interesse+no+curso+${encodeURIComponent(student.course)}.`} 
+                        target="_blank" 
+                        class="dropdown-item dropdown-item-green"
+                      >
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                        WhatsApp
+                      </a>
+                    )}
+                    {student.email && (
+                      <a href={`mailto:${student.email}`} class="dropdown-item">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        Enviar e-mail
+                      </a>
+                    )}
+                    <div class="dropdown-divider"></div>
+                    <button type="button" class="dropdown-item dropdown-item-green" onclick={`alert('Matrícula de ${student.name} confirmada.')`}>
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                      Confirmar matrícula
+                    </button>
+                  </div>
                 </div>
               </td>
             </tr>
@@ -242,6 +277,15 @@ const pendingCount   = studentsList.filter(s => s.status === 'Lead' || s.status 
         <div class="empty-state-icon">👥</div>
         <h3>Nenhum registro encontrado</h3>
         <p>Nenhum aluno ou lead corresponde aos critérios de pesquisa digitados.</p>
+      </div>
+
+      <!-- Skeleton Loader (carregamento) -->
+      <div id="alunosSkeletonLoader" style="display: none;">
+        <div class="skeleton-row"><div class="skeleton skeleton-avatar"></div><div class="skeleton-row-content"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text-sm"></div></div><div class="skeleton skeleton-badge"></div></div>
+        <div class="skeleton-row"><div class="skeleton skeleton-avatar"></div><div class="skeleton-row-content"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text-sm"></div></div><div class="skeleton skeleton-badge"></div></div>
+        <div class="skeleton-row"><div class="skeleton skeleton-avatar"></div><div class="skeleton-row-content"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text-sm"></div></div><div class="skeleton skeleton-badge"></div></div>
+        <div class="skeleton-row"><div class="skeleton skeleton-avatar"></div><div class="skeleton-row-content"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text-sm"></div></div><div class="skeleton skeleton-badge"></div></div>
+        <div class="skeleton-row"><div class="skeleton skeleton-avatar"></div><div class="skeleton-row-content"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text-sm"></div></div><div class="skeleton skeleton-badge"></div></div>
       </div>
     </div>
   </div>
@@ -401,11 +445,59 @@ const pendingCount   = studentsList.filter(s => s.status === 'Lead' || s.status 
   .summary-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.25rem 1.5rem;
+    border-radius: 14px;
+    padding: 1.35rem 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.3rem;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .summary-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  }
+
+  .summary-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .summary-val-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .trend-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.18rem 0.5rem;
+    border-radius: 6px;
+    line-height: 1.3;
+  }
+
+  .trend-up {
+    background: rgba(52, 211, 153, 0.15);
+    color: #34D399;
+    border: 1px solid rgba(52, 211, 153, 0.25);
+  }
+
+  .trend-neutral {
+    background: rgba(148, 163, 184, 0.10);
+    color: var(--text-muted);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+  }
+
+  .trend-pending {
+    background: rgba(245, 158, 11, 0.12);
+    color: #F59E0B;
+    border: 1px solid rgba(245, 158, 11, 0.22);
   }
 
   .summary-label {
@@ -483,6 +575,17 @@ const pendingCount   = studentsList.filter(s => s.status === 'Lead' || s.status 
     border: 1px solid var(--border);
     border-radius: 14px;
     overflow: hidden;
+  }
+
+  .table-container .students-table {
+    min-width: 850px;
+  }
+
+  @media (max-width: 900px) {
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
   }
 
   .students-table {
@@ -588,41 +691,105 @@ const pendingCount   = studentsList.filter(s => s.status === 'Lead' || s.status 
   .badge-warning { background: rgba(245, 158, 11, 0.15); color: #F59E0B; }
   .badge-danger { background: rgba(239, 68, 68, 0.15); color: #F87171; }
 
-  .row-actions {
-    display: flex;
+  /* ================= BUTTON OUTLINE VARIANT ================= */
+  .btn-action-outline {
+    display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
-    justify-content: flex-end;
-  }
-
-  .action-btn {
-    padding: 0.45rem 0.85rem;
-    border-radius: 6px;
-    font-size: 0.82rem;
-    font-weight: 500;
-    text-decoration: none;
-    border: 1px solid var(--border);
+    gap: 0.5rem;
     background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
     color: var(--text-main);
+    padding: 0.65rem 1.15rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
+    text-decoration: none;
   }
 
-  .action-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+  .btn-action-outline:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .btn-action-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary-red);
     color: #FFF;
+    padding: 0.65rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
+    transition: all 0.2s ease;
+    text-decoration: none;
   }
 
-  .action-btn-green {
-    background: rgba(16, 185, 129, 0.15);
-    color: #10B981;
-    border-color: rgba(16, 185, 129, 0.3);
+  .btn-action-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(239, 68, 68, 0.4);
   }
 
-  .action-btn-green:hover {
-    background: #10B981;
-    color: #FFF;
+  /* ================= STATUS BADGES (Semantic v2) ================= */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 9999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    border: 1px solid transparent;
   }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .status-confirmed {
+    background: var(--status-confirmed-bg);
+    color: var(--status-confirmed-text);
+    border-color: var(--status-confirmed-border);
+  }
+  .status-confirmed .status-dot { background: var(--status-confirmed-text); }
+
+  .status-lead {
+    background: var(--status-lead-bg);
+    color: var(--status-lead-text);
+    border-color: var(--status-lead-border);
+  }
+  .status-lead .status-dot { background: var(--status-lead-text); }
+
+  .status-pending {
+    background: var(--status-pending-bg);
+    color: var(--status-pending-text);
+    border-color: var(--status-pending-border);
+  }
+  .status-pending .status-dot { background: var(--status-pending-text); }
+
+  .status-cancelled {
+    background: var(--status-cancelled-bg);
+    color: var(--status-cancelled-text);
+    border-color: var(--status-cancelled-border);
+  }
+  .status-cancelled .status-dot { background: var(--status-cancelled-text); }
+
+  .status-analysis {
+    background: var(--status-analysis-bg);
+    color: var(--status-analysis-text);
+    border-color: var(--status-analysis-border);
+  }
+  .status-analysis .status-dot { background: var(--status-analysis-text); }
 
   /* EMPTY STATE */
   .empty-state {

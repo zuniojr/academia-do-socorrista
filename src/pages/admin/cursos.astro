@@ -101,18 +101,27 @@ const totalEnrolled = courses.reduce((acc, c) => acc + c.studentsCount, 0);
     <div class="summary-cards-grid">
       <div class="summary-card">
         <span class="summary-label">Formações Ativas</span>
-        <strong class="summary-val">{totalCourses}</strong>
+        <div class="summary-val-row">
+          <strong class="summary-val">{totalCourses}</strong>
+          <span class="trend-badge trend-neutral">— Ativas</span>
+        </div>
         <span class="summary-sub text-muted">Cursos presenciais e semipresenciais</span>
       </div>
       <div class="summary-card">
         <span class="summary-label">Total de Formados</span>
-        <strong class="summary-val text-green">{totalEnrolled}+</strong>
+        <div class="summary-val-row">
+          <strong class="summary-val text-green">{totalEnrolled}+</strong>
+          <span class="trend-badge trend-up">↑ +14%</span>
+        </div>
         <span class="summary-sub text-green">Socorristas e cidadãos capacitados</span>
       </div>
       <div class="summary-card">
         <span class="summary-label">Turmas com Inscrições</span>
-        <strong class="summary-val text-gold">4</strong>
-        <span class="summary-sub text-gold">Com vagas disponíveis para este mês</span>
+        <div class="summary-val-row">
+          <strong class="summary-val text-gold">4</strong>
+          <span class="trend-badge trend-pending">● Vagas Abertas</span>
+        </div>
+        <span class="summary-sub text-gold">Disponíveis para este mês</span>
       </div>
     </div>
 
@@ -152,7 +161,10 @@ const totalEnrolled = courses.reduce((acc, c) => acc + c.studentsCount, 0);
                 <span class="students-badge">👥 {course.studentsCount} alunos</span>
               </td>
               <td>
-                <span class={`badge ${course.badgeClass}`}>{course.status}</span>
+                <span class={`status-badge ${course.status.includes('Matrículas') ? 'status-confirmed' : 'status-lead'}`}>
+                  <span class="status-dot"></span>
+                  {course.status}
+                </span>
               </td>
               <td style="text-align: right;">
                 <div class="row-actions">
@@ -287,10 +299,19 @@ const totalEnrolled = courses.reduce((acc, c) => acc + c.studentsCount, 0);
     letter-spacing: 0.5px;
   }
 
+  .summary-val-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.65rem;
+    margin: 0.2rem 0;
+  }
+
   .summary-val {
-    font-size: 1.7rem;
-    font-weight: 700;
+    font-size: 1.85rem;
+    font-weight: 800;
     color: #FFF;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
   }
 
   .summary-sub {
@@ -302,16 +323,44 @@ const totalEnrolled = courses.reduce((acc, c) => acc + c.studentsCount, 0);
   .text-muted { color: var(--text-muted); }
   .text-sub { color: var(--text-sub); }
 
+  /* Trend Badges */
+  .trend-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .trend-up {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34D399;
+  }
+
+  .trend-neutral {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-muted);
+  }
+
+  .trend-pending {
+    background: rgba(245, 158, 11, 0.15);
+    color: #FBBF24;
+  }
+
   /* TABELA */
   .table-container {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 14px;
-    overflow: hidden;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .courses-table {
     width: 100%;
+    min-width: 820px;
     border-collapse: collapse;
     text-align: left;
     font-size: 0.9rem;
@@ -394,6 +443,40 @@ const totalEnrolled = courses.reduce((acc, c) => acc + c.studentsCount, 0);
     color: #A7F3D0;
     font-weight: 500;
   }
+
+  /* Status Badges */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 9999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    border: 1px solid transparent;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .status-confirmed {
+    background: var(--status-confirmed-bg);
+    color: var(--status-confirmed-text);
+    border-color: var(--status-confirmed-border);
+  }
+  .status-confirmed .status-dot { background: var(--status-confirmed-text); }
+
+  .status-lead {
+    background: var(--status-lead-bg);
+    color: var(--status-lead-text);
+    border-color: var(--status-lead-border);
+  }
+  .status-lead .status-dot { background: var(--status-lead-text); }
 
   .badge {
     display: inline-block;
