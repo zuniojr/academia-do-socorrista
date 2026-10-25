@@ -1,5 +1,5 @@
 ---
-import type { CollectionEntry } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import Layout from './Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -9,17 +9,82 @@ interface Props extends CollectionEntry<'blog'>['data'] {
 }
 
 const { title, description, pubDate, updatedDate, heroImage, slug } = Astro.props;
+
+// Carrega todos os posts para listar os artigos relacionados
+const allPosts = await getCollection('blog');
+
+function getPostCategory(post: any): string {
+	if (post.data?.category) return post.data.category;
+	const pTitle = (post.data?.title || '').toLowerCase();
+	const pSlug = (post.slug || '').toLowerCase();
+	const pDesc = (post.data?.description || '').toLowerCase();
+	const combined = `${pTitle} ${pSlug} ${pDesc}`;
+
+	if (combined.includes('afogamento') || combined.includes('afogado') || combined.includes('resgate aquático') || combined.includes('água')) {
+		return 'RESGATE AQUÁTICO';
+	}
+	if (combined.includes('guarda-vidas') || combined.includes('salvamento')) {
+		return 'GUARDA-VIDAS';
+	}
+	if (combined.includes('protocolo') || combined.includes('passo a passo') || combined.includes('procedimento') || combined.includes('xabcde')) {
+		return 'PROTOCOLOS';
+	}
+	if (combined.includes('hemorragia') || combined.includes('sangramento') || combined.includes('torniquete')) {
+		return 'CONTROLE DE HEMORRAGIA';
+	}
+	if (combined.includes('curso') || combined.includes('capacitação') || combined.includes('treinamento') || combined.includes('formação')) {
+		return 'CAPACITAÇÃO';
+	}
+	if (combined.includes('dea') || combined.includes('rcp') || combined.includes('parada') || combined.includes('reanimação')) {
+		return 'SUPORTE À VIDA';
+	}
+	if (combined.includes('tático') || combined.includes('combate')) {
+		return 'APH TÁTICO';
+	}
+	return 'PRIMEIROS SOCORROS';
+}
+
+const currentCategory = getPostCategory({ data: { title, description }, slug });
+
+// Seleciona 3 posts relacionados (excluindo o atual)
+const otherPosts = allPosts.filter(p => p.slug !== slug);
+const sameCategoryPosts = otherPosts.filter(p => getPostCategory(p) === currentCategory);
+const differentCategoryPosts = otherPosts.filter(p => getPostCategory(p) !== currentCategory);
+const relatedPosts = [...sameCategoryPosts, ...differentCategoryPosts].slice(0, 3);
+
+// Gera tags contextuais
+function generateTags(): string[] {
+	const tags: string[] = [];
+	const text = `${title} ${description} ${currentCategory}`.toLowerCase();
+	if (text.includes('afogamento') || text.includes('afogado')) tags.push('AFOGAMENTO', 'RESGATE AQUÁTICO');
+	if (text.includes('guarda-vidas')) tags.push('GUARDA-VIDAS', 'SEGURANÇA AQUÁTICA');
+	if (text.includes('protocolo') || text.includes('xabcde')) tags.push('PROTOCOLOS DE APH', 'ATENDIMENTO PRÉ-HOSPITALAR');
+	if (text.includes('hemorragia') || text.includes('torniquete')) tags.push('CONTROLE DE HEMORRAGIA', 'STOP THE BLEED');
+	if (text.includes('dea') || text.includes('rcp') || text.includes('reanimação')) tags.push('SUPORTE BÁSICO DE VIDA', 'RCP E DEA');
+	if (text.includes('capacitação') || text.includes('treinamento') || text.includes('curso')) tags.push('FORMAÇÃO PROFISSIONAL', 'TREINAMENTO TÉCNICO');
+	
+	if (tags.length === 0) {
+		tags.push('PRIMEIROS SOCORROS', 'APH', 'SALVAMENTO');
+	}
+	return Array.from(new Set(tags)).slice(0, 4);
+}
+
+const postTags = generateTags();
 ---
 
-<Layout title={title} description={description}>
+<Layout title={`${title} | Academia do Socorrista`} description={description}>
+	<!-- Barra de progresso de leitura -->
+	<div id="reading-progress-bar" class="reading-progress"></div>
+
 	<Header />
-	
-	<!-- BARRA FLUTUANTE DE ADMIN (visível quando logado ou modo de edição ativo) -->
-	<div id="blog-admin-bar" class="blog-admin-bar" style="display: none;">
-		<div class="admin-bar-container container">
+
+	<!-- BARRA FLUTUANTE DE ADMIN (visível apenas quando logado) -->
+	<aside id="blog-admin-bar" class="blog-admin-bar" style="display: none;" aria-label="Painel de controle do artigo">
+		<div class="container admin-bar-container">
 			<div class="admin-bar-left">
 				<span class="admin-pulse-dot"></span>
-				<span class="admin-label">Modo Administrador</span>
+				<span class="admin-label">Modo Edição Ativo</span>
+				<span class="admin-badge">Admin</span>
 			</div>
 			<div class="admin-bar-right">
 				{slug && (
@@ -28,220 +93,1043 @@ const { title, description, pubDate, updatedDate, heroImage, slug } = Astro.prop
 						<span>Editar Este Artigo</span>
 					</a>
 				)}
-				<a href="/admin/artigos" class="admin-bar-btn">Gerenciar Artigos</a>
+				<a href="/admin/artigos" class="admin-bar-btn">Painel de Artigos</a>
 				<a href="/blog" class="admin-bar-btn">Ver Todos os Posts</a>
 			</div>
 		</div>
-	</div>
+	</aside>
 
-	<main class="page-container">
-		<article class="blog-post container animate-fade">
-			<div class="post-header text-center">
-				<div class="header-badges">
-					<span class="section-badge">Blog & Segurança</span>
+	<!-- WRAPPER COM TEMA CLARO EDITORIAL REFINADO (#F7F5EE) -->
+	<div class="single-article-wrapper">
+		<div class="container">
+			
+			<!-- BREADCRUMBS & NAVEGAÇÃO -->
+			<nav class="article-breadcrumb" aria-label="Navegação estrutural">
+				<a href="/">Início</a>
+				<span class="breadcrumb-sep">/</span>
+				<a href="/blog">Blog</a>
+				<span class="breadcrumb-sep">/</span>
+				<span class="breadcrumb-current">{currentCategory}</span>
+			</nav>
+
+			<!-- CABEÇALHO DO ARTIGO -->
+			<header class="article-main-header">
+				<div class="article-meta-top">
+					<span class="article-category-badge">{currentCategory}</span>
+					<span class="article-read-time">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+						6 a 8 min de leitura
+					</span>
 					{slug && (
-						<a href={`/admin/artigos/editar?slug=${slug}`} class="article-edit-quick-btn" title="Editar artigo no Painel Admin">
-							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-							<span>Editar Artigo</span>
+						<a href={`/admin/artigos/editar?slug=${slug}`} class="article-quick-edit-link" title="Editar artigo no Painel">
+							<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+							<span>Editar</span>
 						</a>
 					)}
 				</div>
-				<div class="date">
-					Publicado em {pubDate.toLocaleDateString('pt-BR')}
-					{
-						updatedDate && (
-							<span class="last-updated-on">
-								 • Atualizado em {updatedDate.toLocaleDateString('pt-BR')}
-							</span>
-						)
-					}
-				</div>
-				<h1 class="text-gradient">{title}</h1>
-				<div class="hero-image">
-					{heroImage && (
-						<img 
-							width={1200} 
-							height={600} 
-							src={heroImage} 
-							alt={title}
-							onerror="this.onerror=null; this.src='/blog/aph-ambulance-rescue.avif'" 
-						/>
-					)}
-				</div>
-			</div>
 
-			<div class="prose">
-				<div class="post-content">
-					<slot />
-				</div>
-				<div class="post-footer glass-card">
-					<h3>Pronto para o Próximo Nível?</h3>
-					<p>Conheça os nossos treinamentos completos e torne-se um socorrista preparado para qualquer emergência.</p>
-					<div class="footer-actions">
-						<a href="https://www.academiadosocorrista.com.br/domine-o-controle-de-hemorragias" class="btn btn-primary">Fazer Inscrição</a>
-						<a href="https://www.academiadosocorrista.com.br/domine-o-controle-de-hemorragias" class="btn btn-outline">Tirar Dúvidas no Suporte</a>
+				<h1 class="article-title">{title}</h1>
+
+				<div class="article-meta-bottom">
+					<div class="author-info">
+						<div class="author-avatar">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+						</div>
+						<div class="author-text">
+							<span class="author-name">Equipe Técnica • Academia do Socorrista</span>
+							<time class="author-date" datetime={pubDate.toISOString()}>
+								Publicado em {pubDate.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
+								{updatedDate && ` • Atualizado em ${updatedDate.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}`}
+							</time>
+						</div>
 					</div>
 				</div>
+			</header>
+
+			<!-- ESTRUTURA PRINCIPAL: COLUNA DO ARTIGO + SIDEBAR STICKY -->
+			<div class="article-body-layout">
+				
+				<!-- COLUNA PRINCIPAL DE CONTEÚDO (ESQUERDA) -->
+				<main class="article-content-column">
+					
+					<!-- HERO IMAGE EM DESTAQUE -->
+					{heroImage && (
+						<figure class="article-hero-figure">
+							<img 
+								src={heroImage} 
+								alt={title}
+								class="article-hero-img"
+								onerror="this.onerror=null; this.src='/blog/aph-ambulance-rescue.avif'" 
+							/>
+						</figure>
+					)}
+
+					<!-- CONTEÚDO EDITORIAL DO ARTIGO (MARKDOWN RENDERIZADO) -->
+					<div class="article-prose-content">
+						<slot />
+					</div>
+
+					<!-- RODAPÉ DO ARTIGO: TAGS & COMPARTILHAMENTO (IMAGEM 3) -->
+					<footer class="article-post-footer">
+						<div class="post-tags-wrapper">
+							<span class="tags-label">TAGS:</span>
+							<div class="tags-list">
+								{postTags.map(tag => (
+									<span class="tag-pill">#{tag}</span>
+								))}
+							</div>
+						</div>
+
+						<div class="post-share-wrapper">
+							<span class="share-label">COMPARTILHAR:</span>
+							<div class="share-buttons">
+								<a 
+									href={`https://api.whatsapp.com/send?text=${encodeURIComponent(title + ' - ' + (typeof window !== 'undefined' ? window.location.href : ''))}`} 
+									target="_blank" 
+									rel="noopener noreferrer" 
+									class="share-btn share-whatsapp" 
+									title="Compartilhar no WhatsApp"
+									aria-label="WhatsApp"
+								>
+									<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+								</a>
+								<a 
+									href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}`} 
+									target="_blank" 
+									rel="noopener noreferrer" 
+									class="share-btn share-linkedin" 
+									title="Compartilhar no LinkedIn"
+									aria-label="LinkedIn"
+								>
+									<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+								</a>
+								<button 
+									type="button" 
+									id="btn-copy-link" 
+									class="share-btn share-copy" 
+									title="Copiar Link do Artigo"
+									aria-label="Copiar Link"
+								>
+									<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+								</button>
+							</div>
+						</div>
+					</footer>
+
+				</main>
+
+				<!-- COLUNA LATERAL STICKY (DIREITA) -->
+				<aside class="article-sidebar-column">
+					<div class="sidebar-sticky-wrapper">
+						
+						<!-- CARD 1: SOBRE A INSTITUIÇÃO (ESTILO REFINADO IMAGEM 1/2) -->
+						<div class="sidebar-card institution-card">
+							<h3 class="sidebar-card-title">SOBRE A ACADEMIA</h3>
+							<div class="title-gold-divider"></div>
+							<p class="institution-desc">
+								Referência nacional em capacitação técnica e treinamento avançado em APH, primeiros socorros, salvamento aquático e controle de hemorragias. Formamos socorristas preparados para agir quando vidas estão em jogo.
+							</p>
+							<a href="/nossos-cursos" class="institution-link">
+								<span>CONHEÇA NOSSOS CURSOS</span>
+								<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+							</a>
+						</div>
+
+						<!-- CARD 2: PRECISA DE AJUDA? (CARD ESCURO IMPACTANTE IMAGEM 1/2) -->
+						<div class="sidebar-card cta-dark-card">
+							<div class="cta-icon-circle">
+								<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+							</div>
+							<h3 class="cta-card-title">PRECISA DE AJUDA?</h3>
+							<p class="cta-card-desc">
+								Fale com nossos instrutores e tire suas dúvidas sobre protocolos, cursos e treinamentos práticos.
+							</p>
+							<a href="https://bitlybr.net/duvida" target="_blank" rel="noopener noreferrer" class="cta-gold-btn">
+								<span>FALAR COM A EQUIPE</span>
+								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+							</a>
+						</div>
+
+					</div>
+				</aside>
+
 			</div>
-		</article>
-	</main>
+
+			<!-- SEÇÃO "ARTIGOS relacionados" (IMAGEM 3) -->
+			{relatedPosts.length > 0 && (
+				<section class="related-articles-section">
+					<div class="related-section-header">
+						<span class="related-eyebrow">CONTEÚDO RECOMENDADO</span>
+						<h2 class="related-main-title">
+							ARTIGOS <span class="serif-italic">relacionados</span>
+						</h2>
+					</div>
+
+					<div class="related-grid">
+						{relatedPosts.map(post => {
+							const cat = getPostCategory(post);
+							return (
+								<article class="related-card">
+									<a href={`/blog/${post.slug}/`} class="related-card-image-link" tabindex="-1" aria-hidden="true">
+										<img 
+											src={post.data.heroImage || '/blog/aph-ambulance-rescue.avif'} 
+											alt={post.data.title}
+											loading="lazy"
+											onerror="this.onerror=null; this.src='/blog/aph-ambulance-rescue.avif'" 
+										/>
+									</a>
+									<div class="related-card-body">
+										<div class="related-card-tag">{cat}</div>
+										<h3 class="related-card-title">
+											<a href={`/blog/${post.slug}/`}>{post.data.title}</a>
+										</h3>
+										<a href={`/blog/${post.slug}/`} class="related-card-cta">
+											<span>LER ARTIGO</span>
+											<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+										</a>
+									</div>
+								</article>
+							);
+						})}
+					</div>
+				</section>
+			)}
+
+		</div>
+	</div>
+
+	<!-- BANNER CTA PRÉ-FOOTER ESCURO (IMAGEM 3) -->
+	<section class="pre-footer-cta-section">
+		<div class="container pre-footer-cta-inner">
+			<span class="pre-footer-eyebrow">PRONTO PARA SALVAR VIDAS?</span>
+			<h2 class="pre-footer-headline">VAMOS CONSTRUIR O SEU CONHECIMENTO JUNTOS.</h2>
+			<p class="pre-footer-subline">
+				Entre em contato com nossos especialistas e receba uma orientação personalizada sobre nossas capacitações e treinamentos sem compromisso.
+			</p>
+			<a href="https://bitlybr.net/duvida" target="_blank" rel="noopener noreferrer" class="pre-footer-gold-btn">
+				<span>FALAR COM A EQUIPE</span>
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+			</a>
+		</div>
+	</section>
+
+	<!-- TOAST NOTIFICATION DE LINK COPIADO -->
+	<div id="copy-toast" class="copy-toast" role="status" aria-live="polite">
+		<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+		<span>Link copiado com sucesso!</span>
+	</div>
+
 	<Footer />
 </Layout>
 
 <style>
-	.page-container {
-		padding: 180px 0 120px;
-		background: var(--dark);
-	}
-
-	.blog-post {
-		max-width: 1000px;
-	}
-
-	.post-header {
-		margin-bottom: 60px;
-	}
-
-	.post-header h1 {
-		font-size: 3.5rem;
-		margin: 20px 0 40px;
-		line-height: 1.1;
-	}
-
-	.date {
-		color: var(--text-muted);
-		font-weight: 600;
-		font-size: 1rem;
-	}
-
-	.hero-image {
-		width: 100%;
-		border-radius: 30px;
-		overflow: hidden;
-		box-shadow: 0 40px 80px rgba(0,0,0,0.6);
-	}
-
-	.hero-image img {
-		width: 100%;
-		height: auto;
-		display: block;
-	}
-
-	.prose {
-		margin: 80px auto 0;
-		max-width: 800px;
-	}
-
-	.post-content {
-		font-size: 1.2rem;
-		line-height: 2;
-		color: var(--text-muted);
-	}
-
-	.post-content :global(h2) {
-		color: white;
-		font-size: 2rem;
-		margin: 60px 0 30px;
-	}
-
-	.post-content :global(h3) {
-		color: var(--primary);
-		font-size: 1.5rem;
-		margin: 40px 0 20px;
-	}
-
-	.post-content :global(p) {
-		margin-bottom: 30px;
-	}
-
-	.post-content :global(ul) {
-		margin-bottom: 30px;
-		list-style: none;
-	}
-
-	.post-content :global(li) {
-		margin-bottom: 15px;
-		position: relative;
-		padding-left: 30px;
-	}
-
-	.post-content :global(li::before) {
-		content: '→';
-		position: absolute;
+	/* ==========================================================================
+	   BARRA DE PROGRESSO DE LEITURA
+	   ========================================================================== */
+	.reading-progress {
+		position: fixed;
+		top: 0;
 		left: 0;
-		color: var(--primary);
-		font-weight: 800;
+		height: 3px;
+		width: 0%;
+		background: #C88A2C;
+		z-index: 9999;
+		transition: width 0.1s ease-out;
 	}
 
-	.post-footer {
-		margin-top: 100px;
-		padding: 60px;
-		text-align: center;
+	/* ==========================================================================
+	   CONTAINER PRINCIPAL COM TEMA CLARO EDITORIAL REFINADO (#F7F5EE)
+	   ========================================================================== */
+	.single-article-wrapper {
+		background-color: #F7F5EE;
+		color: #1E293B;
+		padding: 130px 0 90px;
+		min-height: 100vh;
 	}
 
-	.post-footer h3 {
-		font-size: 2rem;
-		margin-bottom: 15px;
-	}
-
-	.post-footer p {
-		margin-bottom: 35px;
-		color: var(--text-muted);
-	}
-
-	.footer-actions {
-		display: flex;
-		gap: 20px;
-		justify-content: center;
-	}
-
-	.header-badges {
+	/* BREADCRUMB */
+	.article-breadcrumb {
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		gap: 12px;
-		margin-bottom: 20px;
-		flex-wrap: wrap;
+		gap: 8px;
+		font-size: 0.8rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: #8C7B65;
+		margin-bottom: 24px;
 	}
 
-	.article-edit-quick-btn {
-		display: none;
+	.article-breadcrumb a {
+		color: #8C7B65;
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.article-breadcrumb a:hover {
+		color: #C88A2C;
+	}
+
+	.breadcrumb-sep {
+		opacity: 0.4;
+	}
+
+	.breadcrumb-current {
+		color: #C88A2C;
+	}
+
+	/* CABEÇALHO DO ARTIGO */
+	.article-main-header {
+		margin-bottom: 36px;
+	}
+
+	.article-meta-top {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		flex-wrap: wrap;
+		margin-bottom: 16px;
+	}
+
+	.article-category-badge {
+		background: #F5EBDC;
+		color: #A86C23;
+		font-size: 0.72rem;
+		font-weight: 800;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		padding: 5px 12px;
+		border-radius: 4px;
+	}
+
+	.article-read-time {
+		display: inline-flex;
 		align-items: center;
 		gap: 6px;
-		background: rgba(255, 85, 0, 0.15);
-		border: 1px solid rgba(255, 85, 0, 0.4);
-		color: #ff7733;
-		padding: 5px 14px;
+		color: #64748B;
+		font-size: 0.82rem;
+		font-weight: 600;
+	}
+
+	.article-quick-edit-link {
+		display: none;
+		align-items: center;
+		gap: 5px;
+		background: #FDF4E7;
+		border: 1px solid rgba(192, 106, 23, 0.3);
+		color: #C06A17;
+		padding: 4px 10px;
 		border-radius: 999px;
-		font-size: 0.8rem;
+		font-size: 0.75rem;
 		font-weight: 700;
 		text-decoration: none;
 		transition: all 0.2s ease;
 	}
 
-	.article-edit-quick-btn:hover {
-		background: #ff5500;
-		color: #ffffff;
-		border-color: #ff5500;
-		transform: translateY(-2px);
-		box-shadow: 0 4px 12px rgba(255, 85, 0, 0.35);
+	.article-quick-edit-link:hover {
+		background: #C06A17;
+		color: #FFFFFF;
 	}
 
-	:global(body.is-admin) .article-edit-quick-btn {
+	:global(body.is-admin) .article-quick-edit-link {
 		display: inline-flex;
 	}
 
+	/* TÍTULO PRINCIPAL DO POST */
+	.article-title {
+		font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+		font-size: 2.85rem;
+		font-weight: 900;
+		line-height: 1.18;
+		color: #0F172A;
+		letter-spacing: -0.025em;
+		margin-bottom: 22px;
+		max-width: 1050px;
+	}
+
+	/* METADADOS DO AUTOR E DATA */
+	.article-meta-bottom {
+		display: flex;
+		align-items: center;
+		padding-bottom: 26px;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+	}
+
+	.author-info {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.author-avatar {
+		width: 38px;
+		height: 38px;
+		border-radius: 50%;
+		background: #EAE4D5;
+		color: #64748B;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.author-text {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.author-name {
+		font-size: 0.88rem;
+		font-weight: 700;
+		color: #1E293B;
+	}
+
+	.author-date {
+		font-size: 0.8rem;
+		color: #64748B;
+	}
+
+	/* ==========================================================================
+	   GRID DE 2 COLUNAS: ARTIGO (ESQ) + SIDEBAR (DIR)
+	   ========================================================================== */
+	.article-body-layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 350px;
+		gap: 50px;
+		align-items: start;
+		margin-bottom: 80px;
+	}
+
+	/* ==========================================================================
+	   COLUNA PRINCIPAL: HERO + PROSE CONTENT
+	   ========================================================================== */
+	.article-content-column {
+		min-width: 0;
+	}
+
+	/* HERO IMAGE COM CANTOS ARREDONDADOS E SOMBRA REFINADA */
+	.article-hero-figure {
+		margin: 0 0 36px 0;
+		border-radius: 20px;
+		overflow: hidden;
+		background: #E2E8F0;
+		box-shadow: 0 16px 36px rgba(0, 0, 0, 0.06);
+	}
+
+	.article-hero-img {
+		width: 100%;
+		height: auto;
+		max-height: 520px;
+		object-fit: cover;
+		display: block;
+	}
+
+	/* ESTILIZAÇÃO DO CONTEÚDO EDITORIAL (MARKDOWN) */
+	.article-prose-content {
+		font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+		font-size: 1.08rem;
+		line-height: 1.85;
+		color: #334155;
+	}
+
+	/* PARÁGRAFOS */
+	.article-prose-content :global(p) {
+		margin-bottom: 24px;
+		color: #334155;
+	}
+
+	/* TÍTULOS COM A LINHA VERTICAL DOURADA À ESQUERDA (ESTILO EXATO DA FOTO) */
+	.article-prose-content :global(h2) {
+		font-family: 'Outfit', sans-serif;
+		font-size: 1.35rem;
+		font-weight: 900;
+		line-height: 1.35;
+		color: #0F172A;
+		text-transform: uppercase;
+		letter-spacing: -0.01em;
+		margin: 44px 0 20px 0;
+		padding-left: 14px;
+		border-left: 4px solid #C88A2C;
+	}
+
+	.article-prose-content :global(h3) {
+		font-family: 'Outfit', sans-serif;
+		font-size: 1.15rem;
+		font-weight: 800;
+		color: #0F172A;
+		margin: 32px 0 16px 0;
+	}
+
+	.article-prose-content :global(h4) {
+		font-size: 1.02rem;
+		font-weight: 700;
+		color: #1E293B;
+		margin: 24px 0 12px 0;
+	}
+
+	/* LISTAS NÃO ORDENADAS COM MARCADOR EM LOSANGO DOURADO (◆) */
+	.article-prose-content :global(ul) {
+		list-style: none;
+		margin: 0 0 28px 0;
+		padding: 0;
+	}
+
+	.article-prose-content :global(ul li) {
+		position: relative;
+		padding-left: 24px;
+		margin-bottom: 14px;
+		line-height: 1.75;
+	}
+
+	.article-prose-content :global(ul li::before) {
+		content: '◆';
+		position: absolute;
+		left: 0;
+		top: 0.12rem;
+		color: #C88A2C;
+		font-size: 0.72rem;
+	}
+
+	/* LISTAS ORDENADAS COM NÚMEROS DESTACADOS */
+	.article-prose-content :global(ol) {
+		margin: 0 0 28px 0;
+		padding-left: 20px;
+	}
+
+	.article-prose-content :global(ol li) {
+		margin-bottom: 12px;
+		line-height: 1.75;
+		padding-left: 6px;
+	}
+
+	.article-prose-content :global(ol li::marker) {
+		color: #C88A2C;
+		font-weight: 800;
+	}
+
+	/* BLOCO DE CITAÇÃO / CALLOUT (ESTILO EXATO DA FOTO COM FUNDO BEGE E BORDA DOURADA) */
+	.article-prose-content :global(blockquote) {
+		background: #F1ECE0;
+		border-left: 3px solid #C88A2C;
+		border-radius: 0 12px 12px 0;
+		padding: 22px 26px;
+		margin: 36px 0;
+		font-style: italic;
+		color: #475569;
+		line-height: 1.75;
+		position: relative;
+	}
+
+	.article-prose-content :global(blockquote p) {
+		margin: 0;
+		color: #475569;
+		font-style: italic;
+	}
+
+	/* NEGRITO MARCADO */
+	.article-prose-content :global(strong) {
+		color: #0F172A;
+		font-weight: 700;
+	}
+
+	/* LINKS NO TEXTO */
+	.article-prose-content :global(a) {
+		color: #A86C23;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		transition: color 0.2s ease;
+	}
+
+	.article-prose-content :global(a:hover) {
+		color: #7D4F13;
+	}
+
+	/* TABELAS MODERNAS E ELEGANTES */
+	.article-prose-content :global(table) {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 32px 0;
+		font-size: 0.95rem;
+		background: #FFFFFF;
+		border-radius: 12px;
+		overflow: hidden;
+		box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+		border: 1px solid #EBE4D5;
+	}
+
+	.article-prose-content :global(th) {
+		background: #EFE9DB;
+		color: #0F172A;
+		font-weight: 800;
+		text-align: left;
+		padding: 14px 18px;
+		font-size: 0.85rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		border-bottom: 1px solid #E2D9C7;
+	}
+
+	.article-prose-content :global(td) {
+		padding: 14px 18px;
+		border-bottom: 1px solid #F1EBE1;
+		color: #334155;
+		line-height: 1.6;
+	}
+
+	.article-prose-content :global(tr:last-child td) {
+		border-bottom: none;
+	}
+
+	/* ==========================================================================
+	   RODAPÉ DO ARTIGO: TAGS & COMPARTILHAMENTO (IMAGEM 3)
+	   ========================================================================== */
+	.article-post-footer {
+		margin-top: 50px;
+		padding-top: 30px;
+		border-top: 1px solid rgba(0, 0, 0, 0.08);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 20px;
+		flex-wrap: wrap;
+	}
+
+	.post-tags-wrapper {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		flex-wrap: wrap;
+	}
+
+	.tags-label {
+		font-size: 0.72rem;
+		font-weight: 800;
+		letter-spacing: 0.12em;
+		color: #8C7B65;
+	}
+
+	.tags-list {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		flex-wrap: wrap;
+	}
+
+	.tag-pill {
+		background: #ECE5D7;
+		color: #556272;
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		padding: 5px 12px;
+		border-radius: 4px;
+	}
+
+	.post-share-wrapper {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.share-label {
+		font-size: 0.72rem;
+		font-weight: 800;
+		letter-spacing: 0.12em;
+		color: #8C7B65;
+	}
+
+	.share-buttons {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.share-btn {
+		width: 34px;
+		height: 34px;
+		border-radius: 50%;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		background: #ECE5D7;
+		color: #475569;
+		border: none;
+		cursor: pointer;
+		text-decoration: none;
+		transition: all 0.2s ease;
+	}
+
+	.share-btn:hover {
+		transform: translateY(-2px);
+		background: #C88A2C;
+		color: #FFFFFF;
+	}
+
+	/* ==========================================================================
+	   COLUNA LATERAL / SIDEBAR STICKY (DIREITA)
+	   ========================================================================== */
+	.article-sidebar-column {
+		position: relative;
+	}
+
+	.sidebar-sticky-wrapper {
+		position: sticky;
+		top: 100px;
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+	}
+
+	.sidebar-card {
+		border-radius: 16px;
+		overflow: hidden;
+	}
+
+	/* CARD 1: SOBRE A INSTITUIÇÃO (ESTILO REFINADO IMAGEM 1/2) */
+	.institution-card {
+		background: #FAF8F5;
+		border: 1px solid #ECE4D5;
+		padding: 30px 26px;
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+	}
+
+	.sidebar-card-title {
+		font-family: 'Outfit', sans-serif;
+		font-size: 0.88rem;
+		font-weight: 900;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: #0F172A;
+		margin-bottom: 12px;
+	}
+
+	.title-gold-divider {
+		width: 100%;
+		height: 2px;
+		background: #C88A2C;
+		margin-bottom: 18px;
+	}
+
+	.institution-desc {
+		font-size: 0.9rem;
+		line-height: 1.65;
+		color: #556272;
+		margin-bottom: 22px;
+	}
+
+	.institution-link {
+		color: #C88A2C;
+		text-decoration: none;
+		font-size: 0.74rem;
+		font-weight: 800;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		transition: transform 0.2s ease, color 0.2s ease;
+	}
+
+	.institution-link:hover {
+		color: #8C5413;
+		transform: translateX(4px);
+	}
+
+	/* CARD 2: CTA ESCURO IMPACTANTE (PRECISA DE AJUDA?) */
+	.cta-dark-card {
+		background: #0B1321;
+		color: #FFFFFF;
+		padding: 36px 26px;
+		text-align: center;
+		box-shadow: 0 16px 36px rgba(11, 19, 33, 0.25);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.cta-icon-circle {
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		background: rgba(200, 138, 44, 0.18);
+		color: #D4A346;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 18px;
+	}
+
+	.cta-card-title {
+		font-family: 'Outfit', sans-serif;
+		font-size: 1.15rem;
+		font-weight: 900;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: #FFFFFF;
+		margin-bottom: 12px;
+	}
+
+	.cta-card-desc {
+		color: #94A3B8;
+		font-size: 0.88rem;
+		line-height: 1.6;
+		margin-bottom: 24px;
+	}
+
+	.cta-gold-btn {
+		background: #D4A346;
+		color: #0B1321;
+		font-weight: 900;
+		font-size: 0.78rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		padding: 13px 22px;
+		border-radius: 8px;
+		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		width: 100%;
+		box-shadow: 0 4px 16px rgba(212, 163, 70, 0.25);
+		transition: all 0.25s ease;
+	}
+
+	.cta-gold-btn:hover {
+		background: #E2B35B;
+		transform: translateY(-2px);
+		box-shadow: 0 8px 24px rgba(212, 163, 70, 0.4);
+	}
+
+	/* ==========================================================================
+	   SEÇÃO "ARTIGOS relacionados" (IMAGEM 3)
+	   ========================================================================== */
+	.related-articles-section {
+		margin-top: 60px;
+		padding-top: 60px;
+		border-top: 1px solid rgba(0, 0, 0, 0.08);
+	}
+
+	.related-section-header {
+		margin-bottom: 36px;
+	}
+
+	.related-eyebrow {
+		display: block;
+		font-size: 0.72rem;
+		font-weight: 800;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: #C88A2C;
+		margin-bottom: 8px;
+	}
+
+	.related-main-title {
+		font-family: 'Outfit', sans-serif;
+		font-size: 2.4rem;
+		font-weight: 900;
+		letter-spacing: -0.01em;
+		color: #0F172A;
+		text-transform: uppercase;
+		line-height: 1.2;
+	}
+
+	/* DETALHE CHARMOSO: PALAVRA "relacionados" EM ITÁLICO SERIFADO DOURADO */
+	.serif-italic {
+		font-family: 'Playfair Display', Georgia, serif;
+		font-style: italic;
+		font-weight: 500;
+		text-transform: lowercase;
+		color: #C88A2C;
+		letter-spacing: 0;
+	}
+
+	.related-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 30px;
+	}
+
+	.related-card {
+		background: #FFFFFF;
+		border-radius: 16px;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+		border: 1px solid rgba(0, 0, 0, 0.03);
+		transition: transform 0.35s ease, box-shadow 0.35s ease;
+	}
+
+	.related-card:hover {
+		transform: translateY(-6px);
+		box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+	}
+
+	.related-card-image-link {
+		display: block;
+		height: 200px;
+		overflow: hidden;
+		background: #E2E8F0;
+	}
+
+	.related-card-image-link img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		transition: transform 0.5s ease;
+	}
+
+	.related-card:hover .related-card-image-link img {
+		transform: scale(1.06);
+	}
+
+	.related-card-body {
+		padding: 22px;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+
+	.related-card-tag {
+		align-self: flex-start;
+		background: #F5EBDC;
+		color: #A86C23;
+		font-size: 0.65rem;
+		font-weight: 800;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		padding: 4px 10px;
+		border-radius: 4px;
+		margin-bottom: 12px;
+	}
+
+	.related-card-title {
+		font-family: 'Outfit', sans-serif;
+		font-size: 1.05rem;
+		font-weight: 900;
+		line-height: 1.35;
+		text-transform: uppercase;
+		margin-bottom: 18px;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		min-height: 3.8em;
+	}
+
+	.related-card-title a {
+		color: #0F172A;
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.related-card-title a:hover {
+		color: #C88A2C;
+	}
+
+	.related-card-cta {
+		color: #C88A2C;
+		text-decoration: none;
+		font-weight: 800;
+		font-size: 0.72rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		margin-top: auto;
+		transition: transform 0.2s ease, color 0.2s ease;
+	}
+
+	.related-card-cta:hover {
+		color: #8C5413;
+		transform: translateX(3px);
+	}
+
+	/* ==========================================================================
+	   BANNER CTA PRÉ-FOOTER ESCURO (IMAGEM 3)
+	   ========================================================================== */
+	.pre-footer-cta-section {
+		background: #070F1C;
+		background: radial-gradient(circle at center top, #0E1E36 0%, #070F1C 80%);
+		padding: 100px 0;
+		text-align: center;
+		color: #FFFFFF;
+		border-top: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.pre-footer-cta-inner {
+		max-width: 840px;
+	}
+
+	.pre-footer-eyebrow {
+		display: block;
+		font-size: 0.8rem;
+		font-weight: 800;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: #D4A346;
+		margin-bottom: 16px;
+	}
+
+	.pre-footer-headline {
+		font-family: 'Outfit', sans-serif;
+		font-size: 3.2rem;
+		font-weight: 900;
+		line-height: 1.15;
+		text-transform: uppercase;
+		letter-spacing: -0.02em;
+		color: #FFFFFF;
+		margin-bottom: 20px;
+	}
+
+	.pre-footer-subline {
+		color: #94A3B8;
+		font-size: 1.1rem;
+		line-height: 1.65;
+		max-width: 620px;
+		margin: 0 auto 36px;
+	}
+
+	.pre-footer-gold-btn {
+		background: #D4A346;
+		color: #070F1C;
+		font-weight: 900;
+		font-size: 0.85rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		padding: 16px 38px;
+		border-radius: 8px;
+		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		box-shadow: 0 8px 30px rgba(212, 163, 70, 0.3);
+		transition: all 0.3s ease;
+	}
+
+	.pre-footer-gold-btn:hover {
+		background: #E2B35B;
+		transform: translateY(-3px);
+		box-shadow: 0 12px 35px rgba(212, 163, 70, 0.45);
+	}
+
+	/* ==========================================================================
+	   BARRA DE ADMIN (STYLING)
+	   ========================================================================== */
 	.blog-admin-bar {
 		position: sticky;
 		top: 0;
 		left: 0;
 		right: 0;
 		z-index: 1000;
-		background: rgba(18, 22, 28, 0.95);
-		backdrop-filter: blur(12px);
-		border-bottom: 1px solid rgba(255, 85, 0, 0.3);
+		background: rgba(18, 22, 28, 0.96);
+		backdrop-filter: blur(14px);
+		border-bottom: 1px solid rgba(255, 85, 0, 0.35);
 		padding: 10px 0;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+		box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
 	}
 
 	.admin-bar-container {
@@ -269,21 +1157,32 @@ const { title, description, pubDate, updatedDate, heroImage, slug } = Astro.prop
 
 	@keyframes pulse-green {
 		0%, 100% { opacity: 1; transform: scale(1); }
-		50% { opacity: 0.5; transform: scale(1.3); }
+		50% { opacity: 0.4; transform: scale(1.3); }
 	}
 
 	.admin-label {
 		font-size: 0.82rem;
 		font-weight: 700;
-		color: #e5e7eb;
+		color: #f3f4f6;
+		letter-spacing: 0.03em;
+	}
+
+	.admin-badge {
+		background: rgba(255, 85, 0, 0.2);
+		border: 1px solid rgba(255, 85, 0, 0.4);
+		color: #ff8533;
+		padding: 2px 8px;
+		border-radius: 999px;
+		font-size: 0.68rem;
+		font-weight: 800;
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
 	}
 
 	.admin-bar-right {
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: 8px;
+		flex-wrap: wrap;
 	}
 
 	.admin-bar-btn {
@@ -318,29 +1217,161 @@ const { title, description, pubDate, updatedDate, heroImage, slug } = Astro.prop
 		box-shadow: 0 4px 14px rgba(255, 85, 0, 0.4);
 	}
 
+	/* ==========================================================================
+	   TOAST NOTIFICATION
+	   ========================================================================== */
+	.copy-toast {
+		position: fixed;
+		bottom: 30px;
+		left: 50%;
+		transform: translateX(-50%) translateY(100px);
+		background: #0F172A;
+		color: #FFFFFF;
+		padding: 12px 24px;
+		border-radius: 999px;
+		font-size: 0.88rem;
+		font-weight: 700;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+		z-index: 99999;
+		opacity: 0;
+		pointer-events: none;
+		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+		border: 1px solid rgba(200, 138, 44, 0.4);
+	}
+
+	.copy-toast.show {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
+
+	.copy-toast svg {
+		color: #10B981;
+	}
+
+	/* ==========================================================================
+	   RESPONSIVIDADE
+	   ========================================================================== */
+	@media (max-width: 1080px) {
+		.article-body-layout {
+			grid-template-columns: 1fr;
+			gap: 40px;
+		}
+
+		.sidebar-sticky-wrapper {
+			position: static;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 24px;
+		}
+
+		.related-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
 	@media (max-width: 768px) {
-		.post-header h1 { font-size: 2.5rem; }
-		.post-footer { padding: 40px 20px; }
-		.footer-actions { flex-direction: column; }
+		.single-article-wrapper {
+			padding: 110px 0 60px;
+		}
+
+		.article-title {
+			font-size: 2.1rem;
+		}
+
+		.article-prose-content {
+			font-size: 1rem;
+		}
+
+		.article-prose-content :global(h2) {
+			font-size: 1.2rem;
+		}
+
+		.sidebar-sticky-wrapper {
+			grid-template-columns: 1fr;
+		}
+
+		.related-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.pre-footer-headline {
+			font-size: 2.2rem;
+		}
+
+		.pre-footer-cta-section {
+			padding: 70px 0;
+		}
 	}
 </style>
 
 <script>
-	async function checkBlogAdmin() {
-		try {
-			const res = await fetch('/api/admin/auth-status', { credentials: 'include' });
-			if (res.ok) {
-				const data = await res.json();
-				if (data.authenticated) {
-					document.body.classList.add('is-admin');
-					const bar = document.getElementById('blog-admin-bar');
-					if (bar) bar.style.display = 'block';
-				}
-			}
-		} catch (e) {
-			// Não autenticado
+	// BARRA DE PROGRESSO DE LEITURA
+	function updateReadingProgress() {
+		const progressBar = document.getElementById('reading-progress-bar');
+		if (!progressBar) return;
+		const docElement = document.documentElement;
+		const scrollTop = docElement.scrollTop || document.body.scrollTop;
+		const scrollHeight = docElement.scrollHeight - docElement.clientHeight;
+		if (scrollHeight > 0) {
+			const percent = (scrollTop / scrollHeight) * 100;
+			progressBar.style.width = Math.min(100, Math.max(0, percent)) + '%';
 		}
 	}
-	checkBlogAdmin();
-</script>
+	window.addEventListener('scroll', updateReadingProgress, { passive: true });
 
+	// COPIAR LINK COM FEEDBACK TOAST
+	const copyBtn = document.getElementById('btn-copy-link');
+	const toast = document.getElementById('copy-toast');
+
+	if (copyBtn && toast) {
+		copyBtn.addEventListener('click', async () => {
+			try {
+				await navigator.clipboard.writeText(window.location.href);
+				toast.classList.add('show');
+				setTimeout(() => {
+					toast.classList.remove('show');
+				}, 2800);
+			} catch (err) {
+				// Fallback
+				const dummy = document.createElement('input');
+				document.body.appendChild(dummy);
+				dummy.value = window.location.href;
+				dummy.select();
+				document.execCommand('copy');
+				document.body.removeChild(dummy);
+				toast.classList.add('show');
+				setTimeout(() => {
+					toast.classList.remove('show');
+				}, 2800);
+			}
+		});
+	}
+
+	// VERIFICAÇÃO DE MODO ADMIN
+	async function checkArticleAdmin() {
+		try {
+			const urlParams = new URLSearchParams(window.location.search);
+			const forceEdit = urlParams.has('edit') || urlParams.has('admin');
+
+			const res = await fetch('/api/admin/auth-status', { credentials: 'include' });
+			let isAuthenticated = false;
+
+			if (res.ok) {
+				const data = await res.json();
+				isAuthenticated = Boolean(data.authenticated);
+			}
+
+			if (isAuthenticated || forceEdit) {
+				document.body.classList.add('is-admin');
+				const bar = document.getElementById('blog-admin-bar');
+				if (bar) bar.style.display = 'block';
+			}
+		} catch (e) {
+			// Silencioso se offline
+		}
+	}
+	checkArticleAdmin();
+</script>
