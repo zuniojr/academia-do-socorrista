@@ -2,7 +2,7 @@
 title: "Atendimento de Vítima de Afogamento: Passo a Passo do Socorro"
 description: "Saiba como realizar o atendimento de uma vítima de afogamento: avaliação, ventilações, RCP, DEA, aquecimento e quando levar ao hospital. Guia prático."
 pubDate: "2026-10-24"
-heroImage: "/blog/rege-post-blog-05_10_26-1-725752.png"
+heroImage: "/blog/afogamento0254-919953.png"
 ---
 
 > **TL;DR**: O **atendimento de uma vítima de afogamento** começa pela segurança do socorrista e pelo acionamento do socorro (193 ou 192). Depois de retirá-la da água, avalie consciência e respiração por até 10 segundos. Se ela respira normalmente, mantenha a via aérea livre, aqueça e monitore. Se não respira ou só apresenta gasping, abra a via aérea, aplique **5 ventilações de resgate** e inicie **RCP no ciclo 30:2**, com **DEA** assim que possível. Toda vítima precisa de avaliação médica.
