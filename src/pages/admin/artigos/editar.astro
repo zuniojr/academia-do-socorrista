@@ -527,6 +527,7 @@ const availableImages = [
   </div>
 
   <script define:vars={{ isNew, originalSlug: initialArticle.slug, currentSha: initialArticle.sha }}>
+    let activeSha = currentSha;
     const titleInput = document.getElementById('title');
     const slugInput = document.getElementById('slug');
     const slugPreview = document.getElementById('slug-preview');
@@ -817,7 +818,7 @@ const availableImages = [
             updatedDate: updatedDate || undefined,
             heroImage: heroImage || undefined,
             content,
-            currentSha,
+            currentSha: activeSha,
           }),
         });
 
@@ -827,7 +828,7 @@ const availableImages = [
           showAlert(data.message || 'Rascunho salvo com sucesso!', false);
           btnSave.textContent = '✓ Salvo com sucesso!';
           if (data.sha) {
-            currentSha = data.sha;
+            activeSha = data.sha;
           }
 
           if (isNew) {
