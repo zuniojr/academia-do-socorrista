@@ -13,11 +13,11 @@ export interface GitHubConfig {
 }
 
 export function getGitHubConfig(): GitHubConfig {
-  const token = process.env.GITHUB_TOKEN || '';
-  const owner = process.env.GITHUB_OWNER || 'zuniojr';
-  const repo = process.env.GITHUB_REPO || 'academia-do-socorrista';
-  const baseBranch = process.env.GITHUB_BASE_BRANCH || 'main';
-  const draftBranch = process.env.GITHUB_DRAFT_BRANCH || 'cms-drafts';
+  const token = (process.env.GITHUB_TOKEN || '').trim();
+  const owner = (process.env.GITHUB_OWNER || 'zuniojr').trim();
+  const repo = (process.env.GITHUB_REPO || 'academia-do-socorrista').trim();
+  const baseBranch = (process.env.GITHUB_BASE_BRANCH || 'main').trim();
+  const draftBranch = (process.env.GITHUB_DRAFT_BRANCH || 'cms-drafts').trim();
 
   return {
     token,
@@ -35,17 +35,40 @@ async function githubFetch(endpoint: string, options: RequestInit = {}): Promise
   }
 
   const url = `https://api.github.com/repos/${config.owner}/${config.repo}${endpoint}`;
-  const headers = {
+  const isGet = !options.method || options.method.toUpperCase() === 'GET';
+
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${config.token}`,
-    Accept: 'application/vnd.github.v3+json',
+    Accept: 'application/vnd.github+json',
     'User-Agent': 'AcademiaDoSocorrista-CMS',
-    ...(options.headers || {}),
+    ...((options.headers as Record<string, string>) || {}),
   };
 
-  return fetch(url, {
+  const res = await fetch(url, {
     ...options,
     headers,
   });
+
+  // Em repositórios públicos, se o token receber 403 em requisições GET (limitação de escopo ou permissão de leitura),
+  // faz retry sem o cabeçalho Authorization para obter os dados públicos e o SHA com 100% de confiabilidade
+  if (!res.ok && res.status === 403 && isGet) {
+    const publicHeaders: Record<string, string> = {
+      Accept: 'application/vnd.github+json',
+      'User-Agent': 'AcademiaDoSocorrista-CMS',
+      ...((options.headers as Record<string, string>) || {}),
+    };
+
+    const retryRes = await fetch(url, {
+      ...options,
+      headers: publicHeaders,
+    });
+
+    if (retryRes.ok) {
+      return retryRes;
+    }
+  }
+
+  return res;
 }
 
 /**
@@ -152,13 +175,28 @@ export async function saveDraftFileToGitHub(
   let sha: string | undefined;
   try {
     const existing = await getFileFromGitHub(filePath, config.draftBranch);
-    if (existing) {
+    if (existing?.sha) {
       sha = existing.sha;
     }
   } catch (err: any) {
-    // Se o arquivo for novo, der 404, 403 (ex: binário > 1MB) ou qualquer erro de consulta prévia,
-    // segue sem SHA para permitir a criação/upload direto
-    console.warn(`[CMS Draft] Consulta de SHA prévio ignorada para ${filePath}:`, err?.message);
+    console.warn(`[CMS Draft] Consulta de SHA prévio em ${config.draftBranch} falhou para ${filePath}:`, err?.message);
+  }
+
+  // Se não encontrou na branch de rascunhos, verifica se existe na branch principal (main)
+  if (!sha) {
+    try {
+      const existingInBase = await getFileFromGitHub(filePath, config.baseBranch);
+      if (existingInBase?.sha) {
+        sha = existingInBase.sha;
+      }
+    } catch {
+      // Arquivo pode ser novo
+    }
+  }
+
+  // Se ainda não encontrou e um currentSha válido foi fornecido (40 caracteres hexadecimais), usa como fallback
+  if (!sha && currentSha && /^[0-9a-f]{40}$/i.test(currentSha)) {
+    sha = currentSha;
   }
 
   const encodedContent = Buffer.isBuffer(content) 
