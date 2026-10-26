@@ -2,7 +2,7 @@
 title: "Afogamento: Como Socorrer uma Pessoa em Caso de Acidente (Passo a Passo)"
 description: "Afogamento exige ação rápida e segura. Aprenda como socorrer uma pessoa em caso de acidente, o que fazer depois de tirá-la da água e quando iniciar a RCP."
 pubDate: "2026-10-24"
-heroImage: "/blog/hero-afogados.avif"
+heroImage: "/blog/rege-post-blog-05_10_26-1-041617.png"
 ---
 
 > **TL;DR**: Para **socorrer uma pessoa em caso de afogamento**, a ordem é: peça ajuda e acione o socorro (193 ou 192), tente alcançar ou arremessar um objeto flutuante e **não entre na água sem treinamento**. Depois de retirar a vítima com segurança, verifique se ela respira. Se não respira ou respira de forma anormal, abra a via aérea, aplique **5 ventilações de resgate** e inicie a **RCP no ciclo 30:2**, usando o **DEA** assim que possível. Toda vítima de afogamento precisa de avaliação médica, mesmo que pareça bem.

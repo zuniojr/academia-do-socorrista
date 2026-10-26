@@ -2,7 +2,7 @@
 title: "A Técnica do 'Alcance, Arremesse, Vá': Métodos Seguros de Resgate para Leigos"
 description: "Domine a técnica clássica de resgate de emergência 'Alcance, Arremesse, Vá'. Aprenda métodos seguros e eficazes para salvar vidas na água sem colocar-se em perigo. Guia completo para leigos."
 pubDate: "2026-07-31"
-heroImage: "/images/saiba-mais-4-1.avif"
+heroImage: "/blog/boia-afogamento.png"
 ---
 
 Quando uma pessoa se afoga, cada segundo conta. A técnica clássica de resgate de emergência "Alcance, Arremesse, Vá" (conhecida como "Reach, Throw, Go" em inglês) salva milhares de vidas anualmente. Esta técnica simples, mas eficaz, ensina leigos a intervir em situações de emergência aquática sem arriscar sua própria vida.
