@@ -119,11 +119,13 @@ export async function getFileFromGitHub(filePath: string, branch?: string): Prom
   const res = await githubFetch(`/contents/${filePath}?ref=${targetBranch}`);
   if (!res.ok) {
     if (res.status === 404) return null;
-    throw new Error(`Erro ao buscar arquivo no GitHub: ${res.statusText}`);
+    const err = await res.json().catch(() => ({}));
+    const detail = err.message ? `: ${err.message}` : '';
+    throw new Error(`Erro ao buscar arquivo no GitHub (${res.status} ${res.statusText})${detail}`);
   }
 
   const data = await res.json();
-  const content = Buffer.from(data.content, 'base64').toString('utf8');
+  const content = data.content ? Buffer.from(data.content, 'base64').toString('utf8') : '';
   return {
     content,
     sha: data.sha,
@@ -146,10 +148,18 @@ export async function saveDraftFileToGitHub(
   // Garante a existência da branch de rascunhos
   await ensureDraftBranchExists();
 
-  // Consulta sempre o SHA real e atual do arquivo na branch de rascunhos do GitHub para evitar conflito de SHA
-  const existing = await getFileFromGitHub(filePath, config.draftBranch);
-  const sha = existing ? existing.sha : undefined;
-
+  // Tenta consultar o SHA real caso o arquivo já exista na branch de rascunhos
+  let sha: string | undefined;
+  try {
+    const existing = await getFileFromGitHub(filePath, config.draftBranch);
+    if (existing) {
+      sha = existing.sha;
+    }
+  } catch (err: any) {
+    // Se o arquivo for novo, der 404, 403 (ex: binário > 1MB) ou qualquer erro de consulta prévia,
+    // segue sem SHA para permitir a criação/upload direto
+    console.warn(`[CMS Draft] Consulta de SHA prévio ignorada para ${filePath}:`, err?.message);
+  }
 
   const encodedContent = Buffer.isBuffer(content) 
     ? content.toString('base64') 
@@ -174,6 +184,13 @@ export async function saveDraftFileToGitHub(
     const err = await res.json().catch(() => ({}));
     if (res.status === 409) {
       return { ok: false, message: 'Conflito de edição detectado no GitHub. O arquivo foi modificado por outra pessoa.' };
+    }
+    if (res.status === 403) {
+      const isRateLimit = res.headers.get('x-ratelimit-remaining') === '0' || err.message?.toLowerCase().includes('rate limit');
+      if (isRateLimit) {
+        return { ok: false, message: 'Limite temporário de requisições atingido no GitHub. Aguarde 1 a 2 minutos e tente novamente.' };
+      }
+      return { ok: false, message: `Permissão negada no GitHub (403): ${err.message || 'Verifique as permissões do GITHUB_TOKEN.'}` };
     }
     return { ok: false, message: `Erro ao salvar rascunho: ${err.message || res.statusText}` };
   }

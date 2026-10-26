@@ -362,6 +362,27 @@ export async function uploadMediaFile(
     return { ok: false, message: validation.error || 'Arquivo inválido.' };
   }
 
+  // Otimização inteligente da imagem para web (redimensiona se muito grande e comprime)
+  let optimizedBuffer = buffer;
+  try {
+    const pipeline = sharp(buffer)
+      .rotate()
+      .resize({ width: 1920, height: 1920, fit: 'inside', withoutEnlargement: true });
+
+    if (validation.format === 'jpeg' || validation.format === 'jpg') {
+      optimizedBuffer = await pipeline.jpeg({ quality: 85, mozjpeg: true }).toBuffer();
+    } else if (validation.format === 'png') {
+      optimizedBuffer = await pipeline.png({ compressionLevel: 8 }).toBuffer();
+    } else if (validation.format === 'webp') {
+      optimizedBuffer = await pipeline.webp({ quality: 85 }).toBuffer();
+    } else if (validation.format === 'avif') {
+      optimizedBuffer = await pipeline.avif({ quality: 80 }).toBuffer();
+    }
+  } catch (optErr) {
+    console.warn('[CMS Mídia] Otimização ignorada:', optErr);
+    optimizedBuffer = buffer;
+  }
+
   // 2. Sanitização de nome
   let safeFileName = sanitizeMediaFileName(originalName, validation.format);
 
@@ -407,7 +428,7 @@ export async function uploadMediaFile(
   if (ghConfig.token) {
     const ghRes = await saveDraftFileToGitHub(
       relativeRepoPath,
-      buffer,
+      optimizedBuffer,
       `[CMS Mídia] Upload de ${safeFileName} em public/${folder}`
     );
 
@@ -423,7 +444,7 @@ export async function uploadMediaFile(
   let savedLocal = false;
   try {
     await fs.mkdir(targetDir, { recursive: true });
-    await fs.writeFile(filePath, buffer);
+    await fs.writeFile(filePath, optimizedBuffer);
     savedLocal = true;
   } catch {
     // Em Vercel Serverless somente leitura, ignora se já salvou no GitHub
@@ -440,7 +461,7 @@ export async function uploadMediaFile(
     publicPath,
     folder,
     format: validation.format,
-    size: buffer.length,
+    size: optimizedBuffer.length,
     width: validation.width,
     height: validation.height,
     modifiedAt: new Date().toISOString(),
