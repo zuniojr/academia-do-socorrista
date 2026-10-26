@@ -826,6 +826,9 @@ const availableImages = [
         if (res.ok && data.ok) {
           showAlert(data.message || 'Rascunho salvo com sucesso!', false);
           btnSave.textContent = '✓ Salvo com sucesso!';
+          if (data.sha) {
+            currentSha = data.sha;
+          }
 
           if (isNew) {
             setTimeout(() => {

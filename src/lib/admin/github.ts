@@ -146,14 +146,10 @@ export async function saveDraftFileToGitHub(
   // Garante a existência da branch de rascunhos
   await ensureDraftBranchExists();
 
-  // Se o SHA não foi fornecido, tenta consultar o arquivo existente na branch de rascunhos
-  let sha = currentSha;
-  if (!sha) {
-    const existing = await getFileFromGitHub(filePath, config.draftBranch);
-    if (existing) {
-      sha = existing.sha;
-    }
-  }
+  // Consulta sempre o SHA real e atual do arquivo na branch de rascunhos do GitHub para evitar conflito de SHA
+  const existing = await getFileFromGitHub(filePath, config.draftBranch);
+  const sha = existing ? existing.sha : undefined;
+
 
   const encodedContent = Buffer.isBuffer(content) 
     ? content.toString('base64') 
@@ -200,14 +196,11 @@ export async function deleteDraftFileFromGitHub(
     return { ok: false, message: 'GITHUB_TOKEN não configurado.' };
   }
 
-  let sha = currentSha;
-  if (!sha) {
-    const existing = await getFileFromGitHub(filePath, config.draftBranch);
-    if (!existing) {
-      return { ok: false, message: 'Arquivo não encontrado na branch de rascunhos do GitHub.' };
-    }
-    sha = existing.sha;
+  const existing = await getFileFromGitHub(filePath, config.draftBranch);
+  if (!existing) {
+    return { ok: false, message: 'Arquivo não encontrado na branch de rascunhos do GitHub.' };
   }
+  const sha = existing.sha;
 
   const payload = {
     message: commitMessage || `[Rascunho CMS] Exclusão de ${filePath}`,

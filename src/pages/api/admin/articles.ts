@@ -241,8 +241,7 @@ export const POST: APIRoute = async ({ request }) => {
       const ghResult = await saveDraftFileToGitHub(
         relativeFilePath,
         markdownContent,
-        `[CMS Artigo] ${isNewArticle ? 'Criação' : 'Atualização'} de ${cleanSlug}`,
-        currentSha
+        `[CMS Artigo] ${isNewArticle ? 'Criação' : 'Atualização'} de ${cleanSlug}`
       );
 
       if (!ghResult.ok) {
