@@ -271,11 +271,6 @@ const postTags = generateTags();
 							return (
 								<article class="related-card">
 									<a href={`/blog/${post.slug}/`} class="related-card-image-link" tabindex="-1" aria-hidden="true">
-										<div 
-											class="related-image-backdrop" 
-											style={`background-image: url('${post.data.heroImage || '/blog/aph-ambulance-rescue.avif'}');`}
-											aria-hidden="true"
-										></div>
 										<img 
 											src={post.data.heroImage || '/blog/aph-ambulance-rescue.avif'} 
 											alt={post.data.title}
@@ -974,44 +969,23 @@ const postTags = generateTags();
 
 	.related-card-image-link {
 		position: relative;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 200px;
+		width: 100%;
+		aspect-ratio: 16 / 9;
 		overflow: hidden;
-		background: #0B1320;
-	}
-
-	.related-image-backdrop {
-		position: absolute;
-		inset: -15px;
-		background-size: cover;
-		background-position: center;
-		filter: blur(18px) brightness(0.6) saturate(1.2);
-		transform: scale(1.15);
-		opacity: 0.85;
-		pointer-events: none;
-		transition: transform 0.5s ease, opacity 0.4s ease;
+		background: #FFFFFF;
+		display: block;
 	}
 
 	.related-image-main {
-		position: relative;
-		z-index: 1;
 		width: 100%;
 		height: 100%;
-		object-fit: contain;
+		object-fit: cover;
 		display: block;
-		filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
 		transition: transform 0.5s ease;
 	}
 
-	.related-card:hover .related-image-backdrop {
-		transform: scale(1.25);
-		opacity: 0.95;
-	}
-
 	.related-card:hover .related-image-main {
-		transform: scale(1.03);
+		transform: scale(1.05);
 	}
 
 	.related-card-body {
