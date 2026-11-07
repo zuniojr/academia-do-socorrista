@@ -271,9 +271,15 @@ const postTags = generateTags();
 							return (
 								<article class="related-card">
 									<a href={`/blog/${post.slug}/`} class="related-card-image-link" tabindex="-1" aria-hidden="true">
+										<div 
+											class="related-image-backdrop" 
+											style={`background-image: url('${post.data.heroImage || '/blog/aph-ambulance-rescue.avif'}');`}
+											aria-hidden="true"
+										></div>
 										<img 
 											src={post.data.heroImage || '/blog/aph-ambulance-rescue.avif'} 
 											alt={post.data.title}
+											class="related-image-main"
 											loading="lazy"
 											onerror="this.onerror=null; this.src='/blog/aph-ambulance-rescue.avif'" 
 										/>
@@ -967,22 +973,45 @@ const postTags = generateTags();
 	}
 
 	.related-card-image-link {
-		display: block;
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		height: 200px;
 		overflow: hidden;
-		background: #E2E8F0;
+		background: #0B1320;
 	}
 
-	.related-card-image-link img {
+	.related-image-backdrop {
+		position: absolute;
+		inset: -15px;
+		background-size: cover;
+		background-position: center;
+		filter: blur(18px) brightness(0.6) saturate(1.2);
+		transform: scale(1.15);
+		opacity: 0.85;
+		pointer-events: none;
+		transition: transform 0.5s ease, opacity 0.4s ease;
+	}
+
+	.related-image-main {
+		position: relative;
+		z-index: 1;
 		width: 100%;
 		height: 100%;
-		object-fit: cover;
+		object-fit: contain;
 		display: block;
+		filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
 		transition: transform 0.5s ease;
 	}
 
-	.related-card:hover .related-card-image-link img {
-		transform: scale(1.06);
+	.related-card:hover .related-image-backdrop {
+		transform: scale(1.25);
+		opacity: 0.95;
+	}
+
+	.related-card:hover .related-image-main {
+		transform: scale(1.03);
 	}
 
 	.related-card-body {

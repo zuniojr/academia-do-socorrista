@@ -236,3 +236,4 @@ Leia também:
 - CORPO DE BOMBEIROS MILITAR DE SANTA CATARINA. **Tópicos introdutórios: suporte básico à vida**. Organizado por Henrique Piovezam da Silveira, Anderson Medeiros Sarte e Rafael Melo Marques. 1. ed. Florianópolis: CBMSC, 2022. 79 p.
 
 > **Aviso:** este conteúdo é informativo e não substitui treinamento prático certificado nem atendimento médico profissional. Em uma emergência real, acione imediatamente o SAMU (192) ou o Corpo de Bombeiros (193).
+

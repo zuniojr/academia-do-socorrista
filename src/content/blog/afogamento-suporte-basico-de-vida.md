@@ -211,3 +211,4 @@ Leia também:
 3. American Heart Association. *Guidelines for CPR and ECC*. 2020 Update.
 4. Soar J, et al. "European Resuscitation Council Guidelines 2021: Adult advanced life support." *Resuscitation*. 2021;161:115–151.
 5. World Health Organization. *Global Report on Drowning: Preventing a Leading Killer*. Geneva: WHO, 2014.
+
