@@ -1,6 +1,6 @@
 ---
 title: "Manejo de Vias Aéreas e Estabilização da Cervical no APH"
-description: "Manejo de vias aéreas no APH: avaliação, manobras jaw thrust e chin lift, aspiração, cânulas Guedel e nasofaríngea, e estabilização cervical no protocolo XABCDE."
+description: "Entenda o passo a passo do manejo de vias aéreas e estabilização da cervical no APH. Confira as manobras, uso de cânulas e orientações do CBMSC!"
 pubDate: "2026-11-07"
 heroImage: "/blog/Protocolo-XABCDE.avif"
 ---
@@ -11,33 +11,32 @@ heroImage: "/blog/Protocolo-XABCDE.avif"
 
 ## Sumário
 
-- [Por que as vias aéreas são prioridade no APH](#por-que-as-vias-aereas-sao-prioridade)
-- [Causas e avaliação inicial das vias aéreas](#causas-e-avaliacao-inicial)
-- [Manobras manuais de abertura e desobstrução](#manobras-manuais)
-- [Aspiração de vias aéreas](#aspiracao)
-- [Dispositivos adjuvantes de vias aéreas](#dispositivos-adjuvantes)
-- [Estabilização manual da coluna cervical](#estabilizacao-cervical)
-- [Tabela-resumo de condutas](#tabela-resumo)
-- [Perguntas frequentes](#faq)
-- [Conclusão](#conclusao)
-- [Referência](#referencia)
+- [Por que as vias aéreas são prioridade no APH](#por-que-as-vias-aéreas-são-prioridade-no-aph)
+- [Causas e avaliação inicial das vias aéreas](#causas-e-avaliação-inicial-das-vias-aéreas)
+- [Manobras manuais de abertura e desobstrução](#manobras-manuais-de-abertura-e-desobstrução)
+- [Aspiração de vias aéreas](#aspiração-de-vias-aéreas)
+- [Dispositivos adjuvantes de vias aéreas](#dispositivos-adjuvantes-de-vias-aéreas)
+- [Estabilização manual da coluna cervical](#estabilização-manual-da-coluna-cervical)
+- [Tabela-resumo de condutas](#tabela-resumo-de-condutas)
+- [Perguntas frequentes](#perguntas-frequentes)
+- [Conclusão](#conclusão)
+- [Referência](#referência)
 
 ---
 
-## Por que as vias aéreas são prioridade no APH {#por-que-as-vias-aereas-sao-prioridade}
+## Por que as vias aéreas são prioridade no APH
 
 A perda de permeabilidade das vias aéreas figura entre as causas mais rápidas de **óbito evitável** no pré-hospitalar. Logo após a contenção de hemorragias externas graves — a etapa **X** do protocolo XABCDE —, o controle das vias respiratórias associado à proteção da coluna cervical, a etapa **A**, assume prioridade absoluta na avaliação primária.
 
 A lógica fisiológica é direta: a interrupção do fluxo de oxigênio impede a hematose e precipita a **hipóxia celular generalizada**. Ao mesmo tempo, a movimentação inadequada de uma coluna instável pode acarretar **lesões medulares irreversíveis**. Por isso, abrir a via aérea e proteger a cervical são ações que caminham sempre juntas — e nunca podem ser dissociadas no atendimento ao trauma.
 
-> [!IMPORTANT]
-> Abrir a via aérea sem estabilizar a cervical em um paciente de trauma é tão perigoso quanto não abri-la. As duas ações são simultâneas e indissociáveis na etapa A.
+> **Importante:** Abrir a via aérea sem estabilizar a cervical em um paciente de trauma é tão perigoso quanto não abri-la. As duas ações são simultâneas e indissociáveis na etapa A.
 
 Se você ainda não revisou a sequência completa, comece pelo [protocolo XABCDE de avaliação inicial do trauma](/blog/protocolo-xabcde-avaliacao-inicial-trauma) e pelo artigo sobre [tipos de emergências no APH — trauma e clínicas](/blog/tipos-de-emergencias-no-aph-trauma-e-clinicas).
 
 ---
 
-## Causas e avaliação inicial das vias aéreas {#causas-e-avaliacao-inicial}
+## Causas e avaliação inicial das vias aéreas
 
 A obstrução respiratória pode ter origem **mecânica** — alimentos, sangue, secreções ou corpos estranhos — ou decorrer da **diminuição do nível de consciência**, na qual a perda do tônus muscular faz a língua tombar contra a hipofaringe, ocluindo a passagem de ar.
 
@@ -62,12 +61,11 @@ O decúbito dorsal favorece o colapso da língua sobre a laringofaringe e o acú
 - **Cavidade oral** — dentes soltos, restos alimentares, deformidades anatômicas e presença de sangue ou vômito.
 - **Região anterior do pescoço** — desvio de traqueia ou estase jugular são sinais de gravidade extrema (pneumotórax hipertensivo, tamponamento cardíaco) e indicam transporte urgente sem demora em cena.
 
-> [!WARNING]
-> Desvio de traqueia e estase jugular em vítima de trauma são alertas críticos. Estabilize a via aérea e inicie o transporte imediatamente — não prolongue o tempo em cena.
+> **Atenção:** Desvio de traqueia e estase jugular em vítima de trauma são alertas críticos. Estabilize a via aérea e inicie o transporte imediatamente — não prolongue o tempo em cena.
 
 ---
 
-## Manobras manuais de abertura e desobstrução {#manobras-manuais}
+## Manobras manuais de abertura e desobstrução
 
 Como a base da língua se insere na mandíbula, a **projeção óssea anterior** traciona as partes moles e libera a passagem de ar. A escolha da manobra depende **estritamente** da presença ou ausência de mecanismo de trauma.
 
@@ -84,8 +82,7 @@ Como a base da língua se insere na mandíbula, a **projeção óssea anterior**
 4. Traciona a mandíbula **para cima e para frente**, enquanto as palmas estabilizam lateralmente a cabeça.
 5. Mantém a cervical em posição neutra durante toda a manobra.
 
-> [!TIP]
-> No *jaw thrust*, as palmas nunca se apoiam no occipício nem na fronte — o contato é exclusivamente lateral, preservando o alinhamento neutro sem tração axial.
+> **Dica:** No *jaw thrust*, as palmas nunca se apoiam no occipício nem na fronte — o contato é exclusivamente lateral, preservando o alinhamento neutro sem tração axial.
 
 ### 2. Elevação do Queixo no Trauma — *Chin Lift Modificado*
 
@@ -103,8 +100,7 @@ Como a base da língua se insere na mandíbula, a **projeção óssea anterior**
 1. Uma mão exerce pressão na testa, estendendo suavemente o pescoço em hiperextensão.
 2. Os dedos indicador e médio da outra mão elevam o mento a partir da **porção óssea** (não nos tecidos moles, para não comprimir a traqueia).
 
-> [!CAUTION]
-> Esta manobra é **contraindicada no trauma** por produzir hiperextensão cervical, podendo agravar uma lesão raquimedular instável. É reservada apenas como último recurso, quando as técnicas anteriores falharam e representam a única forma de viabilizar a entrada de ar.
+> **Cuidado:** Esta manobra é **contraindicada no trauma** por produzir hiperextensão cervical, podendo agravar uma lesão raquimedular instável. É reservada apenas como último recurso, quando as técnicas anteriores falharam e representam a única forma de viabilizar a entrada de ar.
 
 ### Resumo comparativo das manobras
 
@@ -116,7 +112,7 @@ Como a base da língua se insere na mandíbula, a **projeção óssea anterior**
 
 ---
 
-## Aspiração de vias aéreas {#aspiracao}
+## Aspiração de vias aéreas
 
 Diante de **ruídos gorgolejantes** ou visualização de secreções, vômito e sangue, o socorrista intervém com aspiradores manuais, elétricos ou acoplados à rede de oxigênio.
 
@@ -146,7 +142,7 @@ Quando há **vômitos volumosos** e a aspiração não é suficiente:
 
 ---
 
-## Dispositivos adjuvantes de vias aéreas {#dispositivos-adjuvantes}
+## Dispositivos adjuvantes de vias aéreas
 
 Quando as manobras manuais precisam de sustentação contínua para viabilizar a ventilação e o transporte, utilizam-se **cânulas faríngeas não invasivas**.
 
@@ -170,8 +166,7 @@ A cânula deve equivaler exatamente à distância anatômica entre:
 - O **lóbulo da orelha** e a **comissura labial** (canto da boca), **ou**
 - O **ângulo da mandíbula** e o **centro dos incisivos superiores**.
 
-> [!CAUTION]
-> **Cânula curta demais** → empurra a língua contra a laringe, agravando a obstrução. **Cânula longa demais** → oclui a epiglote e fecha a glote. Meça sempre antes de inserir.
+> **Cuidado:** **Cânula curta demais** → empurra a língua contra a laringe, agravando a obstrução. **Cânula longa demais** → oclui a epiglote e fecha a glote. Meça sempre antes de inserir.
 
 #### Método de inserção — adultos
 
@@ -181,8 +176,7 @@ A cânula deve equivaler exatamente à distância anatômica entre:
 4. Execute uma **rotação de 180°**, posicionando a curvatura para baixo, sobre a língua.
 5. Confirme a posição pela melhora do fluxo de ar.
 
-> [!IMPORTANT]
-> **Exceção pediátrica:** em crianças e lactentes, a cânula é inserida **diretamente na posição anatômica correta** (curvatura para baixo desde o início), sem rotação, pois os tecidos moles do palato são frágeis e a rotação pode causar lacerações.
+> **Importante:** **Exceção pediátrica:** em crianças e lactentes, a cânula é inserida **diretamente na posição anatômica correta** (curvatura para baixo desde o início), sem rotação, pois os tecidos moles do palato são frágeis e a rotação pode causar lacerações.
 
 ---
 
@@ -229,7 +223,7 @@ Não aplicar em pacientes com:
 
 ---
 
-## Estabilização manual da coluna cervical {#estabilizacao-cervical}
+## Estabilização manual da coluna cervical
 
 Todo paciente com histórico de **trauma fechado de impacto significativo** — acidentes de trânsito, atropelamentos, quedas de altura, mergulhos em águas rasas ou explosões — é considerado portador potencial de lesão instável na coluna até prova em contrário.
 
@@ -245,8 +239,7 @@ O primeiro socorrista ajoelha-se **alinhado atrás do paciente** em decúbito do
 
 A estabilização manual deve ser mantida de forma **ininterrupta** durante toda a avaliação primária e o exame físico secundário.
 
-> [!NOTE]
-> O **colar cervical não deve ser aplicado precocemente na etapa A**. Sua colocação imediata atrasa intervenções vitais (abertura da via aérea, aspiração), causa desconforto e **não substitui** a contenção manual. O dispositivo é inserido apenas na etapa posterior de **Restrição do Movimento da Coluna (RMC)**.
+> **Nota:** O **colar cervical não deve ser aplicado precocemente na etapa A**. Sua colocação imediata atrasa intervenções vitais (abertura da via aérea, aspiração), causa desconforto e **não substitui** a contenção manual. O dispositivo é inserido apenas na etapa posterior de **Restrição do Movimento da Coluna (RMC)**.
 
 ### Critérios de interrupção da manobra em linha
 
@@ -262,7 +255,7 @@ A tentativa de realinhamento cervical deve ser **suspensa imediatamente** caso s
 
 ---
 
-## Tabela-resumo de condutas {#tabela-resumo}
+## Tabela-resumo de condutas
 
 | Situação | Conduta prioritária |
 |---|---|
@@ -283,7 +276,7 @@ A tentativa de realinhamento cervical deve ser **suspensa imediatamente** caso s
 
 ---
 
-## Perguntas frequentes {#faq}
+## Perguntas frequentes
 
 **Qual manobra de abertura de vias aéreas usar no trauma?**
 No trauma com suspeita de lesão raquimedular, usa-se a tração da mandíbula (*jaw thrust*), que abre a via aérea com movimentação mínima da cervical. Se houver deformidade facial severa que impeça o apoio nos zigomáticos, emprega-se o *chin lift* modificado — que exige dois socorristas.
@@ -308,7 +301,7 @@ Realize o realinhamento progressivo e suave, observando os 5 critérios de inter
 
 ---
 
-## Conclusão {#conclusao}
+## Conclusão
 
 O **manejo de vias aéreas e a estabilização da cervical** são a etapa A do protocolo XABCDE e um dos pontos mais críticos do atendimento pré-hospitalar ao trauma. Avaliar ruídos corretamente, escolher a manobra conforme o mecanismo, aspirar com limite rigoroso de tempo, selecionar a cânula adequada ao nível de consciência e manter a coluna alinhada sem interrupção — sem colar precoce — são decisões que separam a condução segura do improviso.
 
@@ -322,7 +315,7 @@ Leia também:
 
 ---
 
-## Referência {#referencia}
+## Referência
 
 - CORPO DE BOMBEIROS MILITAR DE SANTA CATARINA. **Tópicos introdutórios: suporte básico à vida**. Organizado por Henrique Piovezam da Silveira, Anderson Medeiros Sarte e Rafael Melo Marques. 1. ed. Florianópolis: CBMSC, 2022. 79 p.
 
