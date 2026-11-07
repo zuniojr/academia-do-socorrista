@@ -2,7 +2,7 @@
 title: "Parada Cardiorrespiratória (PCR) no APH: Protocolos e RCP"
 description: "Saiba como agir na Parada Cardiorrespiratória (PCR) no APH: identificação, sequência C-A-B-D, compressões torácicas, uso do DEA e diretrizes do CBMSC."
 pubDate: "2026-11-07"
-heroImage: "/blog/aph-ambulance-rescue.avif"
+heroImage: "/blog/parada-cardiorrespiratoria.avif"
 ---
 
 > **TL;DR**: A Parada Cardiorrespiratória (PCR) no Atendimento Pré-Hospitalar exige ação imediata: reconheça inconsciência, ausência de respiração eficaz e de pulso central em até 10 segundos e acione o SME (193/192). O CBMSC adota a sequência **C-A-B-D** — Compressões torácicas (100–120/min, ≥ 5 cm em adultos), abertura das Vias Aéreas, boa Ventilação com dispositivo de barreira e Desfibrilação com DEA. Cada minuto sem RCP reduz cerca de 10% a chance de sobrevida.
