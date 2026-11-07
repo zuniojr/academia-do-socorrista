@@ -2,7 +2,7 @@
 title: "Como Realizar o Atendimento de uma Vítima de Afogamento no Suporte Básico de Vida"
 description: "Guia completo de SBV para afogamento: dimensionamento da cena, escala AVDI, aspiração de vias aéreas, oxigenoterapia, RCP com DEA e controle da hipotermia conforme o CBMSC."
 pubDate: "2026-11-07"
-heroImage: "/blog/hero-afogados.avif"
+heroImage: "/blog/atendimento-de-uma-vitima-de-afogamento.avif"
 ---
 
 > **TL;DR**: O **atendimento de uma vítima de afogamento no Suporte Básico de Vida (SBV)** é uma prioridade clínica de combate à hipóxia tecidual rápida. A sequência operacional inicia pelo **dimensionamento e segurança da cena**, seguido pela retirada com alinhamento cervical e avaliação da responsividade pela escala **AVDI**. Na avaliação primária, destacam-se a aspiração rápida de vias aéreas (máximo 15 segundos), oxigenoterapia com máscara não reinalante se a saturação estiver abaixo de 94%, ventilações de resgate em caso de parada respiratória isolada e **RCP (ciclo 30:2)** com cuidados especiais no uso do **DEA** em paciente molhado, além da prevenção imediata da **tríade da morte** decorrente da hipotermia.

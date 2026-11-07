@@ -2,7 +2,7 @@
 title: "Afogamento no Suporte Básico de Vida: Por Que o Protocolo é Diferente"
 description: "Entenda por que o SBV no afogamento prioriza ventilação antes da compressão. Protocolo CBMSC, AVDI, BVM e RCP explicados para socorristas e estudantes."
 pubDate: "2026-11-07"
-heroImage: "/blog/dea-operation.avif"
+heroImage: "/blog/por-que-o-protocolo-e-diferente.avif"
 ---
 
 > **TL;DR**: No afogamento, a parada cardiorrespiratória tem origem **hipóxica** — falta de oxigênio, não falha elétrica do coração. Por isso, o SBV prioriza **ventilação antes das compressões**, ao contrário do protocolo padrão para adultos com PCR de origem cardíaca. Compreender essa diferença pode salvar vidas.
@@ -211,4 +211,3 @@ Leia também:
 3. American Heart Association. *Guidelines for CPR and ECC*. 2020 Update.
 4. Soar J, et al. "European Resuscitation Council Guidelines 2021: Adult advanced life support." *Resuscitation*. 2021;161:115–151.
 5. World Health Organization. *Global Report on Drowning: Preventing a Leading Killer*. Geneva: WHO, 2014.
-
