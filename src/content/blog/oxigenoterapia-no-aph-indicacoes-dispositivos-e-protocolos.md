@@ -2,7 +2,7 @@
 title: "Oxigenoterapia no APH: Indicações, Dispositivos e Protocolos"
 description: "Entenda a oxigenoterapia no APH conforme o CBMSC: indicações, saturação de oxigênio (SpO2), equipamentos de provisão, riscos e cuidados operacionais."
 pubDate: "2026-11-07"
-heroImage: "/blog/aph-ambulance-rescue.avif"
+heroImage: "/blog/oxigenoterapia-no-aph.avif"
 ---
 
 > **TL;DR**: A **oxigenoterapia no APH** é a administração de oxigênio medicinal a 100% para reverter a hipóxia tecidual, inserida na etapa B da avaliação primária. Indica-se suplementação quando a **SpO2 fica abaixo de 94%** ou há sinais evidentes de hipóxia. A escolha do dispositivo depende do padrão ventilatório: máscara não reinalante para hipóxia grave com respiração espontânea, BVM em parada respiratória ou PCR e cateter nasal com uso restrito. O oxigênio é comburente e exige cuidados rigorosos de segurança.
