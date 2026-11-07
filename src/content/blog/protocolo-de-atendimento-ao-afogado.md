@@ -2,7 +2,7 @@
 title: "Protocolo de Atendimento ao Afogado: Passo a Passo Atualizado (AHA/ILCOR 2025)"
 description: "Protocolo de atendimento ao afogado em 7 etapas: resgate seguro, 5 ventilações de resgate, RCP 30:2, DEA, oxigênio e classificação de gravidade. Guia prático e atualizado."
 pubDate: "2026-10-24"
-heroImage: "/blog/hero-afogados.avif"
+heroImage: "/blog/aha-ilcor.avif"
 ---
 
 > **TL;DR**: O **protocolo de atendimento ao afogado** segue a lógica de uma emergência respiratória: resgate seguro, retirada da água, avaliação da respiração, **5 ventilações de resgate**, RCP no ciclo **30:2**, DEA e oxigênio o mais cedo possível. As diretrizes AHA/ILCOR 2025 reforçam que a **ventilação precoce** é o elo que interrompe a hipóxia — por isso a RCP no afogamento começa pelas ventilações, não pelas compressões.
