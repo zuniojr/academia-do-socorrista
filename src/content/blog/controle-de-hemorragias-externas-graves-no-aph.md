@@ -2,7 +2,7 @@
 title: "Controle de Hemorragias Externas Graves no APH: Guia Prático"
 description: "Aprenda o controle de hemorragias externas graves no APH: tipos de sangramento, sinais de choque, pressão direta, curativo compressivo, torniquete e wound packing."
 pubDate: "2026-11-07"
-heroImage: "/blog/torniquete-aph.avif"
+heroImage: "/blog/controle-de-hemorragias-externas-graves.png"
 ---
 
 > **TL;DR**: No trauma, a **hemorragia externa grave** é apontada como a principal causa de mortes evitáveis — por isso o controle de sangramentos exsanguinantes é a etapa **X**, antes mesmo das vias aéreas. A conduta varia pela localização: pressão direta e curativo compressivo nas extremidades, **torniquete** quando a compressão falha ou há amputação, e **preenchimento de ferida (wound packing)** com gaze hemostática em axilas e virilhas. Nunca afrouxe o torniquete periodicamente.
