@@ -2,7 +2,7 @@
 title: "Tipos de Emergências no APH: Trauma, Clínicas e a Atuação do Socorrista"
 description: "Conheça os tipos de emergências no APH — trauma fechado e aberto, quadros clínicos e a sistematização do atendimento segundo o manual do CBMSC."
 pubDate: "2026-11-07"
-heroImage: "/blog/aph-ambulance-rescue.avif"
+heroImage: "/blog/tipos-de-emergencias.avif"
 ---
 
 > **TL;DR**: No Atendimento Pré-Hospitalar (APH), as ocorrências se dividem em **emergências de trauma** (lesões por energia externa, como colisões, quedas e ferimentos) e **emergências clínicas** (agravos internos, como infarto, asma, AVC e crises diabéticas). O socorrista age por protocolos: dimensiona a cena, avalia o nível de consciência pela escala AVDI, aplica a avaliação primária — **XABCDE** no trauma e **ABCD** no clínico — e respeita o tempo máximo em cena de 10 minutos para pacientes instáveis e 20 minutos para estáveis.
