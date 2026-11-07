@@ -2,7 +2,7 @@
 title: "Afogamento Silencioso: O Maior Perigo na Água Não Faz Barulho"
 description: "O afogamento silencioso é real e não se parece com os filmes. Entenda a resposta instintiva, os 5 sinais críticos e como educadores aquáticos podem salvar vidas."
 pubDate: "2026-07-30"
-heroImage: "/blog/hero-afogados.avif"
+heroImage: "/blog/afogamento-silencioso.avif"
 ---
 
 > **TL;DR**: O mito de que o afogamento é sempre violento e barulhento custa vidas. Na realidade, a chamada **resposta instintiva ao afogamento** — documentada pelo Dr. Francesco A. Pia em 1974 — impede a vítima de gritar, acenar ou fazer movimentos voluntários. O corpo fica na vertical, a boca alterna entre submergir e emergir, e o silêncio é a regra, não a exceção. Educadores aquáticos que conhecem esses sinais podem treinar outros a reconhecer o perigo a tempo.
