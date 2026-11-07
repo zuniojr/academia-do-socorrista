@@ -2,7 +2,7 @@
 title: "Manejo de Vias Aéreas e Estabilização da Cervical no APH"
 description: "Entenda o passo a passo do manejo de vias aéreas e estabilização da cervical no APH. Confira as manobras, uso de cânulas e orientações do CBMSC!"
 pubDate: "2026-11-07"
-heroImage: "/blog/Protocolo-XABCDE.avif"
+heroImage: "/blog/manejo-de-vias-aereas-e-estabilizacao-da-cervical-no-aph.avif"
 ---
 
 > **TL;DR**: No APH, depois do controle de hemorragias graves (etapa X), o **manejo de vias aéreas com estabilização da cervical** é a prioridade absoluta da etapa A. Avalie ruídos anormais, escolha a manobra conforme o mecanismo de trauma, aspire por no máximo **15 segundos** e mantenha a coluna cervical alinhada de forma ininterrupta — sem colar cervical precoce — até a etapa de RMC.
