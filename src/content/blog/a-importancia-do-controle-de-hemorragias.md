@@ -2,7 +2,7 @@
 title: "A Importância do Controle de Hemorragias no APH: Técnicas, Tempo de Resposta e Vidas Salvas"
 description: "Descubra por que o controle de hemorragias é a prioridade absoluta no trauma. Aprenda a identificar sangramentos críticos, aplicar pressão, empacotamento e torniquete."
 pubDate: "2026-10-26"
-heroImage: "/blog/torniquete-aph.avif"
+heroImage: "/blog/post-academiadosocorrista-blog-1200x675.avif"
 ---
 
 > **TL;DR**: O **controle de hemorragias** é a intervenção de primeiros socorros mais crítica no atendimento ao trauma porque uma vítima com sangramento arterial massivo pode morrer por choque hipovolêmico em menos de 3 minutos — muito antes da chegada da ambulância. As três técnicas essenciais e validadas por protocolos internacionais (PHTLS e *Stop the Bleed*) são: **pressão direta firme e contínua**, **preenchimento de ferida (wound packing)** em áreas juncionais e o **uso imediato do torniquete homologado** em extremidades. Qualquer pessoa capacitada pode agir e estancar uma hemorragia para salvar uma vida.
