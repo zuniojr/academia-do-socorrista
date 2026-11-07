@@ -2,7 +2,7 @@
 title: "DEA: Ritmos Chocáveis, Passo a Passo e Cuidados de Segurança no APH"
 description: "Entenda como o DEA funciona nos ritmos chocáveis FV e TV, o passo a passo do uso correto e os cuidados de segurança essenciais no atendimento pré-hospitalar."
 pubDate: "2026-11-07"
-heroImage: "/blog/dea-operation.avif"
+heroImage: "/blog/dea.avif"
 ---
 
 > **TL;DR**: O DEA analisa automaticamente o ritmo cardíaco e só indica choque nos ritmos chocáveis — Fibrilação Ventricular (FV) e Taquicardia Ventricular sem pulso (TV). O choque interrompe a atividade elétrica caótica e permite que o coração retome o ritmo normal. Usado nos primeiros 3 a 5 minutos da PCR, eleva as taxas de sobrevida para **50% a 70%**. Ligar → pás → análise → choque → RCP imediata — sem pausar para checar pulso.
@@ -236,4 +236,3 @@ Leia também:
 - CORPO DE BOMBEIROS MILITAR DE SANTA CATARINA. **Tópicos introdutórios: suporte básico à vida**. Organizado por Henrique Piovezam da Silveira, Anderson Medeiros Sarte e Rafael Melo Marques. 1. ed. Florianópolis: CBMSC, 2022. 79 p.
 
 > **Aviso:** este conteúdo é informativo e não substitui treinamento prático certificado nem atendimento médico profissional. Em uma emergência real, acione imediatamente o SAMU (192) ou o Corpo de Bombeiros (193).
-
