@@ -2,7 +2,7 @@
 title: "Curso Recuperação de Afogados na Prática: Por Que Fazer e o Que Você Aprende"
 description: "A vítima está fora da água: e agora? Conheça o curso Recuperação de Afogados na Prática da Academia do Socorrista e domine o atendimento pós-resgate."
 pubDate: "2026-11-07"
-heroImage: "/blog/hero-guarda-vidas.avif"
+heroImage: "/blog/recuperacao-de-afogado.avif"
 ---
 
 > **TL;DR**: Tirar a vítima da água é apenas a primeira metade do resgate. A maioria das mortes evitáveis acontece na areia ou na borda da piscina devido à hipóxia severa, broncoaspiração de vômito e aplicação de protocolos errados. O curso **[Recuperação de Afogados na Prática](/recuperacao-de-afogados-na-pratica)** foi desenhado especificamente para ensinar o protocolo correto de suporte básico, estabilização e ressuscitação, preparando você para agir com segurança quando cada segundo conta.
@@ -155,4 +155,3 @@ Não deixe para se capacitar quando a emergência acontecer com alguém da sua e
 - [Afogamento no Suporte Básico de Vida: Por Que o Protocolo é Diferente](/blog/afogamento-suporte-basico-de-vida)
 - [Como Realizar o Atendimento de uma Vítima de Afogamento no SBV](/blog/como-realizar-o-atendimento-de-uma-vitima-de-afogamento-no-suporte-basico-de-vida)
 - [Posição de Recuperação para Afogados: Quando e Como Fazer](/blog/posicao-de-recuperacao-para-afogado)
-
